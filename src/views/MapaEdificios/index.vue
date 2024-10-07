@@ -197,13 +197,14 @@ export default {
               const rutaImagen = this.verImagenServidorPorRuta(edificio.ruta_imagen);
               const contenidoBindPopup = `
                 <div class="text-center">
-                  <h6 class="texto-pequenio">(${edificio.codigo}) - ${edificio.nombre}</h6>
+                  <h6 class="texto-pequenio"><b>${edificio.codigo}</b> - ${edificio.nombre}</h6>
                   <img src="${rutaImagen}" alt="${edificio.nombre}" style="max-width: 100px; height: auto;" />
                   <br>
                   <button id="btn-abrir_modal" class="btn btn-success mt-2 texto-pequenio">Ver Info</button>
                 </div>
               `
-              const marker = L.marker(coordenadas, { title: edificio.nombre, alt: edificio.nombre }).addTo(this.map)
+              const tituloMostrarHover = edificio.codigo + ' - ' + edificio.nombre
+              const marker = L.marker(coordenadas, { title: tituloMostrarHover, alt: edificio.nombre }).addTo(this.map)
                 .bindPopup(contenidoBindPopup);
 
               marker.on('popupopen', () => {
