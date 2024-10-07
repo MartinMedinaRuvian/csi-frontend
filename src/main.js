@@ -30,7 +30,7 @@ axios.interceptors.response.use((response) => {
   return response;
 }, (error) => {
   // Verificar si la respuesta tiene un estado 401 o 403
-  if (error.response.status === 400 || error.response.status === 401 || error.response.status === 403) {
+  if (error.response.status === 401 || error.response.status === 403) {
     // Redirigir a una ruta específica, por ejemplo, una página de login o acceso denegado
     location.href = '/403' // Ajusta según la ruta de tu página
     return new Promise(() => {}); // Detener la ejecución retornando una promesa vacía
