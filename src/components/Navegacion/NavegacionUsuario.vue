@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar fixed-top navbar-expand-md" id="navegacion">
-  <router-link data-toggle="collapse" data-target=".navbar-collapse.show" class="navbar-brand titulo" to="/"><span class="text-dark">Multi</span><span class="color-verde-principal">Services</span></router-link>   
+  <router-link data-toggle="collapse" data-target=".navbar-collapse.show" class="navbar-brand titulo" to="/"><span class="text-dark">CSI</span><span class="color-verde-principal">Control</span></router-link>   
  
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="icon-Menu"></span>
@@ -8,7 +8,7 @@
 
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
-      
+
       <li class="nav-item ml-4">
        <router-link data-toggle="collapse" data-target=".navbar-collapse.show" to="/resumen" class="text-dark">Resumen</router-link>
       </li>
