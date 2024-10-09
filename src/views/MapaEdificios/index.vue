@@ -200,7 +200,7 @@ export default {
                   <h6 class="texto-pequenio"><b>${edificio.codigo}</b> - ${edificio.nombre}</h6>
                   <img src="${rutaImagen}" alt="${edificio.nombre}" style="max-width: 100px; height: auto;" />
                   <br>
-                  <button id="btn-abrir_modal" class="btn btn-success mt-2 texto-pequenio">Ver Info</button>
+                  <button id="btn-info" class="btn btn-success mt-2 texto-pequenio">Ver Info</button>
                 </div>
               `
               const tituloMostrarHover = edificio.codigo + ' - ' + edificio.nombre
@@ -208,8 +208,9 @@ export default {
                 .bindPopup(contenidoBindPopup);
 
               marker.on('popupopen', () => {
-                document.querySelector('#btn-abrir_modal').addEventListener('click', () => {
-                  this.verDatosModal(edificio);
+                document.querySelector('#btn-info').addEventListener('click', () => {
+                  //this.verDatosModal(edificio);
+                  this.verInfoEdificio(edificio)
                 });
               });
             }
@@ -232,27 +233,27 @@ export default {
       }
     },
     guardarNuevoEdificio() {
-      const edificioGuardar = this.edificio
-      const edificio = {
-        nombre: edificioGuardar.nombre,
-        codigo: edificioGuardar.codigo,
-        ubicacion_mapa: edificioGuardar.ubicacionEdificio
+      const registroGuardar = this.edificio
+      const registro = {
+        nombre: registroGuardar.nombre,
+        codigo: registroGuardar.codigo,
+        ubicacion_mapa: registroGuardar.ubicacionEdificio
       }
-      console.log(edificio)
-      this.axios.post("edificio", edificio).then((respuesta) => {
+      const nombreTabla = "edificio"
+      this.axios.post(nombreTabla, registro).then((respuesta) => {
         if (respuesta.status === 200) {
           const idGuardado = respuesta.data.id
-          this.actualizarImagen(idGuardado)
-          location.href = '/menu-administrador'
+          this.actualizarImagen(nombreTabla, idGuardado)
+          location.href = '/'
         }
       }).catch(error => console.log(error))
     },
-    actualizarImagen(idEdificio) {
+    actualizarImagen(nombreTabla, id) {
       var formData = new FormData();
       var imagefile = document.querySelector("#archivo");
       formData.append("archivo", imagefile.files[0]);
       this.axios
-        .put("imagen/edificio/" + idEdificio, formData, {
+        .put("imagen/" + nombreTabla + "/" + id, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -295,6 +296,12 @@ export default {
       const ruta = this.axios.defaults.baseURL + '/' + rutaImagen
       console.log(ruta)
       return ruta
+    },
+    verInfoEdificio(registro){
+      this.$router.push({
+        name: "Edificio",
+        query: { registro: JSON.stringify(registro) },
+      });
     }
   }
 }
