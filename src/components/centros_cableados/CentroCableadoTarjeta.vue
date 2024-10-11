@@ -1,28 +1,28 @@
 <template>
-  <div class="mt-5">
+  <div class="mt-5 container">
     <div class="container-principal" v-if="(centros_cableados != null || centros_cableados != undefined)
       && centros_cableados.length > 0">
-      <h4 class="mt-5">Centros de Cableados</h4>
-      <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarCentroCableado">Nuevo Centro de
-        Cableado</button>
-      <div class="row mt-5"> <!-- Añadimos la fila para agrupar las columnas -->
+      <h4 class="mt-5 mb-5">Centros de Cableados</h4>
+      <div class="row mt-5">
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4" v-for="centro_cableado in centros_cableados"
-          :key="centro_cableado.id">
-          <!-- Ajustamos las tarjetas dentro de una columna responsive -->
-          <div class="card" style="width: 100%;"> <!-- Ancho 100% para adaptarse al tamaño de la columna -->
-            <div class="card-header">
-              <img id="imagen" :src="ruta_servidor + '/' + centro_cableado.ruta_imagen" alt="">
-              <div class="numero">#{{ centro_cableado.numero }}</div>
-            </div>
-            <div class="card-body">
-              <p>{{ centro_cableado.ubicacion }}</p>
-              <p class="card-text">{{ centro_cableado.observacion }}</p>
-            </div>
+        :key="centro_cableado.id">
+        <div class="card" style="width: 100%;">
+          <div class="card-header">
+            <img id="imagen" :src="ruta_servidor + '/' + centro_cableado.ruta_imagen" alt="">
+            <div class="numero">#{{ centro_cableado.numero }}</div>
+          </div>
+          <div class="card-body">
+            <p>{{ centro_cableado.ubicacion }}</p>
+            <button class="btn btn-success">Ver Info</button>
           </div>
         </div>
       </div>
     </div>
+    <button class="btn btn-success mt-5" data-toggle="modal" data-target="#modalGuardarCentroCableado">Nuevo Centro de
+      Cableado</button>
+    </div>
     <div v-else>
+      <h5>No hay Centros de Cableado</h5>
       <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarCentroCableado">Agregar Centro de
         Cableado</button>
     </div>
@@ -161,6 +161,11 @@ export default {
 </script>
 
 <style>
+.card{
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
 .card-header {
   position: relative;
   text-align: center;
@@ -176,13 +181,13 @@ export default {
 
 .card-header .numero {
   position: absolute;
-  top: 10px; /* Mueve el número hacia la parte superior */
-  left: 10px; /* Mueve el número hacia la izquierda */
+  top: 0px; /* Mueve el número hacia la parte superior */
+  left: 0px; /* Mueve el número hacia la izquierda */
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
   padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 16px;
+  border-top-left-radius: 10px;
+  font-size: 20px;
 }
 
 .card-body {
