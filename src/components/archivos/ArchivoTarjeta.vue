@@ -1,28 +1,35 @@
 <template>
-  <div class="mt-5 container">
-    <div class="container-principal" v-if="(archivos != null || archivos != undefined)
+  <div>
+    <div class="container-principal_archivos" v-if="(archivos != null || archivos != undefined)
       && archivos.length > 0">
-      <h4 class="mt-5 mb-5">Archivos</h4>
-      <div class="row mt-5">
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4" v-for="archivo in archivos" :key="archivo.id">
-          <div class="card" style="width: 100%;">
-            <div class="card-header">
-              <div v-if="elArchivoEsUnaImagen(archivo.nombre)">
-                <img id="imagen" :src="ruta_servidor + '/' + archivo.ruta" alt="">
+      <h4 class="mb-5">Archivos
+        <span>
+          <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarArchivo">+</button>
+        </span>
+      </h4>
+
+      <div id="dialog-window">
+        <div id="scrollable-content" class="containe-imagenes mb-5">
+          <ul class="list-group" v-for="archivo in archivos" :key="archivo.id">
+            <li class="list-group-item d-flex justify-content-between">
+              <div class="texto-archivos">
+                <span v-if="elArchivoEsUnaImagen(archivo.nombre)" class="texto-mediano text-success pointer-hand"
+                  data-toggle="modal" data-target="#modalVerImagen" @click="verDatosModal(archivo)">{{ archivo.nombre }}
+                </span>
+                <span v-else class="texto-mediano text-success pointer-hand" @click="descargarArchivo(archivo.ruta)">{{
+                  archivo.nombre }}
+                </span>
               </div>
-              <div v-else>
-                <span class="icono">📄</span>
+              <div class="botones-archivos">
+                <span>
+                  <button class="btn-eliminar_item btn btn-danger ml-2" @click="verDatosModal(archivo)"
+                    data-toggle="modal" data-target="#modalEliminarArchivo">&#10006;</button>
+                </span>
               </div>
-            </div>
-            <div class="card-body">
-              <p>{{ archivo.nombre }}</p>
-              <button class="btn btn-danger" @click="verDatosModal(archivo)" data-toggle="modal" data-target="#modalEliminarArchivo">Eliminar</button>
-            </div>
-          </div>
+            </li>
+          </ul>
         </div>
       </div>
-      <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarArchivo">Nuevo
-        Archivo</button>
     </div>
     <div v-else>
       <h5>No hay Archivos</h5>
@@ -88,8 +95,7 @@
             <form @submit.prevent>
 
               <div class="form-group mt-4">
-                <h5>Archivo:</h5>
-                {{ archivo }}
+                <h5>¿ Eliminar Archivo: {{ archivo.nombre }} ?</h5>
               </div>
 
               <div class="row">
@@ -100,7 +106,8 @@
                   </button>
                 </div>
                 <div class="col-md-6 mt-3">
-                  <input type="button" class="btn btn-danger form-control" value="Guardar" @click="eliminarArchivo()" />
+                  <input type="button" class="btn btn-danger form-control" value="Eliminar"
+                    @click="eliminarArchivo()" />
                 </div>
               </div>
             </form>
@@ -108,15 +115,20 @@
         </div>
       </div>
     </div>
+
+    <ImagenPrevia :archivo="archivo" />
+
   </div>
 </template>
 
 <script>
+import ImagenPrevia from "@/components/archivos/ImagenPrevia";
 export default {
   props: {
     archivos: [],
     info_tabla: {}
   },
+  components:{ ImagenPrevia },
   data() {
     return {
       archivo: {},
@@ -193,11 +205,26 @@ export default {
     verDatosModal(dato) {
       this.archivo = { ...dato };
     },
+    rutaArchivoServidor(ruta_archivo) {
+      return this.ruta_servidor + '/' + ruta_archivo
+    },
+    descargarArchivo(ruta_archivo) {
+      const url = this.rutaArchivoServidor(ruta_archivo)
+      window.open(url, '_blank');
+    }
   },
 };
 </script>
 
 <style>
+.container-principal_archivos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* Para que el contenido dentro de .container-principal esté en una columna */
+}
+
 .card {
   margin-bottom: 20px;
   border-radius: 10px;
@@ -261,5 +288,42 @@ export default {
 
 .icono {
   font-size: 80px;
+}
+
+.btn-eliminar_item {
+  font-size: 10px;
+}
+
+.texto-mediano {
+  font-size: 15px;
+}
+
+.pointer-hand {
+  cursor: pointer;
+}
+
+#dialog-window {
+  max-width: 90%;
+  height: 200px;
+  margin-bottom: 40px;
+}
+
+#scrollable-content {
+  height: 250px;
+  overflow: auto;
+  border: solid 1px #212121;
+}
+
+#imagenArchivoVer {
+  width: 100%;
+  height: 300px;
+}
+
+.texto-archivos{
+  width: 85%;
+  word-wrap: break-word !important;
+}
+.botones-archivos{
+  width: 15%;
 }
 </style>

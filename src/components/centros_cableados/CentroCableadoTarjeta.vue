@@ -1,25 +1,28 @@
 <template>
-  <div class="mt-5 container">
+  <div>
     <div class="container-principal" v-if="(centros_cableados != null || centros_cableados != undefined)
       && centros_cableados.length > 0">
-      <h4 class="mt-5 mb-5">Centros de Cableados</h4>
+      <h4 class="mb-5">Centros de Cableados <span> <button class="btn btn-success" data-toggle="modal"
+            data-target="#modalGuardarCentroCableado">+ </button></span></h4>
       <div class="row mt-5">
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4" v-for="centro_cableado in centros_cableados"
-        :key="centro_cableado.id">
-        <div class="card" style="width: 100%;">
-          <div class="card-header">
-            <img id="imagen" :src="ruta_servidor + '/' + centro_cableado.ruta_imagen" alt="">
-            <div class="numero">#{{ centro_cableado.numero }}</div>
-          </div>
-          <div class="card-body">
-            <p>{{ centro_cableado.ubicacion }}</p>
-            <button class="btn btn-success">Ver Info</button>
+          :key="centro_cableado.id">
+          <div class="card" style="width: 100%;">
+            <div class="card-header">
+              <img id="imagen" :src="rutaImagenVer(centro_cableado.ruta_imagen)" alt="">
+              <div class="numero">#{{ centro_cableado.numero }}</div>
+            </div>
+            <div class="card-body">
+              <p>{{ centro_cableado.ubicacion }} - {{ centro_cableado.tipo }}</p>
+              <p class="propiedades">
+                <span class="text-primary">{{ centro_cableado.climatizado == 'S' ? '&#10052;' : '&#128683;&#10052;'}}</span> <br>
+                <span>{{ centro_cableado.camaras == 'S' ? '&#128247;' : '&#128683;&#128247;'}}</span>
+              </p>
+              <button class="btn btn-success">Ver Info</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <button class="btn btn-success mt-5" data-toggle="modal" data-target="#modalGuardarCentroCableado">Nuevo Centro de
-      Cableado</button>
     </div>
     <div v-else>
       <h5>No hay Centros de Cableado</h5>
@@ -35,7 +38,7 @@
             <h5 class="modal-title" id="exampleModalLongTitle">
               Guardar Centro de Cableado
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="centro_cableado = {}">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="centro_cableado = { tipo: 'En oficina', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' }">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -55,15 +58,61 @@
                 </div>
               </div>
 
+              <div class="form-group">
+                <label for="tipo" class="requerido">Tipo:</label>
+                <select id="tipo" class="form-select form-control" v-model="centro_cableado.tipo">
+                  <option v-for="tipo in tiposCentroCableado" :value="tipo" :key="formaPago" class="text-success">
+                    {{ tipo }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="tipo" class="requerido">Climatizado:</label>
+                <select id="tipo" class="form-select form-control" v-model="centro_cableado.climatizado">
+                  <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
+                    {{ opcion }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="tipo" class="requerido">Camaras:</label>
+                <select id="tipo" class="form-select form-control" v-model="centro_cableado.camaras">
+                  <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
+                    {{ opcion }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="tipo" class="requerido">Acceso por llaves:</label>
+                <select id="tipo" class="form-select form-control" v-model="centro_cableado.acceso_llaves">
+                  <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
+                    {{ opcion }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="tipo" class="requerido">Acceso Biometrico:</label>
+                <select id="tipo" class="form-select form-control" v-model="centro_cableado.acceso_biometrico">
+                  <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
+                    {{ opcion }}
+                  </option>
+                </select>
+              </div>
+
               <div class="form-group mt-4">
                 <h5>Imagen:</h5>
                 <div class="row">
                   <div class="col-md-12 col-lg-12">
-                    <input type="file" class="form-control" name="archivo" id="archivo" @change="verImagen()"
-                      accept="image/*" ref="inputArchivo" required>
+                    <input type="file" class="form-control" name="archivo_centro_cableado" id="archivo_centro_cableado"
+                      @change="verImagen()" accept="image/*" ref="inputArchivoCentroCableado" required>
                   </div>
                   <div class="col-md-12 col-lg-12 mt-3">
-                    <img alt="imagen" id="imagenPrevisualizacion" ref="imagenPrevisualizacion" :src="urlSinImagen">
+                    <img class="imagen-previsualizacion" alt="imagen" id="imagenPrevisualizacionCentroCableado"
+                      ref="imagenPrevisualizacionCentroCableado" :src="urlSinImagen">
                   </div>
                 </div>
               </div>
@@ -79,7 +128,7 @@
               <div class="row">
                 <div class="col-md-6 mt-3">
                   <button type="button" class="btn btn-secondary form-control" data-dismiss="modal"
-                    @click="centro_cableado = {}">
+                    @click="centro_cableado = { tipo: 'En oficina', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' }">
                     Cancelar
                   </button>
                 </div>
@@ -104,30 +153,37 @@ export default {
   },
   data() {
     return {
-      centro_cableado: {},
+      centro_cableado: { tipo: 'En oficina', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' },
       ruta_servidor: this.axios.defaults.baseURL,
       urlSinImagen: this.axios.defaults.baseURL + '/archivos/centro_cableado_default.svg',
-      urlImg: ''
+      urlImg: '',
+      tiposCentroCableado: ['En oficina', 'Independiente'],
+      opcionesRespuesta: ['S', 'N']
     };
   },
   methods: {
     verImagen() {
-      const archivos = this.$refs.inputArchivo.files;
+      const archivos = this.$refs.inputArchivoCentroCableado.files;
       console.log(archivos)
 
       if ((archivos != null && archivos != undefined) && archivos.length > 0) {
         const primerArchivo = archivos[0];
         const objectURL = URL.createObjectURL(primerArchivo);
-        this.$refs.imagenPrevisualizacion.src = objectURL;
+        this.$refs.imagenPrevisualizacionCentroCableado.src = objectURL;
       } else {
-        this.$refs.imagenPrevisualizacion.src = this.urlSinImagen;
+        this.$refs.imagenPrevisualizacionCentroCableado.src = this.urlSinImagen;
       }
     },
     guardarNuevoCentroCableado() {
       const registroGuardar = this.centro_cableado
       const registro = {
         numero: registroGuardar.numero,
+        tipo: registroGuardar.tipo,
         ubicacion: registroGuardar.ubicacion,
+        climatizado: registroGuardar.climatizado,
+        camaras: registroGuardar.camaras,
+        acceso_llaves: registroGuardar.acceso_llaves,
+        acceso_biometrico: registroGuardar.acceso_biometrico,
         observacion: registroGuardar.observacion,
         id_edificio: this.id_edificio
       }
@@ -144,7 +200,7 @@ export default {
     actualizarImagen(nombreTabla, id) {
       console.log(nombreTabla, id)
       var formData = new FormData();
-      var imagefile = document.querySelector("#archivo");
+      var imagefile = document.querySelector("#archivo_centro_cableado");
       formData.append("archivo", imagefile.files[0]);
       this.axios
         .put("imagen/" + nombreTabla + "/" + id, formData, {
@@ -156,12 +212,16 @@ export default {
           console.log(respuesta);
         });
     },
+    rutaImagenVer(ruta_imagen) {
+      const ruta = ruta_imagen != null && ruta_imagen != undefined ? ruta_imagen : 'archivos/centro_cableado_default.svg'
+      return this.ruta_servidor + '/' + ruta
+    }
   },
 };
 </script>
 
 <style>
-.card{
+.card {
   margin-bottom: 20px;
   border-radius: 10px;
 }
@@ -172,17 +232,22 @@ export default {
 }
 
 .card-header img {
-  width: 150px; /* Ancho fijo */
-  height: 150px; /* Alto fijo */
+  width: 150px;
+  /* Ancho fijo */
+  height: 150px;
+  /* Alto fijo */
   border-top-left-radius: .25rem;
   border-top-right-radius: .25rem;
-  object-fit: cover; /* Asegura que la imagen se ajuste bien al contenedor */
+  object-fit: cover;
+  /* Asegura que la imagen se ajuste bien al contenedor */
 }
 
 .card-header .numero {
   position: absolute;
-  top: 0px; /* Mueve el número hacia la parte superior */
-  left: 0px; /* Mueve el número hacia la izquierda */
+  top: 0px;
+  /* Mueve el número hacia la parte superior */
+  left: 0px;
+  /* Mueve el número hacia la izquierda */
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
   padding: 5px 10px;
@@ -215,5 +280,13 @@ export default {
 
 .texto-pequenio {
   font-size: 13px;
+}
+
+.imagen-previsualizacion {
+  width: 120px;
+  height: 120px;
+}
+.propiedades span {
+  font-size: 20px;
 }
 </style>

@@ -198,7 +198,7 @@ export default {
               const contenidoBindPopup = `
                 <div class="text-center">
                   <h6 class="texto-pequenio"><b>${edificio.codigo}</b> - ${edificio.nombre}</h6>
-                  <img src="${rutaImagen}" alt="${edificio.nombre}" style="max-width: 100px; height: auto;" />
+                  <img src="${rutaImagen}" alt="${edificio.nombre}" style="max-width: 100px; height: 100px;" />
                   <br>
                   <button id="btn-info" class="btn btn-success mt-2 texto-pequenio">Ver Info</button>
                 </div>
