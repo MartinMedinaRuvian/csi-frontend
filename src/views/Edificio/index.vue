@@ -9,13 +9,16 @@
             <span class="icono-actualizar" data-toggle="modal" data-target="#modalActualizarImagen">
               &#x1F504;
             </span>
-            <div class="form group mt-3">
-              <label for="codigo">Observación:</label>
-              <textarea type="text" placeholder="Observación" v-model="edificio.observación" class="form-control" />
-            </div>
+          </div>
+          <div class="form-group mt-3 observacion">
+            <label for="codigo">Observación:</label>
+            <textarea v-if="edificio.observacion != null && edificio.observacion != undefined" disabled type="text"
+              placeholder="Observación" v-model="edificio.observacion" class="form-control textarea-center" />
+            <h6 v-else>Sin Observación</h6>
           </div>
         </div>
-        <button class="btn btn-danger" data-toggle="modal" data-target="#modalEliminarEdificio">Eliminar Edificio</button>
+        <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarEdificio">Actualizar</button>
+        <button class="btn btn-danger" data-toggle="modal" data-target="#modalEliminarEdificio">Eliminar</button>
       </div>
       <div class="informacion-secundario">
         <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'edificio', id: edificio.id }" />
@@ -76,9 +79,9 @@
         </div>
       </div>
     </div>
-        <!-- Modal Eliminar -->
-        <div class="modal fade" id="modalEliminarEdificio" tabindex="-1" role="dialog" aria-labelledby="modalEliminarEdificio"
-      aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <!-- Modal Eliminar -->
+    <div class="modal fade" id="modalEliminarEdificio" tabindex="-1" role="dialog"
+      aria-labelledby="modalEliminarEdificio" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header bg-success">
@@ -112,6 +115,59 @@
         </div>
       </div>
     </div>
+        <!-- Modal Actualizar -->
+        <div class="modal fade" id="modalActualizarEdificio" tabindex="-1" role="dialog" aria-labelledby="modalActualizarEdificio"
+      aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-success">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Actualizar Edificio
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form @submit.prevent>
+              <div class="form group">
+                <label for="nombre" class="requerido">Nombre:</label>
+                <input required type="text" placeholder="Ingrese el Nombre" v-model="edificio.nombre"
+                  class="form-control" />
+              </div>
+
+              <div class="form group mt-3">
+                <div class="form-group">
+                  <label for="codigo" class="requerido">Código:</label>
+                  <input required type="text" placeholder="Ingrese el Código" v-model="edificio.codigo"
+                    class="form-control" />
+                </div>
+              </div>
+
+              <div class="form group mt-3">
+                <div class="form-group">
+                  <label for="codigo">Observación:</label>
+                  <textarea type="text" placeholder="Ingrese una observación" v-model="edificio.observacion"
+                    class="form-control" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mt-3">
+                  <button type="button" class="btn btn-secondary form-control" data-dismiss="modal">
+                    Cancelar
+                  </button>
+                </div>
+                <div class="col-md-6 mt-3">
+                  <input type="button" class="btn btn-success form-control" value="Guardar"
+                    @click="actualizarEdificio()" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -134,6 +190,7 @@ export default {
     const registroString = this.$route.query.registro;
     const registroObjeto = JSON.parse(registroString);
     this.edificio = registroObjeto;
+    this.verInfo()
     this.verCentrosCableados()
     this.verArchivos()
   },
@@ -152,7 +209,7 @@ export default {
         .then((respuesta) => {
           if (respuesta.status === 200) {
             //this.$router.push('/edificios')
-            window.location.href = "/edificios";
+            window.location.reload()
             $("#modalGuardaredificio").modal("hide");
           }
         })
@@ -177,9 +234,6 @@ export default {
         }
       });
     },
-    verEdificios() {
-      location.href = '/'
-    },
     actualizarImagen() {
       const nombreTabla = 'edificio'
       const id = this.edificio.id
@@ -195,7 +249,7 @@ export default {
         .then((respuesta) => {
           if (respuesta.status == 200) {
             console.log(respuesta.data)
-            location.href = '/'
+            window.location.reload()
           }
         });
     },
@@ -211,17 +265,37 @@ export default {
         this.$refs.imagenPrevisualizacionEdificio.src = urlImagenActual;
       }
     },
-    eliminarEdificio(){
+    eliminarEdificio() {
       const id = this.edificio.id
       this.axios
         .delete("edificio/" + id)
         .then((respuesta) => {
-          window.location.href = "/";
+          window.location.reload()
         })
         .catch((error) => {
           alert(error.response.data);
         });
-    }
+    },
+    actualizarEdificio() {
+      const dato = this.edificio
+      this.axios
+        .put("edificio", dato)
+        .then((respuesta) => {
+          window.location.reload()
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
+    },
+    verInfo() {
+      const idEdificio = this.edificio.id
+      this.axios.get("edificio/" + idEdificio).then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.edificio = respuesta.data;
+          console.log(this.edificio, 'edificiooo')
+        }
+      });
+    },
   }
 };
 </script>
@@ -282,8 +356,21 @@ export default {
   font-size: 20px;
 }
 
-textarea {
+.observacion {
   width: 100%;
+  /* Asegura que ocupe todo el ancho disponible */
+  display: flex;
+  flex-direction: column;
+  /* Alinea verticalmente */
+  align-items: center;
+  /* Centra el contenido dentro del div */
+}
+
+.textarea-center {
+  width: 100%;
+  /* Asegura que el textarea use el ancho total de su contenedor */
+  max-width: 500px;
+  /* Limita el ancho máximo */
 }
 
 .informacion {
@@ -294,16 +381,18 @@ textarea {
   flex-wrap: wrap;
 }
 
-.informacion-basica, .informacion-secundario  {
+.informacion-basica,
+.informacion-secundario {
   flex-basis: 100%;
   max-width: 100%;
 }
 
 @media (min-width: 768px) {
-  .informacion-basica, .informacion-secundario {
+
+  .informacion-basica,
+  .informacion-secundario {
     flex-basis: 50%;
     max-width: 50%;
   }
 }
-
 </style>

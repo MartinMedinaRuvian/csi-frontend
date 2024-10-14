@@ -298,9 +298,13 @@ export default {
       return ruta
     },
     verInfoEdificio(registro){
+      const datosRegistro = {
+        id: registro.id,
+        codigo: registro.codigo
+      }
       this.$router.push({
         name: "Edificio",
-        query: { registro: JSON.stringify(registro) },
+        query: { registro: JSON.stringify(datosRegistro) },
       });
     }
   }
