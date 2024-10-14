@@ -1,5 +1,6 @@
 <template>
   <div class="text-center">
+    <h4 class="text-success mb-5"><span><button class="btn btn-success" @click="volver()">&#8630;</button></span> Información Edificio</h4>
     <div class="informacion">
       <div class="informacion-basica">
         <h5 class="titulo">{{ edificio.nombre }} - {{ edificio.codigo }}</h5>
@@ -12,12 +13,12 @@
           </div>
           <div class="form-group mt-3 observacion">
             <label for="codigo">Observación:</label>
-            <textarea v-if="edificio.observacion != null && edificio.observacion != undefined" disabled type="text"
+            <textarea v-if="edificio.observacion != null && edificio.observacion != undefined && edificio.observacion.length > 0" disabled type="text"
               placeholder="Observación" v-model="edificio.observacion" class="form-control textarea-center" />
             <h6 v-else>Sin Observación</h6>
           </div>
         </div>
-        <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarEdificio">Actualizar</button>
+        <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarEdificio" @click="verDatosModal()">Actualizar</button>
         <button class="btn btn-danger" data-toggle="modal" data-target="#modalEliminarEdificio">Eliminar</button>
       </div>
       <div class="informacion-secundario">
@@ -132,14 +133,14 @@
             <form @submit.prevent>
               <div class="form group">
                 <label for="nombre" class="requerido">Nombre:</label>
-                <input required type="text" placeholder="Ingrese el Nombre" v-model="edificio.nombre"
+                <input required type="text" placeholder="Ingrese el Nombre" v-model="edificio_actualizar.nombre"
                   class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo" class="requerido">Código:</label>
-                  <input required type="text" placeholder="Ingrese el Código" v-model="edificio.codigo"
+                  <input required type="text" placeholder="Ingrese el Código" v-model="edificio_actualizar.codigo"
                     class="form-control" />
                 </div>
               </div>
@@ -147,7 +148,7 @@
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo">Observación:</label>
-                  <textarea type="text" placeholder="Ingrese una observación" v-model="edificio.observacion"
+                  <textarea type="text" placeholder="Ingrese una observación" v-model="edificio_actualizar.observacion"
                     class="form-control" />
                 </div>
               </div>
@@ -183,7 +184,8 @@ export default {
       centros_cableados: [],
       archivos: [],
       mensaje: { ver: false },
-      ruta_servidor: this.axios.defaults.baseURL
+      ruta_servidor: this.axios.defaults.baseURL,
+      edificio_actualizar: {}
     };
   },
   mounted() {
@@ -270,14 +272,14 @@ export default {
       this.axios
         .delete("edificio/" + id)
         .then((respuesta) => {
-          window.location.reload()
+          window.location.href = '/'
         })
         .catch((error) => {
           alert(error.response.data);
         });
     },
     actualizarEdificio() {
-      const dato = this.edificio
+      const dato = this.edificio_actualizar
       this.axios
         .put("edificio", dato)
         .then((respuesta) => {
@@ -296,6 +298,13 @@ export default {
         }
       });
     },
+    verDatosModal() {
+      const dato = this.edificio
+      this.edificio_actualizar = { ...dato };
+    },
+    volver(){
+      location.href = '/'
+    }
   }
 };
 </script>

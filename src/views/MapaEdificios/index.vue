@@ -240,10 +240,10 @@ export default {
         ubicacion_mapa: registroGuardar.ubicacionEdificio
       }
       const nombreTabla = "edificio"
-      this.axios.post(nombreTabla, registro).then((respuesta) => {
+      this.axios.post(nombreTabla, registro).then(async (respuesta) => {
         if (respuesta.status === 200) {
           const idGuardado = respuesta.data.id
-          this.actualizarImagen(nombreTabla, idGuardado)
+          await this.actualizarImagen(nombreTabla, idGuardado)
           location.href = '/'
         }
       }).catch(error => console.log(error))
@@ -299,8 +299,7 @@ export default {
     },
     verInfoEdificio(registro){
       const datosRegistro = {
-        id: registro.id,
-        codigo: registro.codigo
+        id: registro.id
       }
       this.$router.push({
         name: "Edificio",

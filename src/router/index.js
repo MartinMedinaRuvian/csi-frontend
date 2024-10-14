@@ -45,6 +45,12 @@ const routes = [
     name: 'Edificio',
     component: () => import('@/views/Edificio/index.vue'),
     meta:{requiereAutorizacion:true}
+  },
+  {
+    path: '/centro-cableado',
+    name: 'CentroCableado',
+    component: () => import('@/views/CentroCableado/index.vue'),
+    meta:{requiereAutorizacion:true}
   }
 ]
 

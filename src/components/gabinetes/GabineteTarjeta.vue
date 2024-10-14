@@ -1,33 +1,32 @@
 <template>
   <div>
-    <div class="container-principal" v-if="(centros_cableados != null || centros_cableados != undefined)
-      && centros_cableados.length > 0">
-      <h4 class="mb-5">Centros de Cableados <span> <button class="btn btn-success" data-toggle="modal"
+    <div class="container-principal" v-if="(gabinete != null || gabinete != undefined)
+      && gabinete.length > 0">
+      <h4 class="mb-5">Gabinetes (RAW) <span> <button class="btn btn-success" data-toggle="modal"
             data-target="#modalGuardarCentroCableado">+ </button></span></h4>
       <div class="row mt-5">
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4" v-for="centro_cableado in centros_cableados"
-          :key="centro_cableado.id">
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-4" v-for="gabinete in gabinete"
+          :key="gabinete.id">
           <div class="card" style="width: 100%;">
             <div class="card-header">
-              <img id="imagen" :src="rutaImagenVer(centro_cableado.ruta_imagen)" alt="">
-              <div class="numero">#{{ centro_cableado.numero }}</div>
+              <img id="imagen" :src="rutaImagenVer(gabinete.ruta_imagen)" alt="">
+              <div class="numero">#{{ gabinete.numero }}</div>
             </div>
             <div class="card-body">
-              <p>{{ centro_cableado.ubicacion }} - {{ centro_cableado.tipo }}</p>
+              <p>{{ gabinete.tipo }}</p>
               <p class="propiedades">
-                <span class="text-primary">{{ centro_cableado.climatizado == 'S' ? '&#10052;' : '&#128683;&#10052;'}}</span> <br>
-                <span>{{ centro_cableado.camaras == 'S' ? '&#128247;' : '&#128683;&#128247;'}}</span>
+                <span class="text-primary">{{ gabinete.climatizado == 'S' ? '&#10052;' : '&#128683;&#10052;'}}</span> <br>
+                <span>{{ gabinete.camaras == 'S' ? '&#128247;' : '&#128683;&#128247;'}}</span>
               </p>
-              <button class="btn btn-success" @click="verInfoCentroCableado(centro_cableado)">Ver Info</button>
+              <button class="btn btn-success">Ver Info</button>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div v-else>
-      <h5>No hay Centros de Cableado</h5>
-      <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarCentroCableado">Agregar Centro de
-        Cableado</button>
+      <h5>No hay Gabinetes</h5>
+      <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarCentroCableado">Agregar Gabinete</button>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="modalGuardarCentroCableado" tabindex="-1" role="dialog"
@@ -36,9 +35,9 @@
         <div class="modal-content">
           <div class="modal-header bg-success">
             <h5 class="modal-title" id="exampleModalLongTitle">
-              Guardar Centro de Cableado
+              Guardar Gabinete
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="centro_cableado = { tipo: 'EN OFICINA', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' }">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="gabinete = { tipo: 'EN OFICINA', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' }">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -46,22 +45,22 @@
             <form @submit.prevent>
               <div class="form group">
                 <label for="nombre" class="requerido">Número:</label>
-                <input required type="number" placeholder="Ingrese el Número" v-model="centro_cableado.numero"
+                <input required type="number" placeholder="Ingrese el Número" v-model="gabinete.numero"
                   class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo" class="requerido">Ubicación:</label>
-                  <input required type="text" placeholder="Ingrese ubicación" v-model="centro_cableado.ubicacion"
+                  <input required type="text" placeholder="Ingrese ubicación" v-model="gabinete.ubicacion"
                     class="form-control" />
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="tipo" class="requerido">Tipo:</label>
-                <select id="tipo" class="form-select form-control" v-model="centro_cableado.tipo">
-                  <option v-for="tipo in tiposCentroCableado" :value="tipo" :key="tipo" class="text-success">
+                <select id="tipo" class="form-select form-control" v-model="gabinete.tipo">
+                  <option v-for="tipo in tiposCentroCableado" :value="tipo" :key="formaPago" class="text-success">
                     {{ tipo }}
                   </option>
                 </select>
@@ -69,7 +68,7 @@
 
               <div class="form-group">
                 <label for="tipo" class="requerido">Climatizado:</label>
-                <select id="tipo" class="form-select form-control" v-model="centro_cableado.climatizado">
+                <select id="tipo" class="form-select form-control" v-model="gabinete.climatizado">
                   <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
                     {{ opcion }}
                   </option>
@@ -78,7 +77,7 @@
 
               <div class="form-group">
                 <label for="tipo" class="requerido">Camaras:</label>
-                <select id="tipo" class="form-select form-control" v-model="centro_cableado.camaras">
+                <select id="tipo" class="form-select form-control" v-model="gabinete.camaras">
                   <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
                     {{ opcion }}
                   </option>
@@ -87,7 +86,7 @@
 
               <div class="form-group">
                 <label for="tipo" class="requerido">Acceso por llaves:</label>
-                <select id="tipo" class="form-select form-control" v-model="centro_cableado.acceso_llaves">
+                <select id="tipo" class="form-select form-control" v-model="gabinete.acceso_llaves">
                   <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
                     {{ opcion }}
                   </option>
@@ -96,7 +95,7 @@
 
               <div class="form-group">
                 <label for="tipo" class="requerido">Acceso Biometrico:</label>
-                <select id="tipo" class="form-select form-control" v-model="centro_cableado.acceso_biometrico">
+                <select id="tipo" class="form-select form-control" v-model="gabinete.acceso_biometrico">
                   <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
                     {{ opcion }}
                   </option>
@@ -107,7 +106,7 @@
                 <h5>Imagen:</h5>
                 <div class="row">
                   <div class="col-md-12 col-lg-12">
-                    <input type="file" class="form-control" name="archivo_centro_cableado" id="archivo_centro_cableado"
+                    <input type="file" class="form-control" name="archivo_gabinete" id="archivo_gabinete"
                       @change="verImagen()" accept="image/*" ref="inputArchivoCentroCableado" required>
                   </div>
                   <div class="col-md-12 col-lg-12 mt-3">
@@ -120,7 +119,7 @@
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo">Observación:</label>
-                  <textarea type="text" placeholder="Ingrese una observación" v-model="centro_cableado.observación"
+                  <textarea type="text" placeholder="Ingrese una observación" v-model="gabinete.observación"
                     class="form-control" />
                 </div>
               </div>
@@ -128,7 +127,7 @@
               <div class="row">
                 <div class="col-md-6 mt-3">
                   <button type="button" class="btn btn-secondary form-control" data-dismiss="modal"
-                    @click="centro_cableado = { tipo: 'EN OFICINA', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' }">
+                    @click="gabinete = { tipo: 'EN OFICINA', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' }">
                     Cancelar
                   </button>
                 </div>
@@ -148,16 +147,16 @@
 <script>
 export default {
   props: {
-    centros_cableados: [],
+    gabinete: [],
     id_edificio: {}
   },
   data() {
     return {
-      centro_cableado: { tipo: 'EN OFICINA', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' },
+      gabinete: { tipo: 'EN OFICINA', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' },
       ruta_servidor: this.axios.defaults.baseURL,
-      urlSinImagen: this.axios.defaults.baseURL + '/archivos/centro_cableado_default.svg',
+      urlSinImagen: this.axios.defaults.baseURL + '/archivos/gabinete_default.svg',
       urlImg: '',
-      tiposCentroCableado: ['EN OFICINA', 'INDEPENDIENTE'],
+      tiposCentroCableado: ['EN OFICINA', 'Independiente'],
       opcionesRespuesta: ['S', 'N']
     };
   },
@@ -175,7 +174,7 @@ export default {
       }
     },
     guardarNuevoCentroCableado() {
-      const registroGuardar = this.centro_cableado
+      const registroGuardar = this.gabinete
       const registro = {
         numero: registroGuardar.numero,
         tipo: registroGuardar.tipo,
@@ -187,11 +186,11 @@ export default {
         observacion: registroGuardar.observacion,
         id_edificio: this.id_edificio
       }
-      const nombreTabla = "centro_cableado"
-      this.axios.post(nombreTabla, registro).then(async (respuesta) => {
+      const nombreTabla = "gabinete"
+      this.axios.post(nombreTabla, registro).then((respuesta) => {
         if (respuesta.status === 200) {
           const idGuardado = respuesta.data.id
-          await this.actualizarImagen(nombreTabla, idGuardado)
+          this.actualizarImagen(nombreTabla, idGuardado)
           location.reload()
           //location.href = '/'
         }
@@ -200,7 +199,7 @@ export default {
     actualizarImagen(nombreTabla, id) {
       console.log(nombreTabla, id)
       var formData = new FormData();
-      var imagefile = document.querySelector("#archivo_centro_cableado");
+      var imagefile = document.querySelector("#archivo_gabinete");
       formData.append("archivo", imagefile.files[0]);
       this.axios
         .put("imagen/" + nombreTabla + "/" + id, formData, {
@@ -213,17 +212,8 @@ export default {
         });
     },
     rutaImagenVer(ruta_imagen) {
-      const ruta = ruta_imagen != null && ruta_imagen != undefined ? ruta_imagen : 'archivos/centro_cableado_default.svg'
+      const ruta = ruta_imagen != null && ruta_imagen != undefined ? ruta_imagen : 'archivos/gabinete_default.svg'
       return this.ruta_servidor + '/' + ruta
-    },
-    verInfoCentroCableado(registro){
-      const datosRegistro = {
-        id: registro.id
-      }
-      this.$router.push({
-        name: "CentroCableado",
-        query: { registro: JSON.stringify(datosRegistro) },
-      });
     }
   },
 };

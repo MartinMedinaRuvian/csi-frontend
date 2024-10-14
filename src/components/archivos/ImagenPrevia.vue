@@ -23,7 +23,7 @@
                 <div class="col-md-6 mt-3">
                   <button type="button" class="btn btn-secondary form-control" data-dismiss="modal"
                     @click="Archivo = {}">
-                    Cancelar
+                    Cerrar
                   </button>
                 </div>
                 <div class="col-md-6 mt-3">
