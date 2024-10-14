@@ -4,20 +4,20 @@
       <thead class="thead-light">
         <tr>
           <th scope="col">Nombre Completo</th>
-          <th scope="col">Identificación</th>
+          <th scope="col">Email</th>
           <th scope="col">Tipo</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="usuario in usuarios" :key="usuario.codigo">
-          <td :class="usuario.estado === '1' ? 'text-danger' : ''">
+        <tr v-for="usuario in usuarios" :key="usuario.id">
+          <td :class="usuario.estado === 'D' ? 'text-danger' : ''">
             <p>{{ usuario.nombre_completo }}</p>
           </td>
           <td>
-            <p>{{ usuario.identificacion }}</p>
+            <p>{{ usuario.email }}</p>
           </td>
           <td>
-            <p>{{ usuario.rol_codigo === 1 ? "ADMIN" : "TÉCNICO" }}</p>
+            <p>{{ usuario.rol_id === 1 ? "ADMIN" : "USUARIO" }}</p>
           </td>
           <td>
             <button
@@ -99,24 +99,24 @@
           </div>
           <div class="modal-body">
             <form @submit.prevent>
-              <label for="selectEditarUsuario">Seleccione Rol:</label>
+              <label for="selectEditarUsuario" class="requerido">Seleccione Rol:</label>
               <select
                 id="selectEditarUsuario"
                 class="form-select form-control"
                 aria-label="Default select example"
-                v-model="usuario.rol_codigo"
+                v-model="usuario.rol_id"
               >
                 <option
-                  :value="rol.codigo"
+                  :value="rol.id"
                   v-for="rol in roles"
-                  :key="rol.codigo"
+                  :key="rol.id"
                   class="text-success"
                 >
                   {{ rol.descripcion }}
                 </option>
               </select>
               <div class="form group mt-3">
-                <label for="nombrecompleto">Nombre Completo:</label>
+                <label for="nombrecompleto" class="requerido">Nombre Completo:</label>
                 <input
                   type="text"
                   placeholder="Nombre Completo"
@@ -127,11 +127,11 @@
 
               <div class="form group mt-3">
                 <div class="form-group">
-                  <label for="identifiacion">Identificación:</label>
+                  <label for="email" class="requerido">Email:</label>
                   <input
                     type="text"
-                    placeholder="Identificación"
-                    v-model="usuario.identificacion"
+                    placeholder="Email"
+                    v-model="usuario.email"
                     class="form-control"
                   />
                 </div>
@@ -246,16 +246,16 @@
           <div class="modal-body">
             <div class="form group mt-5">
                 <div class="form-group">
-                  <label for="passwordactual">Contraseña del Administrador:</label>
+                  <label for="passwordactual">Contraseña del Super Admin:</label>
                   <div class="input-password">
                     <input
                       id="passwordactual"
                       type="password"
                       placeholder="Contraseña"
-                      v-model="usuario.passwordActual"
+                      v-model="usuario.password_super_admin"
                       class="form-control"
                     />
-                    <button @click="verContraseniaActual()" class="btn btn-outline-success">{{!verPasswordActual ? '&#128065;' : '&#x1F576;'}}</button>
+                    <button @click="verContraseniaSuperAdmin()" class="btn btn-outline-success">{{!verPasswordActual ? '&#128065;' : '&#x1F576;'}}</button>
                   </div>
                 </div>
               </div>
@@ -312,7 +312,7 @@ export default {
   },
   data() {
     return {
-      usuario: { rol_codigo: 1 },
+      usuario: { rol_id: 1 },
       mensaje: { ver: false },
       roles: [],
       verPassword: false,
@@ -327,7 +327,7 @@ export default {
       this.verPassword = !this.verPassword;
       this.verPassword ? document.getElementById('nuevapassword').type = 'text' : document.getElementById('nuevapassword').type = 'password'
     },
-    verContraseniaActual() {
+    verContraseniaSuperAdmin() {
       this.verPasswordActual = !this.verPasswordActual;
       this.verPasswordActual ? document.getElementById('passwordactual').type = 'text' : document.getElementById('passwordactual').type = 'password'
     },
@@ -379,8 +379,8 @@ export default {
     },
     desactivar(usuario) {
       const datoEnviar = {
-        estado: usuario.estado === "1" ? "0" : "1",
-        codigo: usuario.codigo,
+        estado: usuario.estado === "A" ? "D" : "A",
+        id: usuario.id,
       };
       this.axios
         .post("usuario/cambiarestado", datoEnviar)
@@ -396,7 +396,7 @@ export default {
     eliminar(usuario) {
       console.log(usuario);
       this.axios
-        .delete("usuario/" + usuario.codigo)
+        .delete("usuario/" + usuario.id)
         .then((respuesta) => {
           window.location.href = "/usuarios";
         })

@@ -76,7 +76,7 @@ export default {
       if (this.usuario !== null && this.usuario.rol_id == 1) {
         this.$router.push({ name: "MenuAdministrador" });
       } else if (this.usuario !== null && this.usuario.rol_id == 2) {
-        this.$router.push({ name: "MenuTecnico" });
+        this.$router.push({ name: "MenuAdministrador" });
       }
     },
   },

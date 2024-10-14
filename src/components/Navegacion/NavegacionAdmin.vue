@@ -17,6 +17,11 @@
         </li>
 
         <li class="nav-item ml-4">
+          <router-link data-toggle="collapse" data-target=".navbar-collapse.show" to="/usuarios"
+            class="text-dark">Usuarios</router-link>
+        </li>
+
+        <li class="nav-item ml-4">
           <button @click="cerrarSesion" data-toggle="collapse" data-target=".navbar-collapse.show"
             class="btn btn-outline-success">Cerrar sesión</button>
         </li>

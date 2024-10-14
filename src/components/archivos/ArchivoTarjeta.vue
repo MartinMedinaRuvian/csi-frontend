@@ -22,7 +22,7 @@
               </div>
               <div class="botones-archivos">
                 <span>
-                  <button class="btn-eliminar_item btn btn-danger ml-2" @click="verDatosModal(archivo)"
+                  <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2" @click="verDatosModal(archivo)"
                     data-toggle="modal" data-target="#modalEliminarArchivo">&#10006;</button>
                 </span>
               </div>
@@ -123,6 +123,7 @@
 
 <script>
 import ImagenPrevia from "@/components/archivos/ImagenPrevia";
+import { mapGetters } from "vuex";
 export default {
   props: {
     archivos: [],
@@ -136,6 +137,9 @@ export default {
       urlSinImagen: this.axios.defaults.baseURL + '/archivos/archivo_default.svg',
       urlImg: ''
     };
+  },
+  computed: {
+    ...mapGetters(["usuario"]),
   },
   methods: {
     guardarNuevoArchivo() {

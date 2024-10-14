@@ -113,7 +113,7 @@
 
 <script>
 import L from 'leaflet'
-
+import { mapGetters } from "vuex";
 export default {
   name: 'MapaEdificios',
   data() {
@@ -127,6 +127,9 @@ export default {
   },
   mounted() {
     this.inicializarMapa();
+  },
+  computed: {
+    ...mapGetters(["usuario"]),
   },
   methods: {
     inicializarMapa() {
@@ -155,18 +158,21 @@ export default {
           */
       })
 
-      this.map.on('dblclick', async (event) => {
-        navigator.geolocation.getCurrentPosition(position => {
-          console.log(position);
+      if (this.usuario.rol_id === 1) {
+        this.map.on('dblclick', async (event) => {
+          navigator.geolocation.getCurrentPosition(position => {
+            console.log(position);
+          });
+          const coordenadas = event.latlng;
+          console.log(coordenadas);
+          //const nombreEdificio = prompt('Ingrese el nombre del edificio')
+          //const codigoEdificio = prompt('Ingrese el código del edificio')
+          this.edificio.ubicacionEdificio = 'lat_' + coordenadas.lat + ' ' + 'lng_' + coordenadas.lng;
+          $("#modalGuardarEdificio").modal("show");
+          //await this.guardarNuevoEdificio(nombreEdificio, codigoEdificio, ubicacionEdificio)
         });
-        const coordenadas = event.latlng;
-        console.log(coordenadas);
-        //const nombreEdificio = prompt('Ingrese el nombre del edificio')
-        //const codigoEdificio = prompt('Ingrese el código del edificio')
-        this.edificio.ubicacionEdificio = 'lat_' + coordenadas.lat + ' ' + 'lng_' + coordenadas.lng;
-        $("#modalGuardarEdificio").modal("show");
-        //await this.guardarNuevoEdificio(nombreEdificio, codigoEdificio, ubicacionEdificio)
-      });
+      } 
+
 
       // Llamada a verEdificios después de inicializar el mapa
       this.verEdificios();
@@ -297,7 +303,7 @@ export default {
       console.log(ruta)
       return ruta
     },
-    verInfoEdificio(registro){
+    verInfoEdificio(registro) {
       const datosRegistro = {
         id: registro.id
       }
@@ -342,7 +348,7 @@ export default {
   /* Opcional, para darle más énfasis */
 }
 
-.texto-pequenio{
+.texto-pequenio {
   font-size: 13px;
 }
 </style>

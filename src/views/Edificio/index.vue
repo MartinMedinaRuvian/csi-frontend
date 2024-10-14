@@ -19,7 +19,7 @@
           </div>
         </div>
         <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarEdificio" @click="verDatosModal()">Actualizar</button>
-        <button class="btn btn-danger" data-toggle="modal" data-target="#modalEliminarEdificio">Eliminar</button>
+        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal" data-target="#modalEliminarEdificio">Eliminar</button>
       </div>
       <div class="informacion-secundario">
         <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'edificio', id: edificio.id }" />

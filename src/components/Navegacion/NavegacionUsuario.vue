@@ -10,7 +10,7 @@
     <ul class="navbar-nav ml-auto">
 
       <li class="nav-item ml-4">
-       <router-link data-toggle="collapse" data-target=".navbar-collapse.show" to="/resumen" class="text-dark">Resumen</router-link>
+       <router-link data-toggle="collapse" data-target=".navbar-collapse.show" to="/" class="text-dark">Edificios</router-link>
       </li>
   
       <li class="nav-item ml-4">

@@ -32,31 +32,31 @@
               class="close"
               data-dismiss="modal"
               aria-label="Close"
-              @click="usuario = { rol_codigo: 1 }"
+              @click="usuario = { rol_id: 1 }"
             >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <form @submit.prevent>
-              <label for="select">Seleccione Rol:</label>
+              <label for="select" class="requerido">Seleccione Rol:</label>
               <select
                 id="select"
                 class="form-select form-control"
                 aria-label="Default select example"
-                v-model="usuario.rol_codigo"
+                v-model="usuario.rol_id"
               >
                 <option
-                  :value="rol.codigo"
+                  :value="rol.id"
                   v-for="rol in roles"
-                  :key="rol.codigo"
+                  :key="rol.id"
                   class="text-success"
                 >
                   {{ rol.descripcion }}
                 </option>
               </select>
               <div class="form group mt-3">
-                <label for="nombrecompleto">Nombre Completo:</label>
+                <label for="nombrecompleto" class="requerido">Nombre Completo:</label>
                 <input
                   type="text"
                   placeholder="Nombre Completo"
@@ -67,11 +67,11 @@
 
               <div class="form group mt-3">
                 <div class="form-group">
-                  <label for="identifiacion">Identificación:</label>
+                  <label for="email" class="requerido">Email:</label>
                   <input
                     type="text"
-                    placeholder="Identificación"
-                    v-model="usuario.identificacion"
+                    placeholder="Email"
+                    v-model="usuario.email"
                     class="form-control"
                   />
                 </div>
@@ -79,7 +79,7 @@
 
               <div class="form group mt-3">
                 <div class="form-group">
-                  <label for="password">Contraseña:</label>
+                  <label for="password" class="requerido">Contraseña:</label>
                   <div class="input-password">
                     <input
                       id="password"
@@ -106,7 +106,7 @@
                     type="button"
                     class="btn btn-secondary form-control"
                     data-dismiss="modal"
-                    @click="usuario = { rol_codigo: 1 }"
+                    @click="usuario = { rol_id: 1 }"
                   >
                     Cancelar
                   </button>
@@ -169,17 +169,16 @@ export default {
   components: { Mensaje },
   data() {
     return {
-      usuario: { rol_codigo: 1 },
+      usuario: { rol_id: 1 },
       usuarios: [],
       mensaje: { ver: false },
       roles: [],
       verPassword: false,
       condiciones: [
         { descripcion: "NOMBRE", valor: "nombre_completo" },
-        { descripcion: "IDENTIFICACIÓN", valor: "identificacion" },
+        { descripcion: "EMAIL", valor: "email" },
         { descripcion: "ESTADO", valor: "estado" },
-        { descripcion: "CÓDIGO ROL", valor: "rol_codigo" },
-        { descripcion: "CÓDIGO USUARIO", valor: "codigo" },
+        { descripcion: "ID ROL", valor: "rol_id" }
       ],
       condicion: "nombre_completo",
       buscar: "",
@@ -243,5 +242,13 @@ export default {
   display: flex;
   align-content: center;
   align-items: center;
+}
+.requerido::before {
+  content: "* ";
+  /* Agrega el asterisco */
+  color: red;
+  /* Asterisco de color rojo */
+  font-weight: bold;
+  /* Opcional, para darle más énfasis */
 }
 </style>
