@@ -171,24 +171,52 @@ export default {
           $("#modalGuardarEdificio").modal("show");
           //await this.guardarNuevoEdificio(nombreEdificio, codigoEdificio, ubicacionEdificio)
         });
-      } 
+      }
 
 
       // Llamada a verEdificios después de inicializar el mapa
       this.verEdificios();
     },
     async verUbicacionActual() {
-      navigator.geolocation.getCurrentPosition(async (position) => {
-        const coordenadas = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
+      if (!navigator.geolocation) {
+        alert('La geolocalización no es compatible con este navegador.');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const coordenadas = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          console.log(coordenadas);
+          this.edificio.ubicacionEdificio = 'lat_' + coordenadas.lat + ' ' + 'lng_' + coordenadas.lng;
+          $("#modalGuardarEdificio").modal("show");
+          //await this.guardarNuevoEdificio(nombreEdificio, codigoEdificio, ubicacionEdificio)
+          //L.marker(coordenadas, { alt: 'Ubicación Actual' }).addTo(this.map).bindPopup('Ubicación Actual');
+        },
+        (error) => {
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              alert("El usuario negó el permiso de geolocalización.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              alert("La información de ubicación no está disponible.");
+              break;
+            case error.TIMEOUT:
+              alert("La solicitud para obtener la ubicación expiró.");
+              break;
+            case error.UNKNOWN_ERROR:
+              alert("Ocurrió un error desconocido.");
+              break;
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
         }
-        console.log(coordenadas);
-        this.edificio.ubicacionEdificio = 'lat_' + coordenadas.lat + ' ' + 'lng_' + coordenadas.lng;
-        $("#modalGuardarEdificio").modal("show");
-        //await this.guardarNuevoEdificio(nombreEdificio, codigoEdificio, ubicacionEdificio)
-        //L.marker(coordenadas, { alt: 'Ubicación Actual' }).addTo(this.map).bindPopup('Ubicación Actual');
-      });
+      );
     },
     verEdificios() {
 
