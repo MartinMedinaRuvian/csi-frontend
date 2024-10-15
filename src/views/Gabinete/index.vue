@@ -75,7 +75,7 @@
                   <div class="col-md-12 col-lg-12 mt-3">
                     <img class="imagen-previsualizacion" alt="imagen" id="imagenPrevisualizaciongabinete"
                       ref="imagenPrevisualizaciongabinete"
-                      :src="ruta_servidor + '/' + gabinete.ruta_imagen">
+                      :src="rutaImagenVer(gabinete.ruta_imagen)">
                   </div>
                 </div>
               </div>
