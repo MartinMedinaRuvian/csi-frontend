@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-principal_archivos" v-if="(archivos != null || archivos != undefined)
+    <div class="container-principal_archivos mt-5" v-if="(archivos != null || archivos != undefined)
       && archivos.length > 0">
       <h4 class="mb-5">Archivos
         <span>
@@ -307,7 +307,7 @@ export default {
 }
 
 #dialog-window {
-  max-width: 90%;
+  width: 90%;
   height: 200px;
   margin-bottom: 40px;
 }

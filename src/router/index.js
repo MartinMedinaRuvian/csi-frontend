@@ -51,6 +51,12 @@ const routes = [
     name: 'CentroCableado',
     component: () => import('@/views/CentroCableado/index.vue'),
     meta:{requiereAutorizacion:true}
+  },
+  {
+    path: '/gabinete',
+    name: 'Gabinete',
+    component: () => import('@/views/Gabinete/index.vue'),
+    meta:{requiereAutorizacion:true}
   }
 ]
 
