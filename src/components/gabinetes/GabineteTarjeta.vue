@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="container-principal" v-if="(gabinete != null || gabinete != undefined)
-      && gabinete.length > 0">
+    <div class="container-principal" v-if="(gabinetes != null || gabinetes != undefined)
+      && gabinetes.length > 0">
       <h4 class="mb-5">Gabinetes (RAW) <span> <button class="btn btn-success" data-toggle="modal"
             data-target="#modalGuardarCentroCableado">+ </button></span></h4>
       <div class="row mt-5">
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4" v-for="gabinete in gabinete"
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-4" v-for="gabinete in gabinetes"
           :key="gabinete.id">
           <div class="card" style="width: 100%;">
             <div class="card-header">
@@ -13,10 +13,9 @@
               <div class="numero">#{{ gabinete.numero }}</div>
             </div>
             <div class="card-body">
-              <p>{{ gabinete.tipo }}</p>
+              <h6>Tamaño: {{ gabinete.tamanio }}</h6>
               <p class="propiedades">
-                <span class="text-primary">{{ gabinete.climatizado == 'S' ? '&#10052;' : '&#128683;&#10052;'}}</span> <br>
-                <span>{{ gabinete.camaras == 'S' ? '&#128247;' : '&#128683;&#128247;'}}</span>
+                <span class="text-primary">{{ gabinete.aterrizado == 'S' ? '&#9889;' : '&#128683;&#9889;'}}</span> <br>
               </p>
               <button class="btn btn-success">Ver Info</button>
             </div>
@@ -48,79 +47,53 @@
                 <input required type="number" placeholder="Ingrese el Número" v-model="gabinete.numero"
                   class="form-control" />
               </div>
+              
+              <div class="form-group mt-3">
+                <label for="tipo" class="requerido">Tipo:</label>
+                <select id="tipo" class="form-select form-control" v-model="gabinete.id_tipo_gabinete">
+                  <option v-for="tipo in tiposGabinetes" :value="tipo.id" :key="tipo.id" class="text-success">
+                    {{ tipo.descripcion }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="tipo" class="requerido">¿Esta Aterrizado?</label>
+                <select id="tipo" class="form-select form-control" v-model="gabinete.aterrizado">
+                  <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
+                    {{ opcion }}
+                  </option>
+                </select>
+              </div>
 
               <div class="form group mt-3">
                 <div class="form-group">
-                  <label for="codigo" class="requerido">Ubicación:</label>
-                  <input required type="text" placeholder="Ingrese ubicación" v-model="gabinete.ubicacion"
+                  <label for="codigo" class="requerido">Tamaño:</label>
+                  <input required type="text" placeholder="Ingrese tamaño" v-model="gabinete.tamanio"
+                    class="form-control" />
+                </div>
+              </div>
+       
+              <div class="form group mt-3">
+                <div class="form-group">
+                  <label for="codigo">Observación:</label>
+                  <textarea type="text" placeholder="Ingrese una observación" v-model="gabinete.observación"
                     class="form-control" />
                 </div>
               </div>
 
-              <div class="form-group">
-                <label for="tipo" class="requerido">Tipo:</label>
-                <select id="tipo" class="form-select form-control" v-model="gabinete.tipo">
-                  <option v-for="tipo in tiposCentroCableado" :value="tipo" :key="formaPago" class="text-success">
-                    {{ tipo }}
-                  </option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="tipo" class="requerido">Climatizado:</label>
-                <select id="tipo" class="form-select form-control" v-model="gabinete.climatizado">
-                  <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
-                    {{ opcion }}
-                  </option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="tipo" class="requerido">Camaras:</label>
-                <select id="tipo" class="form-select form-control" v-model="gabinete.camaras">
-                  <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
-                    {{ opcion }}
-                  </option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="tipo" class="requerido">Acceso por llaves:</label>
-                <select id="tipo" class="form-select form-control" v-model="gabinete.acceso_llaves">
-                  <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
-                    {{ opcion }}
-                  </option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="tipo" class="requerido">Acceso Biometrico:</label>
-                <select id="tipo" class="form-select form-control" v-model="gabinete.acceso_biometrico">
-                  <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
-                    {{ opcion }}
-                  </option>
-                </select>
-              </div>
 
               <div class="form-group mt-4">
                 <h5>Imagen:</h5>
                 <div class="row">
                   <div class="col-md-12 col-lg-12">
                     <input type="file" class="form-control" name="archivo_gabinete" id="archivo_gabinete"
-                      @change="verImagen()" accept="image/*" ref="inputArchivoCentroCableado" required>
+                      @change="verImagen()" accept="image/*" ref="inputArchivoGabinete" required>
                   </div>
                   <div class="col-md-12 col-lg-12 mt-3">
                     <img class="imagen-previsualizacion" alt="imagen" id="imagenPrevisualizacionCentroCableado"
                       ref="imagenPrevisualizacionCentroCableado" :src="urlSinImagen">
                   </div>
-                </div>
-              </div>
-
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo">Observación:</label>
-                  <textarea type="text" placeholder="Ingrese una observación" v-model="gabinete.observación"
-                    class="form-control" />
                 </div>
               </div>
 
@@ -133,7 +106,7 @@
                 </div>
                 <div class="col-md-6 mt-3">
                   <input type="button" class="btn btn-success form-control" value="Guardar"
-                    @click="guardarNuevoCentroCableado()" />
+                    @click="guardarNuevoGabinete()" />
                 </div>
               </div>
             </form>
@@ -147,22 +120,25 @@
 <script>
 export default {
   props: {
-    gabinete: [],
-    id_edificio: {}
+    gabinetes: [],
+    id_centro_cableado: {}
   },
   data() {
     return {
-      gabinete: { tipo: 'EN OFICINA', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' },
+      gabinete: { id_tipo_gabinete: 1, aterrizado: 'S' },
       ruta_servidor: this.axios.defaults.baseURL,
       urlSinImagen: this.axios.defaults.baseURL + '/archivos/gabinete_default.svg',
       urlImg: '',
-      tiposCentroCableado: ['EN OFICINA', 'Independiente'],
+      tiposGabinetes: [],
       opcionesRespuesta: ['S', 'N']
     };
   },
+  created(){
+    this.verTiposGabinetes()
+  },
   methods: {
     verImagen() {
-      const archivos = this.$refs.inputArchivoCentroCableado.files;
+      const archivos = this.$refs.inputArchivoGabinete.files;
       console.log(archivos)
 
       if ((archivos != null && archivos != undefined) && archivos.length > 0) {
@@ -173,18 +149,15 @@ export default {
         this.$refs.imagenPrevisualizacionCentroCableado.src = this.urlSinImagen;
       }
     },
-    guardarNuevoCentroCableado() {
+    guardarNuevoGabinete() {
       const registroGuardar = this.gabinete
       const registro = {
         numero: registroGuardar.numero,
-        tipo: registroGuardar.tipo,
-        ubicacion: registroGuardar.ubicacion,
-        climatizado: registroGuardar.climatizado,
-        camaras: registroGuardar.camaras,
-        acceso_llaves: registroGuardar.acceso_llaves,
-        acceso_biometrico: registroGuardar.acceso_biometrico,
+        tamanio: registroGuardar.tamanio,
+        aterrizado: registroGuardar.aterrizado,
         observacion: registroGuardar.observacion,
-        id_edificio: this.id_edificio
+        id_centro_cableado: this.id_centro_cableado,
+        id_tipo_gabinete: registroGuardar.id_tipo_gabinete
       }
       const nombreTabla = "gabinete"
       this.axios.post(nombreTabla, registro).then((respuesta) => {
@@ -214,6 +187,13 @@ export default {
     rutaImagenVer(ruta_imagen) {
       const ruta = ruta_imagen != null && ruta_imagen != undefined ? ruta_imagen : 'archivos/gabinete_default.svg'
       return this.ruta_servidor + '/' + ruta
+    },
+    verTiposGabinetes(){
+      this.axios.get("tipo_gabinete")
+      .then((respuesta)=>{
+        this.tiposGabinetes = respuesta.data
+      })
+      .catch(error => console.log(error))
     }
   },
 };
