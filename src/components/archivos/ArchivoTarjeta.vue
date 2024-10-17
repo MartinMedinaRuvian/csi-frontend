@@ -31,7 +31,7 @@
         </div>
       </div>
     </div>
-    <div v-else>
+    <div v-else class="mt-5">
       <h5>No hay Archivos</h5>
       <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarArchivo">Agregar
         Archivo</button>

@@ -36,7 +36,7 @@
             <h5 class="modal-title" id="exampleModalLongTitle">
               Guardar Gabinete
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="gabinete = { tipo: 'EN OFICINA', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' }">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="gabinete = { id_tipo_gabinete: 1, aterrizado: 'S' }">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -100,7 +100,7 @@
               <div class="row">
                 <div class="col-md-6 mt-3">
                   <button type="button" class="btn btn-secondary form-control" data-dismiss="modal"
-                    @click="gabinete = { tipo: 'EN OFICINA', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' }">
+                    @click="gabinete = { id_tipo_gabinete: 1, aterrizado: 'S' }">
                     Cancelar
                   </button>
                 </div>
@@ -121,7 +121,7 @@
 export default {
   props: {
     gabinetes: [],
-    id_gabinete: {}
+    id_centro_cableado: {}
   },
   data() {
     return {
@@ -156,8 +156,8 @@ export default {
         tamanio: registroGuardar.tamanio,
         aterrizado: registroGuardar.aterrizado,
         observacion: registroGuardar.observacion,
-        id_gabinete: this.id_gabinete,
-        id_tipo_gabinete: registroGuardar.id_tipo_gabinete
+        id_tipo_gabinete: registroGuardar.id_tipo_gabinete,
+        id_centro_cableado: this.id_centro_cableado
       }
       const nombreTabla = "gabinete"
       this.axios.post(nombreTabla, registro).then((respuesta) => {

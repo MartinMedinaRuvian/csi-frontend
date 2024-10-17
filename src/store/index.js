@@ -3,7 +3,7 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     usuario: localStorage.getItem('usuario') !== null ? JSON.parse(localStorage.getItem('usuario')) : null,
-    tamanioMaximoArchivo: 2 //Tamanio en Megas
+    tamanioMaximoArchivo: 10 //Tamanio en Megas
   },
   mutations: {
     obtenerUsuario(state, payload){   

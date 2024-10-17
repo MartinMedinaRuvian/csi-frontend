@@ -39,6 +39,7 @@
     <div class="text-center mt-5">
       <p :class="gabinete.aterrizado === 'S' ? 'text-success' : 'text-warning'">{{ gabinete.aterrizado
         === 'S' ? 'Aterrizado &#9889;' : 'No esta aterrizado' }}</p>
+      <p>Tamaño: {{ gabinete.tamanio }}</p>
     </div>
 
     <button class="btn btn-success mt-5" data-toggle="collapse" data-target="#collapseElementoTarjeta"
@@ -324,6 +325,7 @@ export default {
       const dato = {
         id: gabinete.id,
         numero: gabinete.numero,
+        tamanio: gabinete.tamanio,
         aterrizado: gabinete.aterrizado,
         observacion: gabinete.observacion,
         id_centro_cableado: gabinete.id_centro_cableado,
