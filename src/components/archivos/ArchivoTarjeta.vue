@@ -53,9 +53,10 @@
             <form @submit.prevent>
 
               <div class="form-group mt-4">
-                <h5>Archivo:</h5>
+                <h5> Seleccione un Archivo:</h5>
                 <div class="row">
                   <div class="col-md-12 col-lg-12">
+                    <label for="file">Tamaño Máximo: {{ tamanioMaximoArchivo }} Mb</label>
                     <input type="file" class="form-control" name="archivo" id="archivo" accept="*" ref="inputArchivo"
                       required>
                   </div>
@@ -95,7 +96,7 @@
             <form @submit.prevent>
 
               <div class="form-group mt-4">
-                <h5>¿ Eliminar Archivo: {{ archivo.nombre }} ?</h5>
+                <p>Archivo: <br> {{ archivo.nombre }}</p>
               </div>
 
               <div class="row">
@@ -139,7 +140,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["usuario"]),
+    ...mapGetters(["usuario", "tamanioMaximoArchivo", "tamanioMaximoArchivoEnBytes"]),
   },
   methods: {
     guardarNuevoArchivo() {
@@ -174,18 +175,25 @@ export default {
       const id = this.info_tabla.id
       var formData = new FormData();
       var file = document.querySelector("#archivo");
-      formData.append("archivo", file.files[0]);
-      this.axios
-        .post("archivo/" + nombreTabla + "/" + id, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((respuesta) => {
-          if (respuesta.status == 200) {
-            location.reload()
-          }
-        });
+      const archivo = file.files[0]
+      console.log(archivo)
+      if (archivo && archivo.size <= this.tamanioMaximoArchivoEnBytes) {
+        formData.append("archivo", archivo);
+        this.axios
+          .post("archivo/" + nombreTabla + "/" + id, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((respuesta) => {
+            if (respuesta.status == 200) {
+              location.reload()
+            }
+          });
+      } else {
+        file.value = ''
+        alert('El tamaño del archivo es mayor al permitido')
+      }
     },
     eliminarArchivo() {
       const nombreTabla = this.info_tabla.nombre_tabla

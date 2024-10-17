@@ -5,7 +5,7 @@
       <h4 class="mb-5">Gabinetes (RAW) <span> <button class="btn btn-success" data-toggle="modal"
             data-target="#modalGuardarCentroCableado">+ </button></span></h4>
       <div class="row mt-5">
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4" v-for="gabinete in gabinetes"
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-4" v-for="gabinete in gabinetes"
           :key="gabinete.id">
           <div class="card" style="width: 100%;">
             <div class="card-header">

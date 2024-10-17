@@ -5,7 +5,7 @@
       <h4 class="mb-5">Centros de Cableados <span> <button class="btn btn-success" data-toggle="modal"
             data-target="#modalGuardarCentroCableado">+ </button></span></h4>
       <div class="row mt-5">
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4" v-for="centro_cableado in centros_cableados"
+        <div class="col-sm-12 col-md-6 col-lg-3 mb-4" v-for="centro_cableado in centros_cableados"
           :key="centro_cableado.id">
           <div class="card" style="width: 100%;">
             <div class="card-header">

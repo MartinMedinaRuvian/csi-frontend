@@ -134,7 +134,7 @@ export default {
     };
   },
   created(){
-    this.verTiposelementos()
+    //this.verTiposelementos()
   },
   methods: {
     verImagen() {

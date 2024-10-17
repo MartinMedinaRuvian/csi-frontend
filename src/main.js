@@ -34,6 +34,8 @@ axios.interceptors.response.use((response) => {
     // Redirigir a una ruta específica, por ejemplo, una página de login o acceso denegado
     location.href = '/403' // Ajusta según la ruta de tu página
     return new Promise(() => {}); // Detener la ejecución retornando una promesa vacía
+  } else {
+    alert(error.response.data)
   }
   return Promise.reject(error);
 });
