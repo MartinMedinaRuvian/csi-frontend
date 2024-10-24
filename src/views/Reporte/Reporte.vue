@@ -63,7 +63,7 @@ export default {
       ruta_volver: '/entradas',
       tipoDescripcion: 'Daño',
       tituloObservacion: 'Observación / Notas',
-      tipoUsuario: 'Técnico',
+      tipoUsuario: 'Usuario',
       tieneProducto: false,
       tituloCantidad: '',
       tituloValor: '',
@@ -93,7 +93,7 @@ export default {
     this.tipoArticulo = this.registro.tipo
     this.codigoSerieArticulo = (this.tipoArticulo === 'Dispositivo') ? this.registro.codigo_serie_dispositivo : this.registro.codigo_serie_producto
     this.tipoDescripcion = this.registro.tipoDescripcion
-    this.tipoUsuario = this.registro.usuario_rol_codigo === 1 ? 'Administrador' : 'Técnico'
+    this.tipoUsuario = this.registro.usuario_rol_codigo === 1 ? 'Administrador' : 'Usuario'
     this.nombreUsuario = this.registro.usuario
     this.tituloObservacion = (this.registro.tituloObservacion !== null && this.registro.tituloObservacion !== undefined) ? this.registro.tituloObservacion : 'Observación / Notas'
     if(this.ruta_volver === '/reparaciones'){

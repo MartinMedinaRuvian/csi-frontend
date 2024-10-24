@@ -1,31 +1,22 @@
 <template>
   <div>
-    <div class="container-principal" v-if="(elementos != null || elementos != undefined)
-      && elementos.length > 0">
+    <div class="container-principal">
       <h4 class="mb-5">Elemento <span> <button class="btn btn-success" data-toggle="modal"
             data-target="#modalGuardarCentroCableado">+ </button></span></h4>
-      <div class="row mt-5">
-        <div class="col-sm-12 col-md-6 col-lg-4 mb-4" v-for="elemento in elementos"
-          :key="elemento.id">
-          <div class="card" style="width: 100%;">
-            <div class="card-header">
-              <img id="imagen" :src="rutaImagenVer(elemento.ruta_imagen)" alt="">
-              <div class="numero">#{{ elemento.numero }}</div>
-            </div>
-            <div class="card-body">
-              <h6>Tamaño: {{ elemento.tamanio }}</h6>
-              <p class="propiedades">
-                <span class="text-primary">{{ elemento.aterrizado == 'S' ? '&#9889;' : '&#128683;&#9889;'}}</span> <br>
-              </p>
-              <button class="btn btn-success">Ver Info</button>
-            </div>
+        <div class="row">
+        <div class="col columna-elementos_activos mr-2">
+          <div class="contenedor-elementos">
+            <h6 class="text-success"><b>{{ elementosActivos && elementosActivos.length > 0 ? 'ELEMENTOS ACTIVOS' : 'SIN ELEMENTOS ACTIVOS' }}</b></h6>
+            <ElementoTabla :elementos="elementosActivos" />
+          </div>
+        </div>
+        <div class="col columna-elementos_pasivos">
+          <div class="contenedor-elementos">
+            <h6 class="text-primary"><b>{{ elementosPasivos && elementosPasivos.length > 0 ? 'ELEMENTOS PASIVOS' : 'SIN ELEMENTOS PASIVOS' }}</b></h6>
+            <ElementoTabla :elementos="elementosPasivos" />
           </div>
         </div>
       </div>
-    </div>
-    <div v-else>
-      <h5>No hay elementos</h5>
-      <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarCentroCableado">Agregar Elemento</button>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="modalGuardarCentroCableado" tabindex="-1" role="dialog"
@@ -36,18 +27,19 @@
             <h5 class="modal-title" id="exampleModalLongTitle">
               Guardar elemento
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="elemento = { tipo: 'EN OFICINA', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' }">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+              @click="elemento = { id_tipo_elemento: 1, id_tipo_dispositivo: 1 }">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <form @submit.prevent>
               <div class="form group">
-                <label for="nombre" class="requerido">Número:</label>
-                <input required type="number" placeholder="Ingrese el Número" v-model="elemento.numero"
+                <label for="nombre" class="requerido">Nombre:</label>
+                <input required type="text" placeholder="Ingrese el nombre" v-model="elemento.nombre"
                   class="form-control" />
               </div>
-              
+
               <div class="form-group mt-3">
                 <label for="tipo" class="requerido">Tipo:</label>
                 <select id="tipo" class="form-select form-control" v-model="elemento.id_tipo_elemento">
@@ -57,27 +49,19 @@
                 </select>
               </div>
 
-              <div class="form-group">
-                <label for="tipo" class="requerido">¿Esta Aterrizado?</label>
-                <select id="tipo" class="form-select form-control" v-model="elemento.aterrizado">
-                  <option v-for="opcion in opcionesRespuesta" :value="opcion" :key="opcion" class="text-success">
-                    {{ opcion }}
+              <div class="form-group mt-3">
+                <label for="tipo" class="requerido">Tipo Dispositivo:</label>
+                <select id="tipo" class="form-select form-control" v-model="elemento.id_tipo_dispositivo">
+                  <option v-for="tipo in tiposdispositivos" :value="tipo.id" :key="tipo.id" class="text-success">
+                    {{ tipo.descripcion }}
                   </option>
                 </select>
               </div>
 
               <div class="form group mt-3">
                 <div class="form-group">
-                  <label for="codigo" class="requerido">Tamaño:</label>
-                  <input required type="text" placeholder="Ingrese tamaño" v-model="elemento.tamanio"
-                    class="form-control" />
-                </div>
-              </div>
-       
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo">Observación:</label>
-                  <textarea type="text" placeholder="Ingrese una observación" v-model="elemento.observación"
+                  <label for="codigo">Serial:</label>
+                  <input required type="text" placeholder="Ingrese Serial" v-model="elemento.serial"
                     class="form-control" />
                 </div>
               </div>
@@ -100,7 +84,7 @@
               <div class="row">
                 <div class="col-md-6 mt-3">
                   <button type="button" class="btn btn-secondary form-control" data-dismiss="modal"
-                    @click="elemento = { tipo: 'EN OFICINA', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' }">
+                    @click="elemento = { id_tipo_elemento: 1, id_tipo_dispositivo: 1 }">
                     Cancelar
                   </button>
                 </div>
@@ -118,23 +102,32 @@
 </template>
 
 <script>
+import ElementoTabla from "./ElementoTabla";
+import { mapGetters } from "vuex";
 export default {
+  components: { ElementoTabla },
   props: {
-    elementos: [],
-    id_centro_cableado: {}
+    elementosActivos: [],
+    elementosPasivos: [],
+    id_gabinete: {}
   },
   data() {
     return {
-      elemento: { id_tipo_elemento: 1, aterrizado: 'S' },
+      elemento: { id_tipo_elemento: 1, id_tipo_dispositivo: 1 },
       ruta_servidor: this.axios.defaults.baseURL,
       urlSinImagen: this.axios.defaults.baseURL + '/archivos/elemento_default.svg',
       urlImg: '',
       tiposelementos: [],
+      tiposdispositivos: [],
       opcionesRespuesta: ['S', 'N']
     };
   },
   created(){
-    //this.verTiposelementos()
+    this.verTiposelementos()
+    this.verTiposdispositivo()
+  },  
+  computed: {
+    ...mapGetters(["usuario"]),
   },
   methods: {
     verImagen() {
@@ -152,14 +145,15 @@ export default {
     guardarNuevoelemento() {
       const registroGuardar = this.elemento
       const registro = {
-        numero: registroGuardar.numero,
-        tamanio: registroGuardar.tamanio,
-        aterrizado: registroGuardar.aterrizado,
-        observacion: registroGuardar.observacion,
-        id_centro_cableado: this.id_centro_cableado,
-        id_tipo_elemento: registroGuardar.id_tipo_elemento
+        nombre: registroGuardar.nombre,
+        id_tipo_elemento: registroGuardar.id_tipo_elemento,
+        id_tipo_dispositivo: registroGuardar.id_tipo_dispositivo,
+        serial: registroGuardar.serial,
+        id_gabinete: this.id_gabinete,
+        id_usuario: this.usuario.id
       }
       const nombreTabla = "elemento"
+      console.log(registro, 'registro')
       this.axios.post(nombreTabla, registro).then((respuesta) => {
         if (respuesta.status === 200) {
           const idGuardado = respuesta.data.id
@@ -188,12 +182,19 @@ export default {
       const ruta = ruta_imagen != null && ruta_imagen != undefined ? ruta_imagen : 'archivos/elemento_default.svg'
       return this.ruta_servidor + '/' + ruta
     },
-    verTiposelementos(){
+    verTiposelementos() {
       this.axios.get("tipo_elemento")
-      .then((respuesta)=>{
-        this.tiposelementos = respuesta.data
-      })
-      .catch(error => console.log(error))
+        .then((respuesta) => {
+          this.tiposelementos = respuesta.data
+        })
+        .catch(error => console.log(error))
+    },
+    verTiposdispositivo() {
+      this.axios.get("tipo_dispositivo")
+        .then((respuesta) => {
+          this.tiposdispositivos = respuesta.data
+        })
+        .catch(error => console.log(error))
     }
   },
 };
@@ -265,7 +266,21 @@ export default {
   width: 120px;
   height: 120px;
 }
+
 .propiedades span {
   font-size: 20px;
 }
+
+.columna-elementos_activos{
+  padding: 20px;
+  border: solid #28a745 1.5px;
+  border-radius: 15px;
+}
+
+.columna-elementos_pasivos{
+  padding: 20px;
+  border: solid #039BE5 1px;
+  border-radius: 15px;
+}
+
 </style>

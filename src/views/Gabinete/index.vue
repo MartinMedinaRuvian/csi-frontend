@@ -47,7 +47,7 @@
       Elementos
     </button>
     <div class="collapse contenedor-tarjeta" id="collapseElementoTarjeta">
-      <ElementoTarjeta :elementos="elementos" :id_gabinete="gabinete.id" />
+      <ElementoTarjeta :elementosActivos="elementosActivos" :elementosPasivos="elementosPasivos" :id_gabinete="gabinete.id" />
     </div>
     <!-- Modal Atualizar Imagen-->
     <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"
@@ -260,12 +260,28 @@ export default {
     },
     verelementos() {
       const id = this.gabinete.id
-      this.axios.get("gabinete/" + id).then((respuesta) => {
+      this.axios.get("elemento/" + id).then((respuesta) => {
         if (respuesta.status === 200) {
           this.elementos = respuesta.data;
+          this.verElemenosActivos()
+          this.verElemenosPasivos()
           console.log(this.elementos, 'elementos')
         }
       });
+    },
+    verElemenosActivos() {
+      const elementos = this.elementos
+      const elementosActivos = elementos.filter((elemento) => {
+        return elemento.id_tipo_elemento == 1
+      })
+      this.elementosActivos = elementosActivos
+    },
+    verElemenosPasivos() {
+      const elementos = this.elementos
+      const elementosPasivos = elementos.filter((elemento) => {
+        return elemento.id_tipo_elemento == 2
+      })
+      this.elementosPasivos = elementosPasivos
     },
     verArchivos() {
       const idgabinete = this.gabinete.id
