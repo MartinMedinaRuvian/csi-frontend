@@ -4,15 +4,15 @@
       <h4 class="mb-5">Elemento <span> <button class="btn btn-success" data-toggle="modal"
             data-target="#modalGuardarCentroCableado">+ </button></span></h4>
         <div class="row">
-        <div class="col columna-elementos_activos mr-2">
+        <div v-if="elementosActivos && elementosActivos.length > 0" class="col columna-elementos_activos mr-2">
           <div class="contenedor-elementos">
-            <h6 class="text-success"><b>{{ elementosActivos && elementosActivos.length > 0 ? 'ELEMENTOS ACTIVOS' : 'SIN ELEMENTOS ACTIVOS' }}</b></h6>
+            <h6 class="text-success"><b>ELEMENTOS ACTIVOS</b></h6>
             <ElementoTabla :elementos="elementosActivos" />
           </div>
         </div>
-        <div class="col columna-elementos_pasivos">
+        <div v-if="elementosPasivos && elementosPasivos.length > 0" class="col columna-elementos_pasivos">
           <div class="contenedor-elementos">
-            <h6 class="text-primary"><b>{{ elementosPasivos && elementosPasivos.length > 0 ? 'ELEMENTOS PASIVOS' : 'SIN ELEMENTOS PASIVOS' }}</b></h6>
+            <h6 class="text-primary"><b>ELEMENTOS PASIVOS</b></h6>
             <ElementoTabla :elementos="elementosPasivos" />
           </div>
         </div>
