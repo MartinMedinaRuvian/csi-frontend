@@ -275,6 +275,6 @@ export default {
   height: 120px;
 }
 .propiedades span {
-  font-size: 20px;
+  font-size: 30px;
 }
 </style>
