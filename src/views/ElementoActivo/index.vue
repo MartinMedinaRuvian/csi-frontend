@@ -1,0 +1,639 @@
+<template>
+  <div class="text-center">
+    <h4 class="text-success mb-5"><span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
+      Información del Elemento</h4>
+    <div class="informacion">
+      <div class="informacion-basica">
+        <div class="contenedor-imagen">
+          <div class="imagen-wrapper">
+            <img id="imagen" :src="rutaImagenVer(elemento.ruta_imagen)" alt="">
+            <span class="icono-actualizar" data-toggle="modal" data-target="#modalActualizarImagen">
+              &#x1F504;
+            </span>
+          </div>
+          <h6 class="mt-3"><b>{{ elemento.descripcion }}</b></h6>
+          <h6 class="mt-3"><b>{{ elemento.codigo }}</b></h6>
+          <div class="form-group mt-3 observacion">
+            <label for="codigo">Observación:</label>
+            <textarea
+              v-if="elemento.observacion != null && elemento.observacion != undefined && elemento.observacion.length > 0"
+              disabled type="text" placeholder="Observación" v-model="elemento.observacion"
+              class="form-control textarea-center" />
+            <h6 v-else>Sin Observación</h6>
+          </div>
+
+        </div>
+
+        <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarelemento"
+          @click="verDatosModal()">Actualizar</button>
+        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
+          data-target="#modaleliminarElemento">Eliminar</button>
+      </div>
+
+      <div class="informacion-secundario">
+        <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" />
+      </div>
+    </div>
+    <div class="informacion-principal_elemento">
+      <p class="text-primary mt-5"><b>Módelo:</b> {{ elemento.tipo_modelo }} <br>
+        <b>Marca:</b> {{ elemento.tipo_marca }} <br>
+        <b>Referencia:</b> {{ elemento.tipo_referencia }}
+      </p>
+    </div>
+    <div class="propiedades-elemento">
+      <span v-if="propiedadTieneValor(elemento.codigo_inventario)"><b>Código de inventario:</b> {{ elemento.codigo_inventario }}
+        <br>
+      </span> 
+      <span v-if="propiedadTieneValor(elemento.serial)"><b>Serial:</b> {{ elemento.serial }} <br> </span> 
+      <span v-if="propiedadTieneValor(elemento.os)"><b>S.O:</b> {{ elemento.os }} <br></span>
+      <span v-if="propiedadTieneValor(elemento.version_os)"><b>Versión S.O:</b> {{ elemento.version_os }}<br></span> 
+      <span v-if="propiedadTieneValor(elemento.gateway)"><b>Gateway:</b> {{ elemento.gateway }}<br></span> 
+      <span v-if="propiedadTieneValor(elemento.ip_v4)"><b>IPV4:</b> {{ elemento.ip_v4 }}</span> <br>
+      <span v-if="propiedadTieneValor(elemento.ip_v6)"><b>IPV6:</b> {{ elemento.ip_v6 }}</span> <br>
+      <span v-if="propiedadTieneValor(elemento.cantidad_puertos_por_defecto)"><b>Cant. Puertos Default:</b> {{
+        elemento.cantidad_puertos_por_defecto }}</span> <br>
+      <span v-if="propiedadTieneValor(elemento.puerto_logico_por_defecto)"><b></b> {{
+        elemento.puerto_logico_por_defecto }}</span> <br>
+      <span v-if="propiedadTieneValor(elemento.puerto_fisico_por_defecto)">Puerto Fisico Default: {{
+        elemento.puerto_fisico_por_defecto }}</span>
+    </div>
+
+    <button class="btn btn-success" data-toggle="collapse" data-target="#collapseElementoTarjeta"
+      aria-expanded="false" aria-controls="collapseElementoTarjeta">
+      Mantenimientos
+    </button>
+    <!-- Modal Atualizar Imagen-->
+    <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"
+      aria-labelledby="modalActualizarImagen" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-success">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Actualizar Imagen
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="archivo = {}">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form @submit.prevent>
+
+              <div class="form-group mt-4">
+                <h5>Imagen:</h5>
+                <div class="row">
+                  <div class="col-md-12 col-lg-12">
+                    <input type="file" class="form-control" name="archivo_elemento" id="archivo_elemento"
+                      @change="verImagen(elemento.ruta_imagen)" accept="image/*" ref="inputArchivoelemento" required>
+                  </div>
+                  <div class="col-md-12 col-lg-12 mt-3">
+                    <img class="imagen-previsualizacion" alt="imagen" id="imagenPrevisualizacionelemento"
+                      ref="imagenPrevisualizacionelemento" :src="rutaImagenVer(elemento.ruta_imagen)">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mt-3">
+                  <button type="button" class="btn btn-secondary form-control" data-dismiss="modal"
+                    @click="Archivo = {}">
+                    Cancelar
+                  </button>
+                </div>
+                <div class="col-md-6 mt-3">
+                  <input type="button" class="btn btn-success form-control" value="Guardar"
+                    @click="actualizarImagen()" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Eliminar -->
+    <div class="modal fade" id="modaleliminarElemento" tabindex="-1" role="dialog"
+      aria-labelledby="modaleliminarElemento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-success">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Eliminar elemento
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form @submit.prevent>
+
+              <div class="form-group mt-4">
+                <h5>¿ Eliminar elemento: {{ elemento.codigo }} ?</h5>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mt-3">
+                  <button type="button" class="btn btn-secondary form-control" data-dismiss="modal">
+                    Cancelar
+                  </button>
+                </div>
+                <div class="col-md-6 mt-3">
+                  <input type="button" class="btn btn-danger form-control" value="Eliminar"
+                    @click="eliminarElemento()" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Actualizar -->
+    <div class="modal fade" id="modalActualizarelemento" tabindex="-1" role="dialog"
+      aria-labelledby="modalActualizarelemento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-success">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Actualizar elemento
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-left">
+            <form @submit.prevent>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form group mt-3">
+                    <div class="form-group">
+                      <label for="codigo" class="requerido">Descripción:</label>
+                      <input required type="text" placeholder="Ingrese Descripción" v-model="elemento_actualizar.descripcion"
+                        class="form-control" />
+                    </div>
+                  </div>
+    
+                  <div class="form group mt-3">
+                    <div class="form-group">
+                      <label for="codigo" class="requerido">Código:</label>
+                      <input required type="text" placeholder="Ingrese Código" v-model="elemento_actualizar.codigo"
+                        class="form-control" />
+                    </div>
+                  </div>
+    
+                  <div class="form-group mt-3">
+                    <label for="tipo" class="requerido">Referencia:</label>
+                    <select id="tipo" class="form-select form-control" v-model="elemento_actualizar.id_tipo_referencia">
+                      <option v-for="tipo in tiposreferencias" :value="tipo.id" :key="tipo.id" class="text-success">
+                        {{ tipo.descripcion }}
+                      </option>
+                    </select>
+                  </div>
+    
+                  <div class="form-group mt-3">
+                    <label for="tipo" class="requerido">Modelo:</label>
+                    <select id="tipo" class="form-select form-control" v-model="elemento_actualizar.id_tipo_modelo">
+                      <option v-for="tipo in tiposmodelos" :value="tipo.id" :key="tipo.id" class="text-success">
+                        {{ tipo.descripcion }}
+                      </option>
+                    </select>
+                  </div>
+    
+                  <div class="form-group mt-3">
+                    <label for="tipo" class="requerido">Marca:</label>
+                    <select id="tipo" class="form-select form-control" v-model="elemento_actualizar.id_tipo_marca">
+                      <option v-for="tipo in tiposmarcas" :value="tipo.id" :key="tipo.id" class="text-success">
+                        {{ tipo.descripcion }}
+                      </option>
+                    </select>
+                  </div>
+    
+                  <div class="form group mt-3">
+                    <div class="form-group">
+                      <label for="codigo" class="requerido">Serial:</label>
+                      <input required type="text" placeholder="Ingrese Serial" v-model="elemento_actualizar.serial"
+                        class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="form group mt-3">
+                    <div class="form-group">
+                      <label for="codigo">MAC:</label>
+                      <input required type="text" placeholder="" v-model="elemento_actualizar.mac"
+                        class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="form group mt-3">
+                    <div class="form-group">
+                      <label for="codigo">Gateway:</label>
+                      <input required type="text" placeholder="" v-model="elemento_actualizar.gateway"
+                        class="form-control" />
+                    </div>
+                  </div>
+
+
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form group mt-3">
+                    <div class="form-group">
+                      <label for="codigo">S.O:</label>
+                      <input required type="text" placeholder="" v-model="elemento_actualizar.os"
+                        class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form group mt-3">
+                    <div class="form-group">
+                      <label for="codigo">Versión S.O:</label>
+                      <input required type="text" placeholder="" v-model="elemento_actualizar.version_os"
+                        class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form group mt-3">
+                    <div class="form-group">
+                      <label for="codigo">IP V4:</label>
+                      <input required type="text" placeholder="" v-model="elemento_actualizar.ip_v4"
+                        class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form group mt-3">
+                    <div class="form-group">
+                      <label for="codigo">IP V6:</label>
+                      <input required type="text" placeholder="" v-model="elemento_actualizar.ip_v6"
+                        class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="form group mt-3">
+                    <div class="form-group">
+                      <label for="codigo">Cat. Puertos Default:</label>
+                      <input required type="text" placeholder="" v-model="elemento_actualizar.cantidad_puertos_por_defecto"
+                        class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="form group mt-3">
+                    <div class="form-group">
+                      <label for="codigo">Puerto Lógico Default:</label>
+                      <input required type="text" placeholder="" v-model="elemento_actualizar.puerto_logico_por_defecto"
+                        class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="form group mt-3">
+                    <div class="form-group">
+                      <label for="codigo">Puerto Fisico Default:</label>
+                      <input required type="text" placeholder="" v-model="elemento_actualizar.puerto_fisico_por_defecto"
+                        class="form-control" />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="form group mt-3 text-center">
+                <div class="form-group">
+                  <label for="codigo">Observación:</label>
+                  <textarea type="text" placeholder="Ingrese una observación"
+                    v-model="elemento_actualizar.observacion" class="form-control" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mt-3">
+                  <button type="button" class="btn btn-secondary form-control" data-dismiss="modal">
+                    Cancelar
+                  </button>
+                </div>
+                <div class="col-md-6 mt-3">
+                  <input type="button" class="btn btn-success form-control" value="Guardar"
+                    @click="actualizarelemento()" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import ElementoTarjeta from "@/components/elementos/ElementoTarjeta";
+import ArchivoTarjeta from "@/components/archivos/ArchivoTarjeta";
+import { mapGetters } from "vuex";
+import Mensaje from "@/components/Mensaje.vue";
+export default {
+  components: { Mensaje, ElementoTarjeta, ArchivoTarjeta },
+  data() {
+    return {
+      elemento: {},
+      elementos: [],
+      archivos: [],
+      mensaje: { ver: false },
+      ruta_servidor: this.axios.defaults.baseURL,
+      tiposElemento: ['EN OFICINA', 'INDEPENDIENTE'],
+      opcionesRespuesta: [{ descripcion: 'SI', valor: 'S' }, { descripcion: 'NO', valor: 'N' }],
+      elemento_actualizar: {},
+      tiposreferencias: [],
+      tiposmodelos: [],
+      tiposmarcas: [],
+      urlSinImagenActivo: this.axios.defaults.baseURL + '/archivos/elemento_activo_default.svg',
+      urlSinImagenPasivo: this.axios.defaults.baseURL + '/archivos/elemento_pasivo_default.svg',
+    };
+  },
+  mounted() {
+    const registroString = this.$route.query.registro;
+    const registroObjeto = JSON.parse(registroString);
+    this.elemento = registroObjeto;
+    this.verInfo()
+    this.verArchivos()
+  },
+  created() {
+    this.verTiposReferencias()
+    this.verTiposModelos()
+    this.verTiposMarcas()
+  },
+  computed: {
+    ...mapGetters(["usuario"]),
+  },
+  methods: {
+    crearMensaje(contenido, color) {
+      this.mensaje.ver = true;
+      this.mensaje.contenido = contenido;
+      this.mensaje.color = color;
+    },
+    actualizar() {
+      this.axios
+        .put("elemento_activo", this.elemento)
+        .then((respuesta) => {
+          if (respuesta.status === 200) {
+            //this.$router.push('/elementos')
+            window.location.reload()
+            $("#modalGuardarelemento").modal("hide");
+          }
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
+    },
+    verArchivos() {
+      const idelemento = this.elemento.id
+      this.axios.get("archivo/elemento_activo/" + idelemento).then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.archivos = respuesta.data;
+        }
+      });
+    },
+    actualizarImagen() {
+      const nombreTabla = 'elemento_activo'
+      const id = this.elemento.id
+      var formData = new FormData();
+      var imagefile = document.querySelector("#archivo_elemento");
+      formData.append("archivo", imagefile.files[0]);
+      this.axios
+        .put("imagen/" + nombreTabla + "/" + id, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((respuesta) => {
+          if (respuesta.status == 200) {
+            console.log(respuesta.data)
+            window.location.reload()
+          }
+        });
+    },
+    verImagen(urlImagenActual) {
+      const archivos = this.$refs.inputArchivoelemento.files;
+      console.log(archivos)
+
+      if ((archivos != null && archivos != undefined) && archivos.length > 0) {
+        const primerArchivo = archivos[0];
+        const objectURL = URL.createObjectURL(primerArchivo);
+        this.$refs.imagenPrevisualizacionelemento.src = objectURL;
+      } else {
+        this.$refs.imagenPrevisualizacionelemento.src = urlImagenActual;
+      }
+    },
+    eliminarElemento() {
+      const id = this.elemento.id
+      this.axios
+        .delete("elemento_activo/" + id)
+        .then((respuesta) => {
+          if (respuesta.status == 200) {
+            $("#modalEliminarElemento").modal("hide");
+            this.volver()
+          }
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
+    },
+    actualizarelemento() {
+      const registroGuardar = this.elemento_actualizar
+      const registro = {
+        id: this.elemento.id,
+        descripcion: registroGuardar.descripcion,
+        id_tipo_referencia: registroGuardar.id_tipo_referencia,
+        id_tipo_modelo: registroGuardar.id_tipo_modelo,
+        id_tipo_marca: registroGuardar.id_tipo_marca,
+        codigo: registroGuardar.codigo,
+        serial: registroGuardar.serial,
+        observacion: registroGuardar.observacion,
+        os: registroGuardar.os,
+        version_os: registroGuardar.version_os,
+        mac: registroGuardar.mac,
+        gateway: registroGuardar.gateway,
+        ip_v4: registroGuardar.ip_v4,
+        ip_v6: registroGuardar.ip_v6,
+        codigo_inventario: registroGuardar.codigo_inventario,
+        cantidad_puertos_por_defecto: registroGuardar.cantidad_puertos_por_defecto,
+        puerto_logico_por_defecto: registroGuardar.puerto_logico_por_defecto,
+        puerto_fisico_por_defecto: registroGuardar.puerto_fisico_por_defecto,
+        id_gabinete: this.elemento.id_gabinete,
+        id_usuario: this.elemento.id_usuario
+      }
+      this.axios
+        .put("elemento_activo", registro)
+        .then((respuesta) => {
+          window.location.reload()
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
+    },
+    rutaImagenVer(ruta_imagen) {
+      const ruta = ruta_imagen != null && ruta_imagen != undefined ? ruta_imagen : 'archivos/elemento_activo_default.svg'
+      return this.ruta_servidor + '/' + ruta
+    },
+    verDatosModal() {
+      const dato = this.elemento
+      this.elemento_actualizar = { ...dato };
+    },
+    volver() {
+      const id = this.elemento.id_gabinete
+      const datosRegistro = {
+        id
+      }
+      location.href = "/gabinete?registro=" + JSON.stringify(datosRegistro)
+    },
+    verTipoelementoPorId() {
+      const idTipoelemento = this.elemento.id_tipo_elemento
+      this.axios.get("tipo_elemento/" + idTipoelemento)
+        .then((respuesta) => {
+          this.elemento.tipo = respuesta.data.descripcion
+        })
+        .catch(error => console.log(error))
+    },
+    verTiposelementos() {
+      this.axios.get("tipo_elemento")
+        .then((respuesta) => {
+          this.tiposelementos = respuesta.data
+        })
+        .catch(error => console.log(error))
+    },
+    verInfo() {
+      const id = this.elemento.id
+      this.axios.get("elemento_activo/info/" + id).then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.elemento = respuesta.data;
+        }
+      });
+    },
+    propiedadTieneValor(propiedad) {
+      return propiedad !== null && propiedad !== undefined
+    },
+    verTiposReferencias() {
+      this.axios.get("tipo/tipo_referencia")
+        .then((respuesta) => {
+          this.tiposreferencias = respuesta.data
+        })
+        .catch(error => console.log(error))
+    },
+    verTiposModelos() {
+      this.axios.get("tipo/tipo_modelo")
+        .then((respuesta) => {
+          this.tiposmodelos = respuesta.data
+        })
+        .catch(error => console.log(error))
+    },
+    verTiposMarcas() {
+      this.axios.get("tipo/tipo_marca")
+        .then((respuesta) => {
+          this.tiposmarcas = respuesta.data
+        })
+        .catch(error => console.log(error))
+    }
+  }
+};
+</script>
+<style scoped>
+.input-buscar {
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
+
+#imagen {
+  width: 250px;
+  height: 250px;
+  border-radius: 182px;
+}
+
+.contenedor-principal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: space-between;
+}
+
+.contenedor-tarjeta {
+  margin-top: 70px;
+}
+
+.imagen-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.icono-actualizar {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(255, 255, 255, 0.7);
+  /* Fondo para que se vea mejor sobre la imagen */
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.icono-actualizar {
+  font-size: 23px;
+  /* Tamaño del ícono */
+  color: #212121;
+  /* Color del ícono */
+}
+
+.imagen-previsualizacion {
+  width: 120px;
+  height: 120px;
+}
+
+.titulo {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.observacion {
+  width: 100%;
+  /* Asegura que ocupe todo el ancho disponible */
+  display: flex;
+  flex-direction: column;
+  /* Alinea verticalmente */
+  align-items: center;
+  /* Centra el contenido dentro del div */
+}
+
+.textarea-center {
+  width: 100%;
+  /* Asegura que el textarea use el ancho total de su contenedor */
+  max-width: 500px;
+  /* Limita el ancho máximo */
+}
+
+.informacion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+  flex-wrap: wrap;
+}
+
+.informacion-basica,
+.informacion-secundario {
+  flex-basis: 100%;
+  max-width: 100%;
+}
+
+.numero {
+  position: absolute;
+  top: 5px;
+  /* Mueve el número hacia la parte superior */
+  left: 0px;
+  /* Mueve el número hacia la izquierda */
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+
+  .informacion-basica,
+  .informacion-secundario {
+    flex-basis: 50%;
+    max-width: 50%;
+  }
+}
+</style>

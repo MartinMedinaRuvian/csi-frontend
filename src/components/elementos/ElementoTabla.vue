@@ -29,7 +29,7 @@
           </td>
           <td>
             <button data-toggle="modal" data-target="#modalelementoEditar" class="btn btn-outline-success"
-              @click="verDatosModal(elemento)">
+              @click="verInfo(elemento)">
               <span class="icon-Lupa"></span>
             </button>
           </td>
@@ -57,6 +57,15 @@ export default {
       const ruta = ruta_imagen != null && ruta_imagen != undefined ? ruta_imagen : 'archivos/elemento_default.svg'
       return this.ruta_servidor + '/' + ruta
     },
+    verInfo(registro){
+      const datosRegistro = {
+        id: registro.id
+      }
+      this.$router.push({
+        name: "ElementoActivo",
+        query: { registro: JSON.stringify(datosRegistro) },
+      });
+    }
   },
 };
 </script>

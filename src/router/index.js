@@ -57,6 +57,12 @@ const routes = [
     name: 'Gabinete',
     component: () => import('@/views/Gabinete/index.vue'),
     meta:{requiereAutorizacion:true}
+  },
+  {
+    path: '/elemento-activo',
+    name: 'ElementoActivo',
+    component: () => import('@/views/ElementoActivo/index.vue'),
+    meta:{requiereAutorizacion:true}
   }
 ]
 

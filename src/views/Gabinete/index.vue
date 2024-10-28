@@ -261,7 +261,7 @@ export default {
     },
     verElemenosActivos() {
       const id = this.gabinete.id
-      this.axios.get("elemento_activo/" + id).then((respuesta) => {
+      this.axios.get("elemento_activo/info_principal/" + id).then((respuesta) => {
         if (respuesta.status === 200) {
           this.elementosActivos = respuesta.data;
         }
@@ -269,7 +269,7 @@ export default {
     },
     verElemenosPasivos() {
       const id = this.gabinete.id
-      this.axios.get("elemento_pasivo/" + id).then((respuesta) => {
+      this.axios.get("elemento_pasivo/info_principal/" + id).then((respuesta) => {
         if (respuesta.status === 200) {
           this.elementosPasivos = respuesta.data;
         }
