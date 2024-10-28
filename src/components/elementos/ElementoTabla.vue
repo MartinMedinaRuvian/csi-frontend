@@ -5,8 +5,8 @@
       <thead class="thead-light">
         <tr>
           <th scope="col">Imagen</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Serial</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Código</th>
           <th scope="col">Estado</th>
           <th scope="col">Acción</th>
         </tr>
@@ -19,10 +19,10 @@
             </div>
           </td>
           <td>
-            <p>{{ elemento.nombre }}</p>
+            <p>{{ elemento.descripcion }}</p>
           </td>
           <td>
-            <p>{{ elemento.serial }}</p>
+            <p>{{ elemento.codigo }}</p>
           </td>
           <td>
             <p>{{ elemento.estado }}</p>

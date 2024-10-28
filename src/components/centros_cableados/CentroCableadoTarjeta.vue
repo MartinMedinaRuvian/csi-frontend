@@ -10,7 +10,7 @@
           <div class="card" style="width: 100%;">
             <div class="card-header">
               <img id="imagen" :src="rutaImagenVer(centro_cableado.ruta_imagen)" alt="">
-              <div class="numero">#{{ centro_cableado.numero }}</div>
+              <div class="numero"># {{ centro_cableado.numero }}</div>
             </div>
             <div class="card-body">
               <p>{{ centro_cableado.ubicacion }} - {{ centro_cableado.tipo }}</p>

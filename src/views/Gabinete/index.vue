@@ -8,7 +8,7 @@
         <div class="contenedor-imagen">
           <div class="imagen-wrapper">
             <img id="imagen" :src="rutaImagenVer(gabinete.ruta_imagen)" alt="">
-            <div class="numero"># {{ gabinete.numero }}</div>
+            <div class="numero">R{{ gabinete.numero }}</div>
             <span class="icono-actualizar" data-toggle="modal" data-target="#modalActualizarImagen">
               &#x1F504;
             </span>
@@ -115,7 +115,7 @@
             <form @submit.prevent>
 
               <div class="form-group mt-4">
-                <h5>¿ Eliminar Gabinete: #{{ gabinete.numero }} ?</h5>
+                <h5>¿ Eliminar Gabinete: R{{ gabinete.numero }} ?</h5>
               </div>
 
               <div class="row">

@@ -10,7 +10,7 @@
           <div class="card" style="width: 100%;">
             <div class="card-header">
               <img id="imagen" :src="rutaImagenVer(gabinete.ruta_imagen)" alt="">
-              <div class="numero">#{{ gabinete.numero }}</div>
+              <div class="numero">R{{ gabinete.numero }}</div>
             </div>
             <div class="card-body">
               <h6>Tamaño: {{ gabinete.tamanio }}</h6>

@@ -28,16 +28,27 @@
               Guardar elemento
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-              @click="elemento = { id_tipo_elemento: 1, id_tipo_dispositivo: 1 }">
+              @click="elemento = { id_tipo_elemento: 1, id_tipo_referencia: 1, id_tipo_modelo: 1, id_tipo_marca: 1 }">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <form @submit.prevent>
-              <div class="form group">
-                <label for="nombre" class="requerido">Nombre:</label>
-                <input required type="text" placeholder="Ingrese el nombre" v-model="elemento.nombre"
-                  class="form-control" />
+
+              <div class="form group mt-3">
+                <div class="form-group">
+                  <label for="codigo" class="requerido">Descripción:</label>
+                  <input required type="text" placeholder="Ingrese Descripción" v-model="elemento.descripcion"
+                    class="form-control" />
+                </div>
+              </div>
+
+              <div class="form group mt-3">
+                <div class="form-group">
+                  <label for="codigo" class="requerido">Código:</label>
+                  <input required type="text" placeholder="Ingrese Código" v-model="elemento.codigo"
+                    class="form-control" />
+                </div>
               </div>
 
               <div class="form-group mt-3">
@@ -49,18 +60,36 @@
                 </select>
               </div>
 
-              <div class="form-group mt-3">
-                <label for="tipo" class="requerido">Tipo Dispositivo:</label>
-                <select id="tipo" class="form-select form-control" v-model="elemento.id_tipo_dispositivo">
-                  <option v-for="tipo in tiposdispositivos" :value="tipo.id" :key="tipo.id" class="text-success">
+              <div class="form-group mt-3" v-if="elemento.id_tipo_elemento == 1">
+                <label for="tipo" class="requerido">Referencia:</label>
+                <select id="tipo" class="form-select form-control" v-model="elemento.id_tipo_referencia">
+                  <option v-for="tipo in tiposreferencias" :value="tipo.id" :key="tipo.id" class="text-success">
+                    {{ tipo.descripcion }}
+                  </option>
+                </select>
+              </div>
+              
+              <div class="form-group mt-3" v-if="elemento.id_tipo_elemento == 1">
+                <label for="tipo" class="requerido">Modelo:</label>
+                <select id="tipo" class="form-select form-control" v-model="elemento.id_tipo_modelo">
+                  <option v-for="tipo in tiposmodelos" :value="tipo.id" :key="tipo.id" class="text-success">
+                    {{ tipo.descripcion }}
+                  </option>
+                </select>
+              </div>
+              
+              <div class="form-group mt-3" v-if="elemento.id_tipo_elemento == 1">
+                <label for="tipo" class="requerido">Marca:</label>
+                <select id="tipo" class="form-select form-control" v-model="elemento.id_tipo_marca">
+                  <option v-for="tipo in tiposmarcas" :value="tipo.id" :key="tipo.id" class="text-success">
                     {{ tipo.descripcion }}
                   </option>
                 </select>
               </div>
 
-              <div class="form group mt-3">
+              <div class="form group mt-3" v-if="elemento.id_tipo_elemento == 1">
                 <div class="form-group">
-                  <label for="codigo">Serial:</label>
+                  <label for="codigo" class="requerido">Serial:</label>
                   <input required type="text" placeholder="Ingrese Serial" v-model="elemento.serial"
                     class="form-control" />
                 </div>
@@ -84,7 +113,7 @@
               <div class="row">
                 <div class="col-md-6 mt-3">
                   <button type="button" class="btn btn-secondary form-control" data-dismiss="modal"
-                    @click="elemento = { id_tipo_elemento: 1, id_tipo_dispositivo: 1 }">
+                    @click="elemento = { id_tipo_elemento: 1, id_tipo_referencia: 1, id_tipo_modelo: 1, id_tipo_marca: 1 }">
                     Cancelar
                   </button>
                 </div>
@@ -113,18 +142,22 @@ export default {
   },
   data() {
     return {
-      elemento: { id_tipo_elemento: 1, id_tipo_dispositivo: 1 },
+      elemento: { id_tipo_elemento: 1, id_tipo_referencia: 1, id_tipo_modelo: 1, id_tipo_marca: 1 },
       ruta_servidor: this.axios.defaults.baseURL,
       urlSinImagen: this.axios.defaults.baseURL + '/archivos/elemento_default.svg',
       urlImg: '',
       tiposelementos: [],
-      tiposdispositivos: [],
+      tiposreferencias: [],
+      tiposmodelos: [],
+      tiposmarcas: [],
       opcionesRespuesta: ['S', 'N']
     };
   },
   created(){
     this.verTiposelementos()
-    this.verTiposdispositivo()
+    this.verTiposReferencias()
+    this.verTiposModelos()
+    this.verTiposMarcas()
   },  
   computed: {
     ...mapGetters(["usuario"]),
@@ -145,9 +178,12 @@ export default {
     guardarNuevoelemento() {
       const registroGuardar = this.elemento
       const registro = {
-        nombre: registroGuardar.nombre,
+        descripcion: registroGuardar.descripcion,
         id_tipo_elemento: registroGuardar.id_tipo_elemento,
-        id_tipo_dispositivo: registroGuardar.id_tipo_dispositivo,
+        id_tipo_referencia: registroGuardar.id_tipo_referencia,
+        id_tipo_modelo: registroGuardar.id_tipo_modelo,
+        id_tipo_marca: registroGuardar.id_tipo_marca,
+        codigo: registroGuardar.codigo,
         serial: registroGuardar.serial,
         id_gabinete: this.id_gabinete,
         id_usuario: this.usuario.id
@@ -183,16 +219,30 @@ export default {
       return this.ruta_servidor + '/' + ruta
     },
     verTiposelementos() {
-      this.axios.get("tipo_elemento")
+      this.axios.get("tipo/tipo_elemento")
         .then((respuesta) => {
           this.tiposelementos = respuesta.data
         })
         .catch(error => console.log(error))
     },
-    verTiposdispositivo() {
-      this.axios.get("tipo_dispositivo")
+    verTiposReferencias() {
+      this.axios.get("tipo/tipo_referencia")
         .then((respuesta) => {
-          this.tiposdispositivos = respuesta.data
+          this.tiposreferencias = respuesta.data
+        })
+        .catch(error => console.log(error))
+    },
+    verTiposModelos() {
+      this.axios.get("tipo/tipo_modelo")
+        .then((respuesta) => {
+          this.tiposmodelos = respuesta.data
+        })
+        .catch(error => console.log(error))
+    },
+    verTiposMarcas() {
+      this.axios.get("tipo/tipo_marca")
+        .then((respuesta) => {
+          this.tiposmarcas = respuesta.data
         })
         .catch(error => console.log(error))
     }
