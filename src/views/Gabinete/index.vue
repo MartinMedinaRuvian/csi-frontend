@@ -231,7 +231,8 @@ export default {
     const registroObjeto = JSON.parse(registroString);
     this.gabinete = registroObjeto;
     this.verInfo()
-    this.verelementos()
+    this.verElemenosActivos()
+    this.verElemenosPasivos()
     this.verArchivos()
     this.verTiposGabinetes()
   },
@@ -258,30 +259,21 @@ export default {
           alert(error.response.data);
         });
     },
-    verelementos() {
+    verElemenosActivos() {
       const id = this.gabinete.id
-      this.axios.get("elemento/" + id).then((respuesta) => {
+      this.axios.get("elemento_activo/" + id).then((respuesta) => {
         if (respuesta.status === 200) {
-          this.elementos = respuesta.data;
-          this.verElemenosActivos()
-          this.verElemenosPasivos()
-          console.log(this.elementos, 'elementos')
+          this.elementosActivos = respuesta.data;
         }
       });
     },
-    verElemenosActivos() {
-      const elementos = this.elementos
-      const elementosActivos = elementos.filter((elemento) => {
-        return elemento.id_tipo_elemento == 1
-      })
-      this.elementosActivos = elementosActivos
-    },
     verElemenosPasivos() {
-      const elementos = this.elementos
-      const elementosPasivos = elementos.filter((elemento) => {
-        return elemento.id_tipo_elemento == 2
-      })
-      this.elementosPasivos = elementosPasivos
+      const id = this.gabinete.id
+      this.axios.get("elemento_pasivo/" + id).then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.elementosPasivos = respuesta.data;
+        }
+      });
     },
     verArchivos() {
       const idgabinete = this.gabinete.id

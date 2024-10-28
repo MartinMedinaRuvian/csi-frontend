@@ -35,6 +35,15 @@
           <div class="modal-body">
             <form @submit.prevent>
 
+              <div class="form-group mt-3">
+                <label for="tipo" class="requerido">Tipo:</label>
+                <select id="tipo" class="form-select form-control" v-model="tipo_elemento">
+                  <option v-for="tipo in tiposelementos" :value="tipo" :key="tipo" class="text-success">
+                    {{ tipo }}
+                  </option>
+                </select>
+              </div>
+
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo" class="requerido">Descripción:</label>
@@ -51,16 +60,7 @@
                 </div>
               </div>
 
-              <div class="form-group mt-3">
-                <label for="tipo" class="requerido">Tipo:</label>
-                <select id="tipo" class="form-select form-control" v-model="elemento.id_tipo_elemento">
-                  <option v-for="tipo in tiposelementos" :value="tipo.id" :key="tipo.id" class="text-success">
-                    {{ tipo.descripcion }}
-                  </option>
-                </select>
-              </div>
-
-              <div class="form-group mt-3" v-if="elemento.id_tipo_elemento == 1">
+              <div class="form-group mt-3" v-if="tipo_elemento == 'ACTIVO'">
                 <label for="tipo" class="requerido">Referencia:</label>
                 <select id="tipo" class="form-select form-control" v-model="elemento.id_tipo_referencia">
                   <option v-for="tipo in tiposreferencias" :value="tipo.id" :key="tipo.id" class="text-success">
@@ -69,7 +69,7 @@
                 </select>
               </div>
               
-              <div class="form-group mt-3" v-if="elemento.id_tipo_elemento == 1">
+              <div class="form-group mt-3" v-if="tipo_elemento == 'ACTIVO'">
                 <label for="tipo" class="requerido">Modelo:</label>
                 <select id="tipo" class="form-select form-control" v-model="elemento.id_tipo_modelo">
                   <option v-for="tipo in tiposmodelos" :value="tipo.id" :key="tipo.id" class="text-success">
@@ -78,7 +78,7 @@
                 </select>
               </div>
               
-              <div class="form-group mt-3" v-if="elemento.id_tipo_elemento == 1">
+              <div class="form-group mt-3" v-if="tipo_elemento == 'ACTIVO'">
                 <label for="tipo" class="requerido">Marca:</label>
                 <select id="tipo" class="form-select form-control" v-model="elemento.id_tipo_marca">
                   <option v-for="tipo in tiposmarcas" :value="tipo.id" :key="tipo.id" class="text-success">
@@ -87,7 +87,7 @@
                 </select>
               </div>
 
-              <div class="form group mt-3" v-if="elemento.id_tipo_elemento == 1">
+              <div class="form group mt-3" v-if="tipo_elemento == 'ACTIVO'">
                 <div class="form-group">
                   <label for="codigo" class="requerido">Serial:</label>
                   <input required type="text" placeholder="Ingrese Serial" v-model="elemento.serial"
@@ -105,7 +105,7 @@
                   </div>
                   <div class="col-md-12 col-lg-12 mt-3">
                     <img class="imagen-previsualizacion" alt="imagen" id="imagenPrevisualizacionCentroCableado"
-                      ref="imagenPrevisualizacionCentroCableado" :src="urlSinImagen">
+                      ref="imagenPrevisualizacionCentroCableado" :src="tipo_elemento == 'ACTIVO' ? urlSinImagenActivo : urlSinImagenPasivo">
                   </div>
                 </div>
               </div>
@@ -142,11 +142,13 @@ export default {
   },
   data() {
     return {
-      elemento: { id_tipo_elemento: 1, id_tipo_referencia: 1, id_tipo_modelo: 1, id_tipo_marca: 1 },
+      elemento: { id_tipo_referencia: 1, id_tipo_modelo: 1, id_tipo_marca: 1 },
+      tiposelementos: ['ACTIVO', 'PASIVO'],
+      tipo_elemento: 'ACTIVO',
       ruta_servidor: this.axios.defaults.baseURL,
-      urlSinImagen: this.axios.defaults.baseURL + '/archivos/elemento_default.svg',
+      urlSinImagenActivo: this.axios.defaults.baseURL + '/archivos/elemento_activo_default.svg',
+      urlSinImagenPasivo: this.axios.defaults.baseURL + '/archivos/elemento_pasivo_default.svg',
       urlImg: '',
-      tiposelementos: [],
       tiposreferencias: [],
       tiposmodelos: [],
       tiposmarcas: [],
@@ -154,7 +156,6 @@ export default {
     };
   },
   created(){
-    this.verTiposelementos()
     this.verTiposReferencias()
     this.verTiposModelos()
     this.verTiposMarcas()
@@ -172,14 +173,25 @@ export default {
         const objectURL = URL.createObjectURL(primerArchivo);
         this.$refs.imagenPrevisualizacionCentroCableado.src = objectURL;
       } else {
-        this.$refs.imagenPrevisualizacionCentroCableado.src = this.urlSinImagen;
+        if (this.tipo_elemento == 'ACTIVO') {
+          this.$refs.imagenPrevisualizacionCentroCableado.src = this.urlSinImagenActivo;
+        } else {
+          this.$refs.imagenPrevisualizacionCentroCableado.src = this.urlSinImagenPasivo;
+        }
       }
     },
-    guardarNuevoelemento() {
+    async guardarNuevoelemento() {
+      const tipoElementoGuardar = this.tipo_elemento
+      if (tipoElementoGuardar == 'ACTIVO') {
+        await this.guardarNuevoelementoActivo()
+      } else {
+        await this.guardarNuevoelementoPasivo()
+      }
+    },
+    guardarNuevoelementoActivo() {
       const registroGuardar = this.elemento
       const registro = {
         descripcion: registroGuardar.descripcion,
-        id_tipo_elemento: registroGuardar.id_tipo_elemento,
         id_tipo_referencia: registroGuardar.id_tipo_referencia,
         id_tipo_modelo: registroGuardar.id_tipo_modelo,
         id_tipo_marca: registroGuardar.id_tipo_marca,
@@ -188,7 +200,26 @@ export default {
         id_gabinete: this.id_gabinete,
         id_usuario: this.usuario.id
       }
-      const nombreTabla = "elemento"
+      const nombreTabla = "elemento_activo"
+      console.log(registro, 'registro')
+      this.axios.post(nombreTabla, registro).then((respuesta) => {
+        if (respuesta.status === 200) {
+          const idGuardado = respuesta.data.id
+          this.actualizarImagen(nombreTabla, idGuardado)
+          location.reload()
+          //location.href = '/'
+        }
+      }).catch(error => console.log(error))
+    },
+    guardarNuevoelementoPasivo() {
+      const registroGuardar = this.elemento
+      const registro = {
+        descripcion: registroGuardar.descripcion,
+        codigo: registroGuardar.codigo,
+        id_gabinete: this.id_gabinete,
+        id_usuario: this.usuario.id
+      }
+      const nombreTabla = "elemento_pasivo"
       console.log(registro, 'registro')
       this.axios.post(nombreTabla, registro).then((respuesta) => {
         if (respuesta.status === 200) {
@@ -217,13 +248,6 @@ export default {
     rutaImagenVer(ruta_imagen) {
       const ruta = ruta_imagen != null && ruta_imagen != undefined ? ruta_imagen : 'archivos/elemento_default.svg'
       return this.ruta_servidor + '/' + ruta
-    },
-    verTiposelementos() {
-      this.axios.get("tipo/tipo_elemento")
-        .then((respuesta) => {
-          this.tiposelementos = respuesta.data
-        })
-        .catch(error => console.log(error))
     },
     verTiposReferencias() {
       this.axios.get("tipo/tipo_referencia")
