@@ -7,13 +7,13 @@
         <div v-if="elementosActivos && elementosActivos.length > 0" class="col columna-elementos_activos mr-2">
           <div class="contenedor-elementos">
             <h6 class="text-success"><b>ELEMENTOS ACTIVOS</b></h6>
-            <ElementoTabla :elementos="elementosActivos" />
+            <ElementoTabla :elementos="elementosActivos" :es_activo="true" />
           </div>
         </div>
         <div v-if="elementosPasivos && elementosPasivos.length > 0" class="col columna-elementos_pasivos">
           <div class="contenedor-elementos">
             <h6 class="text-primary"><b>ELEMENTOS PASIVOS</b></h6>
-            <ElementoTabla :elementos="elementosPasivos" />
+            <ElementoTabla :elementos="elementosPasivos" :es_activo="false" />
           </div>
         </div>
       </div>
