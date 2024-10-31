@@ -69,6 +69,18 @@ const routes = [
     name: 'ElementoPasivo',
     component: () => import('@/views/ElementoPasivo/index.vue'),
     meta:{requiereAutorizacion:true}
+  },
+  {
+    path: '/nuevo-elemento',
+    name: 'NuevoElemento',
+    component: () => import('@/views/Elemento/NuevoElemento.vue'),
+    meta:{requiereAutorizacion:true}
+  },
+  {
+    path: '/actualizar-elemento',
+    name: 'ActualizarElemento',
+    component: () => import('@/views/Elemento/ActualizarElemento.vue'),
+    meta:{requiereAutorizacion:true}
   }
 ]
 

@@ -24,8 +24,8 @@
 
         </div>
 
-        <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarelemento"
-          @click="verDatosModal()">Actualizar</button>
+        <button class="btn btn-warning mr-2"
+          @click="actualizarElemento2()">Actualizar</button>
         <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
           data-target="#modaleliminarElemento">Eliminar</button>
       </div>
@@ -162,8 +162,50 @@
           <div class="modal-body text-left">
             <form @submit.prevent>
 
+              <TipoGuardar v-if="guardarTipo" @refrescar="refrescarTipos()" @cancelar="guardarTipo = false"
+                :titulo="tituloTipo" :tabla="tablaTipo" />
+
               <div class="row">
                 <div class="col-md-6">
+
+                  <v-autocomplete label="Referencias" class="requerido"
+                    v-model="elemento_actualizar.id_tipo_referencia" :items="tiposreferencias" :item-title="titulosAutocompleteReferencias"
+                    item-value="id" :filter="filterAutocompleteReferencias"></v-autocomplete>
+
+                  <div class="form-group mt-3">
+                    <label for="tipo_referencia" class="requerido">Referencia: <span class="span-boton_nuevo"
+                        @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')">Agregar</span></label>
+                    <select id="tipo_referencia" class="form-select form-control"
+                      v-model="elemento_actualizar.id_tipo_referencia">
+                      <option v-for="tipo in tiposreferencias" :value="tipo.id" :key="tipo.id" class="text-success">
+                        {{ tipo.descripcion }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="form-group mt-3">
+                    <label for="tipo_modelo" class="requerido">Modelo: <span class="span-boton_nuevo"
+                        @click="agregarNuevoTipo('tipo_modelo', 'Nuevo Modelo')">Agregar</span></label>
+                    <select id="tipo_modelo" class="form-select form-control"
+                      v-model="elemento_actualizar.id_tipo_modelo">
+                      <option v-for="tipo in tiposmodelos" :value="tipo.id" :key="tipo.id" class="text-success">
+                        {{ tipo.descripcion }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="form-group mt-3">
+                    <label for="tipo_marca" class="requerido">Marca: <span class="span-boton_nuevo"
+                        @click="agregarNuevoTipo('tipo_marca', 'Nueva Marca')">Agregar</span></label>
+                    <select id="tipo_marca" class="form-select form-control"
+                      v-model="elemento_actualizar.id_tipo_marca">
+                      <option v-for="tipo in tiposmarcas" :value="tipo.id" :key="tipo.id" class="text-success">
+                        {{ tipo.descripcion }}
+                      </option>
+                    </select>
+                  </div>
+
+
                   <div class="form group mt-3">
                     <div class="form-group">
                       <label for="codigo" class="requerido">Descripción:</label>
@@ -178,33 +220,6 @@
                       <input required type="text" placeholder="Ingrese Código" v-model="elemento_actualizar.codigo"
                         class="form-control" />
                     </div>
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="tipo" class="requerido">Referencia:</label>
-                    <select id="tipo" class="form-select form-control" v-model="elemento_actualizar.id_tipo_referencia">
-                      <option v-for="tipo in tiposreferencias" :value="tipo.id" :key="tipo.id" class="text-success">
-                        {{ tipo.descripcion }}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="tipo" class="requerido">Modelo:</label>
-                    <select id="tipo" class="form-select form-control" v-model="elemento_actualizar.id_tipo_modelo">
-                      <option v-for="tipo in tiposmodelos" :value="tipo.id" :key="tipo.id" class="text-success">
-                        {{ tipo.descripcion }}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="tipo" class="requerido">Marca:</label>
-                    <select id="tipo" class="form-select form-control" v-model="elemento_actualizar.id_tipo_marca">
-                      <option v-for="tipo in tiposmarcas" :value="tipo.id" :key="tipo.id" class="text-success">
-                        {{ tipo.descripcion }}
-                      </option>
-                    </select>
                   </div>
 
                   <div class="form group mt-3">
@@ -230,7 +245,6 @@
                         class="form-control" />
                     </div>
                   </div>
-
 
                 </div>
 
@@ -331,8 +345,9 @@ import ElementoTarjeta from "@/components/elementos/ElementoTarjeta";
 import ArchivoTarjeta from "@/components/archivos/ArchivoTarjeta";
 import { mapGetters } from "vuex";
 import Mensaje from "@/components/Mensaje.vue";
+import TipoGuardar from "@/components/tipo/TipoGuardar.vue";
 export default {
-  components: { Mensaje, ElementoTarjeta, ArchivoTarjeta },
+  components: { Mensaje, ElementoTarjeta, ArchivoTarjeta, TipoGuardar },
   data() {
     return {
       elemento: {},
@@ -348,6 +363,9 @@ export default {
       tiposmarcas: [],
       urlSinImagenActivo: this.axios.defaults.baseURL + '/archivos/elemento_activo_default.svg',
       urlSinImagenPasivo: this.axios.defaults.baseURL + '/archivos/elemento_pasivo_default.svg',
+      tablaTipo: 'tipo_referencia',
+      tituloTipo: 'Nueva Referencia',
+      guardarTipo: false
     };
   },
   mounted() {
@@ -366,6 +384,34 @@ export default {
     ...mapGetters(["usuario"]),
   },
   methods: {
+    titulosAutocompleteReferencias(item) {
+      return `${item.descripcion}`;
+    },
+    filterAutocompleteReferencias(item, queryText, itemText) {
+      return (
+        item.descripcion
+          .toLocaleLowerCase()
+          .indexOf(queryText.toLocaleLowerCase()) > -1
+      );
+    },
+    refrescarTipos() {
+      const tablaTipo = this.tablaTipo
+      switch (tablaTipo) {
+        case 'tipo_referencia':
+          this.verTiposReferencias()
+          break
+        case 'tipo_modelo':
+          this.verTiposModelos()
+          break
+        case 'tipo_marca':
+          this.verTiposMarcas()
+          break
+        default:
+          this.verTiposReferencias()
+          break
+      }
+      this.guardarTipo = false
+    },
     crearMensaje(contenido, color) {
       this.mensaje.ver = true;
       this.mensaje.contenido = contenido;
@@ -486,21 +532,6 @@ export default {
       }
       location.href = "/gabinete?registro=" + JSON.stringify(datosRegistro)
     },
-    verTipoelementoPorId() {
-      const idTipoelemento = this.elemento.id_tipo_elemento
-      this.axios.get("tipo_elemento/" + idTipoelemento)
-        .then((respuesta) => {
-          this.elemento.tipo = respuesta.data.descripcion
-        })
-        .catch(error => console.log(error))
-    },
-    verTiposelementos() {
-      this.axios.get("tipo_elemento")
-        .then((respuesta) => {
-          this.tiposelementos = respuesta.data
-        })
-        .catch(error => console.log(error))
-    },
     verInfo() {
       const id = this.elemento.id
       this.axios.get("elemento_activo/info/" + id).then((respuesta) => {
@@ -510,7 +541,7 @@ export default {
       });
     },
     propiedadTieneValor(propiedad) {
-      return propiedad !== null && propiedad !== undefined
+      return propiedad !== null && propiedad !== undefined && propiedad.length > 0
     },
     verTiposReferencias() {
       this.axios.get("tipo/tipo_referencia")
@@ -532,6 +563,20 @@ export default {
           this.tiposmarcas = respuesta.data
         })
         .catch(error => console.log(error))
+    },
+    agregarNuevoTipo(tabla, titulo) {
+      this.tablaTipo = tabla
+      this.tituloTipo = titulo
+      this.guardarTipo = !this.guardarTipo
+    },
+    actualizarElemento2(){
+      let elemento = this.elemento
+      const idGabinete = this.elemento.id_gabinete
+      const datosRegistro = {
+        ...elemento,
+        id_gabinete: idGabinete
+      }
+      location.href = "/actualizar-elemento?registro=" + JSON.stringify(datosRegistro)
     }
   }
 };
@@ -636,6 +681,14 @@ export default {
   border-radius: 50%;
   font-size: 20px;
   font-weight: 700;
+}
+
+.span-boton_nuevo {
+  padding: 3px;
+  background-color: #28a745;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {

@@ -1,8 +1,7 @@
 <template>
   <div>
     <div class="container-principal">
-      <h4 class="mb-5">Elemento <span> <button class="btn btn-success" data-toggle="modal"
-            data-target="#modalGuardarCentroCableado">+ </button></span></h4>
+      <h4 class="mb-5">Elemento <span> <button class="btn btn-success" @click="guardarElemento()">+ </button></span></h4>
         <div class="row">
         <div v-if="elementosActivos && elementosActivos.length > 0" class="col columna-elementos_activos mr-2">
           <div class="contenedor-elementos">
@@ -269,6 +268,13 @@ export default {
           this.tiposmarcas = respuesta.data
         })
         .catch(error => console.log(error))
+    },
+    guardarElemento(){
+      const id = this.id_gabinete
+      const datosRegistro = {
+        id
+      }
+      location.href = "/nuevo-elemento?registro=" + JSON.stringify(datosRegistro)
     }
   },
 };
