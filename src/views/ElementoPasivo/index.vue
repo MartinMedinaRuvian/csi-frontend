@@ -24,8 +24,8 @@
 
         </div>
 
-        <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarelemento"
-          @click="verDatosModal()">Actualizar</button>
+        <button class="btn btn-warning mr-2"
+          @click="actualizarElemento2()">Actualizar</button>
         <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
           data-target="#modaleliminarElemento">Eliminar</button>
       </div>
@@ -348,6 +348,15 @@ export default {
         .catch((error) => {
           alert(error.response.data);
         });
+    },
+    actualizarElemento2(){
+      let elemento = this.elemento
+      const idGabinete = this.elemento.id_gabinete
+      const datosRegistro = {
+        ...elemento,
+        id_gabinete: idGabinete
+      }
+      location.href = "/actualizar-elemento-pasivo?registro=" + JSON.stringify(datosRegistro)
     },
     rutaImagenVer(ruta_imagen) {
       const ruta = ruta_imagen != null && ruta_imagen != undefined ? ruta_imagen : 'archivos/elemento_pasivo_default.svg'
