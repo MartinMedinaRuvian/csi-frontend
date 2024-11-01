@@ -8,7 +8,7 @@
 
       <div class="row"> 
         <div class="col-md-6">
-          <button type="button" class="btn-sm btn-secondary form-control" @click="cancelar()">
+          <button type="button" class="btn-sm btn-secondary form-control" data-dismiss="modal">
             Cancelar
           </button>
         </div>
@@ -41,21 +41,11 @@ export default {
       this.axios.post(nombreTabla + '/' + tabla_tipo, registroGuardar).then(async (respuesta) => {
         if (respuesta.status === 200) {
           this.descripcion = ''
+          $("#modalNuevoTipoElemento").modal("hide");
           this.$emit('refrescar')
         }
       }).catch(error => console.log(error))
-    },
-    cancelar(){
-      this.descripcion = ''
-      this.$emit('cancelar')
     }
   },
 }
 </script>
-<style>
-.formulario-nuevo_tipo {
-  border: solid #28a745;
-  padding: 10px;
-  border-radius: 10px;
-}
-</style>

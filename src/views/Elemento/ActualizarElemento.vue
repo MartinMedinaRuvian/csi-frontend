@@ -36,16 +36,18 @@
                 </div>
               </div>
 
+              <span @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')" class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipoElemento">Nueva Referencia</span>
               <v-autocomplete label="Referencia" class="requerido" v-model="elemento_actualizar.id_tipo_referencia"
                 :items="tiposreferencias" :item-title="titulosAutocompleteTipos" item-value="id"
                 :filter="filterAutocompleteTipos"></v-autocomplete>
 
 
+                <span @click="agregarNuevoTipo('tipo_modelo', 'Nuevo Modelo')" class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipoElemento">Nuevo Modelo</span>
               <v-autocomplete label="Modelo" class="requerido" v-model="elemento_actualizar.id_tipo_modelo"
                 :items="tiposmodelos" :item-title="titulosAutocompleteTipos" item-value="id"
                 :filter="filterAutocompleteTipos"></v-autocomplete>
 
-
+                <span @click="agregarNuevoTipo('tipo_marca', 'Nueva Marca')" class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipoElemento">Nueva Marca</span>
               <v-autocomplete label="Marca" class="requerido" v-model="elemento_actualizar.id_tipo_marca"
                 :items="tiposmarcas" :item-title="titulosAutocompleteTipos" item-value="id"
                 :filter="filterAutocompleteTipos"></v-autocomplete>
@@ -154,11 +156,68 @@
         </form>
       </div>
     </div>
+    <!-- Modal Eliminar -->
+    <div class="modal fade" id="modaleliminarElemento" tabindex="-1" role="dialog"
+      aria-labelledby="modaleliminarElemento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-success">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Eliminar elemento
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form @submit.prevent>
+
+              <div class="form-group mt-4">
+                <h5>Nuevo Elemento</h5>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mt-3">
+                  <button type="button" class="btn btn-secondary form-control" data-dismiss="modal">
+                    Cancelar
+                  </button>
+                </div>
+                <div class="col-md-6 mt-3">
+                  <input type="button" class="btn btn-danger form-control" value="Eliminar"
+                    @click="eliminarElemento()" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal Nuevo Tipo Elemento -->
+    <div class="modal fade" id="modalNuevoTipoElemento" tabindex="-1" role="dialog"
+      aria-labelledby="modalNuevoTipoElemento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-success">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Nuevo elemento
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <TipoGuardar  @refrescar="refrescarTipos()" :titulo="tituloTipo" :tabla="tablaTipo" />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import TipoGuardar from "@/components/tipo/TipoGuardar.vue";
 import { mapGetters } from "vuex";
 export default {
+  components: { TipoGuardar },
   data() {
     return {
       elemento_actualizar: {},
@@ -185,6 +244,23 @@ export default {
     ...mapGetters(["usuario"]),
   },
   methods: {
+    refrescarTipos() {
+      const tablaTipo = this.tablaTipo
+      switch (tablaTipo) {
+        case 'tipo_referencia':
+          this.verTiposReferencias()
+          break
+        case 'tipo_modelo':
+          this.verTiposModelos()
+          break
+        case 'tipo_marca':
+          this.verTiposMarcas()
+          break
+        default:
+          this.verTiposReferencias()
+          break
+      }
+    },
     titulosAutocompleteTipos(item) {
       return `${item.descripcion}`;
     },
@@ -296,6 +372,19 @@ export default {
           alert(error.response.data);
         });
     },
+    agregarNuevoTipo(tabla, titulo) {
+      this.tablaTipo = tabla
+      this.tituloTipo = titulo
+    },
   }
 }
 </script>
+<style>
+.boton-nuevo_elemento {
+  padding: 5px;
+  background-color: #28a745;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 12px;
+}
+</style>
