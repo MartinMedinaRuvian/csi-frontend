@@ -111,7 +111,7 @@
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo">Cat. Puertos Default:</label>
-                  <input required type="text" placeholder="" v-model="elemento_actualizar.cantidad_puertos_por_defecto"
+                  <input required type="number" placeholder="" v-model="elemento_actualizar.cantidad_puertos_por_defecto"
                     class="form-control" />
                 </div>
               </div>
@@ -119,7 +119,7 @@
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo">Puerto Lógico Default:</label>
-                  <input required type="text" placeholder="" v-model="elemento_actualizar.puerto_logico_por_defecto"
+                  <input required type="number" placeholder="" v-model="elemento_actualizar.puerto_logico_por_defecto"
                     class="form-control" />
                 </div>
               </div>
@@ -127,7 +127,7 @@
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo">Puerto Fisico Default:</label>
-                  <input required type="text" placeholder="" v-model="elemento_actualizar.puerto_fisico_por_defecto"
+                  <input required type="number" placeholder="" v-model="elemento_actualizar.puerto_fisico_por_defecto"
                     class="form-control" />
                 </div>
               </div>

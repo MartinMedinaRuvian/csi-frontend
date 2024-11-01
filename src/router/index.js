@@ -77,9 +77,9 @@ const routes = [
     meta:{requiereAutorizacion:true}
   },
   {
-    path: '/actualizar-elemento',
-    name: 'ActualizarElemento',
-    component: () => import('@/views/Elemento/ActualizarElemento.vue'),
+    path: '/actualizar-elemento-activo',
+    name: 'ActualizarElementoActivo',
+    component: () => import('@/views/Elemento/ActualizarElementoActivo.vue'),
     meta:{requiereAutorizacion:true}
   },
   {
