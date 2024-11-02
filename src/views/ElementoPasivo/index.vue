@@ -32,6 +32,7 @@
 
       <div class="informacion-secundario">
         <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'elemento_pasivo', id: elemento.id }" />
+        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_pasivo', id: elemento.id}" />
       </div>
     </div>
     <div class="propiedades-elemento mb-5">
@@ -46,7 +47,7 @@
         }}<br></span>
     </div>
 
-    <button class="btn btn-success" data-toggle="collapse" data-target="#collapseElementoTarjeta" aria-expanded="false"
+    <button class="btn btn-success mt-5" data-toggle="collapse" data-target="#collapseElementoTarjeta" aria-expanded="false"
       aria-controls="collapseElementoTarjeta">
       Mantenimientos
     </button>
@@ -219,13 +220,15 @@ import ElementoTarjeta from "@/components/elementos/ElementoTarjeta";
 import ArchivoTarjeta from "@/components/archivos/ArchivoTarjeta";
 import { mapGetters } from "vuex";
 import Mensaje from "@/components/Mensaje.vue";
+import ProyectoTarjeta from "@/components/proyectos/ProyectoTarjeta.vue";
 export default {
-  components: { Mensaje, ElementoTarjeta, ArchivoTarjeta },
+  components: { Mensaje, ElementoTarjeta, ArchivoTarjeta, ProyectoTarjeta },
   data() {
     return {
       elemento: {},
       elementos: [],
       archivos: [],
+      proyectos: [],
       mensaje: { ver: false },
       ruta_servidor: this.axios.defaults.baseURL,
       tiposElemento: ['EN OFICINA', 'INDEPENDIENTE'],
@@ -244,6 +247,7 @@ export default {
     this.elemento = registroObjeto;
     this.verInfo()
     this.verArchivos()
+    this.verProyectos()
   },
   created() {
     this.verTiposReferencias()
@@ -278,6 +282,15 @@ export default {
       this.axios.get("archivo/elemento_pasivo/" + idelemento).then((respuesta) => {
         if (respuesta.status === 200) {
           this.archivos = respuesta.data;
+        }
+      });
+    },
+    verProyectos() {
+      const idelemento = this.elemento.id
+      this.axios.get("proyecto/elemento_pasivo/" + idelemento).then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.proyectos = respuesta.data;
+          console.log(this.proyectos)
         }
       });
     },

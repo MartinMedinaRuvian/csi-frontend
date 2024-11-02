@@ -32,6 +32,7 @@
 
       <div class="informacion-secundario">
         <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" />
+        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id}" />
       </div>
     </div>
     <div class="informacion-principal_elemento">
@@ -346,13 +347,15 @@ import ArchivoTarjeta from "@/components/archivos/ArchivoTarjeta";
 import { mapGetters } from "vuex";
 import Mensaje from "@/components/Mensaje.vue";
 import TipoGuardar from "@/components/tipo/TipoGuardar.vue";
+import ProyectoTarjeta from "@/components/proyectos/ProyectoTarjeta.vue";
 export default {
-  components: { Mensaje, ElementoTarjeta, ArchivoTarjeta, TipoGuardar },
+  components: { Mensaje, ElementoTarjeta, ArchivoTarjeta, TipoGuardar, ProyectoTarjeta },
   data() {
     return {
       elemento: {},
       elementos: [],
       archivos: [],
+      proyectos: [],
       mensaje: { ver: false },
       ruta_servidor: this.axios.defaults.baseURL,
       tiposElemento: ['EN OFICINA', 'INDEPENDIENTE'],
@@ -374,6 +377,7 @@ export default {
     this.elemento = registroObjeto;
     this.verInfo()
     this.verArchivos()
+    this.verProyectos()
   },
   created() {
     this.verTiposReferencias()
@@ -436,6 +440,14 @@ export default {
       this.axios.get("archivo/elemento_activo/" + idelemento).then((respuesta) => {
         if (respuesta.status === 200) {
           this.archivos = respuesta.data;
+        }
+      });
+    },
+    verProyectos() {
+      const idelemento = this.elemento.id
+      this.axios.get("proyecto/elemento_activo/" + idelemento).then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.proyectos = respuesta.data;
         }
       });
     },
