@@ -77,7 +77,7 @@
               <div class="row">
                 <div class="col-md-6 mt-3">
                   <button type="button" class="btn btn-secondary form-control" data-dismiss="modal"
-                    @click="Proyecto = {}">
+                    @click="proyecto = {}">
                     Cancelar
                   </button>
                 </div>
@@ -113,7 +113,7 @@
               <div class="row">
                 <div class="col-md-6 mt-3">
                   <button type="button" class="btn btn-secondary form-control" data-dismiss="modal"
-                    @click="Proyecto = {}">
+                    @click="proyecto = {}">
                     Cancelar
                   </button>
                 </div>

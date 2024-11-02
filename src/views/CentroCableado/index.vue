@@ -33,6 +33,7 @@
       <div class="informacion-secundario">
         <ArchivoTarjeta :archivos="archivos"
           :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" />
+          <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id}" />
       </div>
     </div>
 
@@ -249,13 +250,15 @@ import GabineteTarjeta from "@/components/gabinetes/GabineteTarjeta";
 import ArchivoTarjeta from "@/components/archivos/ArchivoTarjeta";
 import { mapGetters } from "vuex";
 import Mensaje from "@/components/Mensaje.vue";
+import ProyectoTarjeta from "@/components/proyectos/ProyectoTarjeta.vue";
 export default {
-  components: { Mensaje, GabineteTarjeta, ArchivoTarjeta },
+  components: { Mensaje, GabineteTarjeta, ArchivoTarjeta, ProyectoTarjeta },
   data() {
     return {
       centro_cableado: {},
       gabinetes: [],
       archivos: [],
+      proyectos: [],
       mensaje: { ver: false },
       ruta_servidor: this.axios.defaults.baseURL,
       tiposCentroCableado: ['EN OFICINA', 'INDEPENDIENTE'],
@@ -270,6 +273,7 @@ export default {
     this.verInfo()
     this.verGabinetes()
     this.verArchivos()
+    this.verProyectos()
   },
   computed: {
     ...mapGetters(["usuario"]),
@@ -308,6 +312,14 @@ export default {
       this.axios.get("archivo/centro_cableado/" + idcentro_cableado).then((respuesta) => {
         if (respuesta.status === 200) {
           this.archivos = respuesta.data;
+        }
+      });
+    }, 
+    verProyectos() {
+      const id = this.centro_cableado.id
+      this.axios.get("proyecto/centro_cableado/" + id).then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.proyectos = respuesta.data;
         }
       });
     },
