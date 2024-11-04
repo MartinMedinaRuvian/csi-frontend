@@ -14,12 +14,13 @@
             <li class="list-group-item d-flex justify-content-between">
               <div class="texto-proyectos">
                 <p> <b>Código: </b> {{ proyecto.codigo }} - <b>Empresa: {{ proyecto.nombre_empresa }}</b>
-                 </p>
+                </p>
               </div>
               <div class="botones-proyectos">
                 <span>
-                  <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-success ml-2" @click="verProyecto(proyecto)"
-                    data-toggle="modal" data-target="#modalEliminarProyecto"><span class="icon-Lupa"></span></button>
+                  <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-success ml-2"
+                    @click="verProyecto(proyecto)">
+                    <span class="icon-Lupa"></span></button>
                 </span>
               </div>
             </li>
@@ -55,12 +56,14 @@
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Nombre de la Empresa:</label>
-                <input type="text" placeholder="Ingrese el Nombre de la Empresa" v-model="proyecto.nombre_empresa" class="form-control" />
+                <input type="text" placeholder="Ingrese el Nombre de la Empresa" v-model="proyecto.nombre_empresa"
+                  class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">NIT de la Empresa:</label>
-                <input type="text" placeholder="Ingrese el NIT de la Empresa" v-model="proyecto.nit_empresa" class="form-control" />
+                <input type="text" placeholder="Ingrese el NIT de la Empresa" v-model="proyecto.nit_empresa"
+                  class="form-control" />
               </div>
 
               <div class="form group mt-3">
@@ -91,8 +94,8 @@
       </div>
     </div>
     <!-- Modal Eliminar -->
-    <div class="modal fade" id="modalEliminarProyecto" tabindex="-1" role="dialog" aria-labelledby="modalEliminarProyecto"
-      aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal fade" id="modalEliminarProyecto" tabindex="-1" role="dialog"
+      aria-labelledby="modalEliminarProyecto" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header bg-success">
@@ -146,14 +149,14 @@ export default {
       urlImg: ''
     };
   },
-  created(){
+  created() {
     this.verFechaActual()
   },
   computed: {
     ...mapGetters(["usuario"]),
   },
   methods: {
-    verFechaActual(){
+    verFechaActual() {
       this.proyecto.fecha = FechaUtil.fechaActual()
     },
     guardar() {
@@ -194,7 +197,22 @@ export default {
     verDatosModal(dato) {
       this.proyecto = { ...dato };
     },
-  },
+    verTablaRutaVolver(nombreTabla) {
+      const tabla = nombreTabla.replace('_', '-')
+      return tabla
+    },
+    verProyecto(proyecto) {
+      const datosRegistro = {
+        id: proyecto.id,
+        id_volver: this.info_tabla.id,
+        ruta_volver: this.verTablaRutaVolver(this.info_tabla.nombre_tabla)
+      }
+      this.$router.push({
+        name: "Proyecto",
+        query: { registro: JSON.stringify(datosRegistro) },
+      });
+    }
+  }
 };
 </script>
 
@@ -301,7 +319,7 @@ export default {
   height: 300px;
 }
 
-.texto-proyectos{
+.texto-proyectos {
   width: 85%;
   word-wrap: break-word !important;
 }
@@ -310,7 +328,7 @@ export default {
   font-size: 15px;
 }
 
-.botones-proyectos{
+.botones-proyectos {
   width: 15%;
 }
 </style>

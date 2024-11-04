@@ -27,7 +27,7 @@
 
         <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarGabinete"
           @click="verDatosModal()">Actualizar</button>
-        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal" data-target="#modaleliminarCentroCableado">Eliminar</button>
+        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal" data-target="#modaleliminarGabinete">Eliminar</button>
       </div>
 
       <div class="informacion-secundario">
@@ -99,8 +99,8 @@
       </div>
     </div>
     <!-- Modal Eliminar -->
-    <div class="modal fade" id="modaleliminarCentroCableado" tabindex="-1" role="dialog"
-      aria-labelledby="modaleliminarCentroCableado" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal fade" id="modaleliminarGabinete" tabindex="-1" role="dialog"
+      aria-labelledby="modaleliminarGabinete" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header bg-success">
@@ -126,7 +126,7 @@
                 </div>
                 <div class="col-md-6 mt-3">
                   <input type="button" class="btn btn-danger form-control" value="Eliminar"
-                    @click="eliminarCentroCableado()" />
+                    @click="eliminarGabinete()" />
                 </div>
               </div>
             </form>
@@ -314,7 +314,7 @@ export default {
         this.$refs.imagenPrevisualizaciongabinete.src = urlImagenActual;
       }
     },
-    eliminarCentroCableado() {
+    eliminarGabinete() {
       const id = this.gabinete.id
       this.axios
         .delete("gabinete/" + id)
