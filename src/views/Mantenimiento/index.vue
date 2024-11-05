@@ -175,8 +175,10 @@ export default {
     },
     eliminarMantenimiento() {
       const id = this.mantenimiento.id
+      const idRegistroTabla = this.idVolver
+      const tabla = this.verNombreTabla(this.rutaVolver)
       this.axios
-        .delete("mantenimiento/" + id)
+        .delete("mantenimiento/" + tabla + "/" + idRegistroTabla + "/" + id)
         .then((respuesta) => {
           if (respuesta.status == 200) {
             $("#modalEliminarMantenimiento").modal("hide");
@@ -187,16 +189,18 @@ export default {
           alert(error.response.data);
         });
     },
+    verNombreTabla(nombreTabla) {
+      const tabla = nombreTabla.replace('-', '_')
+      return tabla
+    },
     actualizarMantenimiento() {
       const mantenimiento = this.mantenimiento_actualizar
       const dato = {
         id: mantenimiento.id,
-        numero: mantenimiento.numero,
-        tamanio: mantenimiento.tamanio,
-        aterrizado: mantenimiento.aterrizado,
+        codigo: mantenimiento.codigo,
+        realizado_por: mantenimiento.realizado_por,
         observacion: mantenimiento.observacion,
-        id_centro_cableado: mantenimiento.id_centro_cableado,
-        id_tipo_mantenimiento: mantenimiento.id_tipo_mantenimiento
+        fecha: mantenimiento.fecha
       }
       this.axios
         .put("mantenimiento", dato)
@@ -218,6 +222,7 @@ export default {
     verDatosModal() {
       const dato = this.mantenimiento
       this.mantenimiento_actualizar = { ...dato };
+      this.mantenimiento_actualizar.fecha = this.formatearFecha(this.mantenimiento_actualizar.fecha)
     },
     volver() {
       const id = this.idVolver
