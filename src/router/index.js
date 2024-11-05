@@ -93,6 +93,12 @@ const routes = [
     name: 'Proyecto',
     component: () => import('@/views/Proyecto/index.vue'),
     meta:{requiereAutorizacion:true}
+  },
+  {
+    path: '/mantenimiento',
+    name: 'Mantenimiento',
+    component: () => import('@/views/Mantenimiento/index.vue'),
+    meta:{requiereAutorizacion:true}
   }
 ]
 

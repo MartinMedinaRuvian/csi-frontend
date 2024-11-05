@@ -47,10 +47,15 @@
         }}<br></span>
     </div>
 
-    <button class="btn btn-success mt-5" data-toggle="collapse" data-target="#collapseElementoTarjeta" aria-expanded="false"
-      aria-controls="collapseElementoTarjeta">
+    <button class="btn btn-success" data-toggle="collapse" data-target="#collapseMantenimientoTarjeta" aria-expanded="false"
+      aria-controls="collapseMantenimientoTarjeta">
       Mantenimientos
     </button>
+
+    <div class="collapse" id="collapseMantenimientoTarjeta">
+      <MantenimientoTarjeta :mantenimientos="mantenimientos" :info_tabla="{ nombre_tabla: 'elemento_pasivo', id: elemento.id}" />
+    </div>
+
     <!-- Modal Atualizar Imagen-->
     <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"
       aria-labelledby="modalActualizarImagen" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -221,14 +226,16 @@ import ArchivoTarjeta from "@/components/archivos/ArchivoTarjeta";
 import { mapGetters } from "vuex";
 import Mensaje from "@/components/Mensaje.vue";
 import ProyectoTarjeta from "@/components/proyectos/ProyectoTarjeta.vue";
+import MantenimientoTarjeta from "@/components/mantenimiento/MantenimientoTarjeta.vue";
 export default {
-  components: { Mensaje, ElementoTarjeta, ArchivoTarjeta, ProyectoTarjeta },
+  components: { Mensaje, ElementoTarjeta, ArchivoTarjeta, ProyectoTarjeta, MantenimientoTarjeta },
   data() {
     return {
       elemento: {},
       elementos: [],
       archivos: [],
       proyectos: [],
+      mantenimientos: [],
       mensaje: { ver: false },
       ruta_servidor: this.axios.defaults.baseURL,
       tiposElemento: ['EN OFICINA', 'INDEPENDIENTE'],
@@ -248,6 +255,7 @@ export default {
     this.verInfo()
     this.verArchivos()
     this.verProyectos()
+    this.verMantenimientos()
   },
   created() {
     this.verTiposReferencias()
@@ -291,6 +299,14 @@ export default {
         if (respuesta.status === 200) {
           this.proyectos = respuesta.data;
           console.log(this.proyectos)
+        }
+      });
+    },
+    verMantenimientos() {
+      const idelemento = this.elemento.id
+      this.axios.get("mantenimiento/elemento_pasivo/" + idelemento).then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.mantenimientos = respuesta.data;
         }
       });
     },
