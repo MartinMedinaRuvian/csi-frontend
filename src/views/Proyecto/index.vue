@@ -151,6 +151,7 @@ export default {
     const registroObjeto = JSON.parse(registroString);
     this.rutaVolver = registroObjeto.ruta_volver
     this.idVolver = registroObjeto.id_volver
+    this.proyecto = registroObjeto
     this.verInfo(registroObjeto.id);
     this.verArchivos()
   },
@@ -187,8 +188,10 @@ export default {
     },
     eliminarProyecto() {
       const id = this.proyecto.id
+      const idRegistroTabla = this.idVolver
+      const tabla = this.verNombreTabla(this.rutaVolver)
       this.axios
-        .delete("proyecto/" + id)
+        .delete("proyecto/" + tabla + "/" + idRegistroTabla + "/" + id)
         .then((respuesta) => {
           if (respuesta.status == 200) {
             $("#modalEliminarProyecto").modal("hide");
@@ -199,16 +202,18 @@ export default {
           alert(error.response.data);
         });
     },
+    verNombreTabla(nombreTabla) {
+      const tabla = nombreTabla.replace('-', '_')
+      return tabla
+    },
     actualizarProyecto() {
       const proyecto = this.proyecto_actualizar
       const dato = {
         id: proyecto.id,
-        numero: proyecto.numero,
-        tamanio: proyecto.tamanio,
-        aterrizado: proyecto.aterrizado,
-        observacion: proyecto.observacion,
-        id_centro_cableado: proyecto.id_centro_cableado,
-        id_tipo_proyecto: proyecto.id_tipo_proyecto
+        nombre_empresa: proyecto.nombre_empresa,
+        nit_empresa: proyecto.nit_empresa,
+        fecha: proyecto.fecha,
+        certificacion: proyecto.certificacion
       }
       this.axios
         .put("proyecto", dato)
@@ -230,6 +235,7 @@ export default {
     verDatosModal() {
       const dato = this.proyecto
       this.proyecto_actualizar = { ...dato };
+      this.proyecto_actualizar.fecha = this.formatearFecha(this.proyecto_actualizar.fecha)
     },
     volver() {
       const id = this.idVolver
