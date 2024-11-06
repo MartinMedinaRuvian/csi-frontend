@@ -15,28 +15,40 @@
             </select>
           </div>
 
-          <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Dispositivo" class="requerido mt-5" v-model="elemento.id_tipo_dispositivo_activo"
-            :items="tiposdispositivoactivo" :item-title="titulosAutocompleteTipos" item-value="id"
+          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_dispositivo_activo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
+            data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Dispositivo</span>
+          <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Dispositivo" class="requerido"
+            v-model="elemento.id_tipo_dispositivo_activo" :items="tiposdispositivoactivo"
+            :item-title="titulosAutocompleteTipos" item-value="id"
             :filter="filterAutocompleteTipotitulosAutocompleteTipos">
           </v-autocomplete>
 
-          <v-autocomplete v-if="tipo_elemento == 'PASIVO'" label="Dispositivo" class="requerido" v-model="elemento.id_tipo_dispositivo_pasivo"
-            :items="tiposdispositivopasivo" :item-title="titulosAutocompleteTipos" item-value="id"
+          <span v-if="tipo_elemento == 'PASIVO'" @click="agregarNuevoTipo('tipo_dispositivo_pasivo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
+            data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Dispositivo</span>
+          <v-autocomplete v-if="tipo_elemento == 'PASIVO'" label="Dispositivo" class="requerido"
+            v-model="elemento.id_tipo_dispositivo_pasivo" :items="tiposdispositivopasivo"
+            :item-title="titulosAutocompleteTipos" item-value="id"
             :filter="filterAutocompleteTipotitulosAutocompleteTipos">
           </v-autocomplete>
 
-          <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Referencia" class="requerido" v-model="elemento.id_tipo_referencia"
-            :items="tiposreferencias" :item-title="titulosAutocompleteTipos" item-value="id"
-            :filter="filterAutocompleteTipotitulosAutocompleteTipos">
+          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')" class="boton-nuevo_elemento"
+            data-toggle="modal" data-target="#modalNuevoTipo">Nueva Referencia</span>
+          <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Referencia" class="requerido"
+            v-model="elemento.id_tipo_referencia" :items="tiposreferencias" :item-title="titulosAutocompleteTipos"
+            item-value="id" :filter="filterAutocompleteTipotitulosAutocompleteTipos">
           </v-autocomplete>
 
-          <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Modelo" class="requerido" v-model="elemento.id_tipo_modelo"
-            :items="tiposmodelos" :item-title="titulosAutocompleteTipos" item-value="id"
-            :filter="filterAutocompleteTipotitulosAutocompleteTipos">
+          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_modelo', 'Nuevo Modelo')" class="boton-nuevo_elemento"
+            data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Modelo</span>
+          <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Modelo" class="requerido"
+            v-model="elemento.id_tipo_modelo" :items="tiposmodelos" :item-title="titulosAutocompleteTipos"
+            item-value="id" :filter="filterAutocompleteTipotitulosAutocompleteTipos">
           </v-autocomplete>
 
-          <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Marca" class="requerido" v-model="elemento.id_tipo_marca"
-            :items="tiposmarcas" :item-title="titulosAutocompleteTipos" item-value="id"
+          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_marca', 'Nueva Marca')" class="boton-nuevo_elemento" data-toggle="modal"
+            data-target="#modalNuevoTipo">Nueva Marca</span>
+          <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Marca" class="requerido"
+            v-model="elemento.id_tipo_marca" :items="tiposmarcas" :item-title="titulosAutocompleteTipos" item-value="id"
             :filter="filterAutocompleteTipotitulosAutocompleteTipos">
           </v-autocomplete>
 
@@ -84,14 +96,35 @@
         </form>
       </div>
     </div>
+    <!-- Modal Nuevo Tipo -->
+    <div class="modal fade" id="modalNuevoTipo" tabindex="-1" role="dialog" aria-labelledby="modalNuevoTipo"
+      aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-success">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Nuevo Tipo
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <TipoGuardar @refrescar="refrescarTipos()" :titulo="tituloTipo" :tabla="tablaTipo" />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import TipoGuardar from "@/components/tipo/TipoGuardar.vue";
 import { mapGetters } from "vuex";
 export default {
+  components: { TipoGuardar }, 
   data() {
     return {
-      elemento: { id_tipo_dispositivo_activo: 1, id_tipo_dispositivo_pasivo:1, id_tipo_referencia: 1, id_tipo_modelo: 1, id_tipo_marca: 1 },
+      elemento: { id_tipo_dispositivo_activo: 1, id_tipo_dispositivo_pasivo: 1, id_tipo_referencia: 1, id_tipo_modelo: 1, id_tipo_marca: 1 },
       tiposelementos: ['ACTIVO', 'PASIVO'],
       tipo_elemento: 'ACTIVO',
       ruta_servidor: this.axios.defaults.baseURL,
@@ -103,7 +136,9 @@ export default {
       tiposmarcas: [],
       tiposdispositivoactivo: [],
       tiposdispositivopasivo: [],
-      id_gabinete: 0
+      id_gabinete: 0,
+      tablaTipo: 'tipo_referencia',
+      tituloTipo: 'Nueva Referencia'
     }
   },
   mounted() {
@@ -122,6 +157,30 @@ export default {
     ...mapGetters(["usuario"]),
   },
   methods: {
+    refrescarTipos() {
+      const tablaTipo = this.tablaTipo
+      switch (tablaTipo) {
+        case 'tipo_dispositivo_activo':
+          this.verTiposDispositivosActivos()
+          break
+        case 'tipo_dispositivo_pasivo':
+          this.verTiposDispositivosPasivos()
+          break
+        case 'tipo_referencia':
+          this.verTiposReferencias()
+          break
+        case 'tipo_modelo':
+          this.verTiposModelos()
+          break
+        case 'tipo_marca':
+          this.verTiposMarcas()
+          break
+        default:
+          this.verTiposReferencias()
+          break
+      }
+      $("#modalNuevoTipo").modal("hide");
+    },
     titulosAutocompleteTipos(item) {
       return `${item.descripcion}`;
     },
@@ -235,7 +294,7 @@ export default {
           this.tiposmarcas = respuesta.data
         })
         .catch(error => console.log(error))
-    },   
+    },
     verTiposDispositivosActivos() {
       this.axios.get("tipo/tipo_dispositivo_activo")
         .then((respuesta) => {
@@ -256,6 +315,10 @@ export default {
         id
       }
       location.href = "/gabinete?registro=" + JSON.stringify(datosRegistro)
+    },
+    agregarNuevoTipo(tabla, titulo) {
+      this.tablaTipo = tabla
+      this.tituloTipo = titulo
     },
   },
 }
@@ -303,5 +366,12 @@ export default {
   padding: 20px;
   border: solid #039BE5 1px;
   border-radius: 15px;
+}
+.boton-nuevo_elemento {
+  padding: 5px;
+  background-color: #28a745;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 12px;
 }
 </style>

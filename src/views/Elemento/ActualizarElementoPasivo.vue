@@ -10,7 +10,7 @@
         <form @submit.prevent>
 
           <span @click="agregarNuevoTipo('tipo_dispositivo_pasivo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
-            data-toggle="modal" data-target="#modalNuevoTipo">Nueva Dispositivo</span>
+            data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Dispositivo</span>
           <v-autocomplete label="Dispositivo" class="requerido" v-model="elemento_actualizar.id_tipo_dispositivo_pasivo"
             :items="tiposdispositivopasivo" :item-title="titulosAutocompleteTipos" item-value="id"
             :filter="filterAutocompleteTipotitulosAutocompleteTipos">
