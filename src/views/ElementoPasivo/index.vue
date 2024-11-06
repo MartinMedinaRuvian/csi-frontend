@@ -11,7 +11,7 @@
               &#x1F504;
             </span>
           </div>
-          <h6 class="mt-3"><b>{{ elemento.descripcion }}</b></h6>
+          <h6 class="mt-3"><b>{{ elemento.tipo_dispositivo }}</b></h6>
           <h6 class="mt-3"><b>{{ elemento.codigo }}</b></h6>
           <div class="form-group mt-3 observacion">
             <label for="codigo">Observación:</label>
@@ -25,7 +25,7 @@
         </div>
 
         <button class="btn btn-warning mr-2"
-          @click="actualizarElemento2()">Actualizar</button>
+          @click="actualizarElemento()">Actualizar</button>
         <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
           data-target="#modaleliminarElemento">Eliminar</button>
       </div>
@@ -139,85 +139,6 @@
         </div>
       </div>
     </div>
-    <!-- Modal Actualizar -->
-    <div class="modal fade" id="modalActualizarelemento" tabindex="-1" role="dialog"
-      aria-labelledby="modalActualizarelemento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-success">
-            <h5 class="modal-title" id="exampleModalLongTitle">
-              Actualizar elemento
-            </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body text-left">
-            <form @submit.prevent>
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo" class="requerido">Descripción:</label>
-                  <input required type="text" placeholder="Ingrese Descripción"
-                    v-model="elemento_actualizar.descripcion" class="form-control" />
-                </div>
-              </div>
-              
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo" class="requerido">Código:</label>
-                  <input required type="text" placeholder="Ingrese Código" v-model="elemento_actualizar.codigo"
-                    class="form-control" />
-                </div>
-              </div>
-
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo">Categoría:</label>
-                  <input required type="text" placeholder="Ingrese Categoría" v-model="elemento_actualizar.categoria"
-                    class="form-control" />
-                </div>
-              </div>
-
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo"># de Puertos:</label>
-                  <input required type="number" placeholder="Ingrese # de Puertos" v-model="elemento_actualizar.numero_puertos"
-                    class="form-control" />
-                </div>
-              </div>
-
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo">Tipo de Conector:</label>
-                  <input required type="text" placeholder="Ingrese Tipo Conector" v-model="elemento_actualizar.tipo_conector"
-                    class="form-control" />
-                </div>
-              </div>
-
-              <div class="form group mt-3 text-center">
-                <div class="form-group">
-                  <label for="codigo">Observación:</label>
-                  <textarea type="text" placeholder="Ingrese una observación" v-model="elemento_actualizar.observacion"
-                    class="form-control" />
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6 mt-3">
-                  <button type="button" class="btn btn-secondary form-control" data-dismiss="modal">
-                    Cancelar
-                  </button>
-                </div>
-                <div class="col-md-6 mt-3">
-                  <input type="button" class="btn btn-success form-control" value="Guardar"
-                    @click="actualizarelemento()" />
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <script>
@@ -241,9 +162,7 @@ export default {
       tiposElemento: ['EN OFICINA', 'INDEPENDIENTE'],
       opcionesRespuesta: [{ descripcion: 'SI', valor: 'S' }, { descripcion: 'NO', valor: 'N' }],
       elemento_actualizar: {},
-      tiposreferencias: [],
-      tiposmodelos: [],
-      tiposmarcas: [],
+      tiposdispositivo: [],
       urlSinImagenActivo: this.axios.defaults.baseURL + '/archivos/elemento_activo_default.svg',
       urlSinImagenPasivo: this.axios.defaults.baseURL + '/archivos/elemento_pasivo_default.svg',
     };
@@ -257,11 +176,6 @@ export default {
     this.verProyectos()
     this.verMantenimientos()
   },
-  created() {
-    this.verTiposReferencias()
-    this.verTiposModelos()
-    this.verTiposMarcas()
-  },
   computed: {
     ...mapGetters(["usuario"]),
   },
@@ -270,20 +184,6 @@ export default {
       this.mensaje.ver = true;
       this.mensaje.contenido = contenido;
       this.mensaje.color = color;
-    },
-    actualizar() {
-      this.axios
-        .put("elemento_pasivo", this.elemento)
-        .then((respuesta) => {
-          if (respuesta.status === 200) {
-            //this.$router.push('/elementos')
-            window.location.reload()
-            $("#modalGuardarelemento").modal("hide");
-          }
-        })
-        .catch((error) => {
-          alert(error.response.data);
-        });
     },
     verArchivos() {
       const idelemento = this.elemento.id
@@ -355,30 +255,7 @@ export default {
           alert(error.response.data);
         });
     },
-    actualizarelemento() {
-      const registroGuardar = this.elemento_actualizar
-      const registro = {
-        id: this.elemento.id,
-        descripcion: registroGuardar.descripcion,
-        codigo: registroGuardar.codigo,
-        observacion: registroGuardar.observacion,
-        codigo_inventario: registroGuardar.codigo_inventario,
-        categoria: registroGuardar.categoria,
-        numero_puertos: registroGuardar.numero_puertos,
-        tipo_conector: registroGuardar.tipo_conector,
-        id_gabinete: this.elemento.id_gabinete,
-        id_usuario: this.elemento.id_usuario
-      }
-      this.axios
-        .put("elemento_pasivo", registro)
-        .then((respuesta) => {
-          window.location.reload()
-        })
-        .catch((error) => {
-          alert(error.response.data);
-        });
-    },
-    actualizarElemento2(){
+    actualizarElemento(){
       let elemento = this.elemento
       const idGabinete = this.elemento.id_gabinete
       const datosRegistro = {
@@ -402,21 +279,6 @@ export default {
       }
       location.href = "/gabinete?registro=" + JSON.stringify(datosRegistro)
     },
-    verTipoelementoPorId() {
-      const idTipoelemento = this.elemento.id_tipo_elemento
-      this.axios.get("tipo_elemento/" + idTipoelemento)
-        .then((respuesta) => {
-          this.elemento.tipo = respuesta.data.descripcion
-        })
-        .catch(error => console.log(error))
-    },
-    verTiposelementos() {
-      this.axios.get("tipo_elemento")
-        .then((respuesta) => {
-          this.tiposelementos = respuesta.data
-        })
-        .catch(error => console.log(error))
-    },
     verInfo() {
       const id = this.elemento.id
       this.axios.get("elemento_pasivo/info/" + id).then((respuesta) => {
@@ -426,28 +288,7 @@ export default {
       });
     },
     propiedadTieneValor(propiedad) {
-      return propiedad !== null && propiedad !== undefined
-    },
-    verTiposReferencias() {
-      this.axios.get("tipo/tipo_referencia")
-        .then((respuesta) => {
-          this.tiposreferencias = respuesta.data
-        })
-        .catch(error => console.log(error))
-    },
-    verTiposModelos() {
-      this.axios.get("tipo/tipo_modelo")
-        .then((respuesta) => {
-          this.tiposmodelos = respuesta.data
-        })
-        .catch(error => console.log(error))
-    },
-    verTiposMarcas() {
-      this.axios.get("tipo/tipo_marca")
-        .then((respuesta) => {
-          this.tiposmarcas = respuesta.data
-        })
-        .catch(error => console.log(error))
+      return propiedad !== null && propiedad !== undefined && propiedad != ''
     }
   }
 };

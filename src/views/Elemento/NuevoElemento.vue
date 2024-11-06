@@ -15,20 +15,15 @@
             </select>
           </div>
 
-          <div class="form group mt-3">
-            <div class="form-group">
-              <label for="codigo" class="requerido">Descripción:</label>
-              <input required type="text" placeholder="Ingrese Descripción" v-model="elemento.descripcion"
-                class="form-control" />
-            </div>
-          </div>
+          <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Dispositivo" class="requerido mt-5" v-model="elemento.id_tipo_dispositivo_activo"
+            :items="tiposdispositivoactivo" :item-title="titulosAutocompleteTipos" item-value="id"
+            :filter="filterAutocompleteTipotitulosAutocompleteTipos">
+          </v-autocomplete>
 
-          <div class="form group mt-3">
-            <div class="form-group">
-              <label for="codigo" class="requerido">Código:</label>
-              <input required type="text" placeholder="Ingrese Código" v-model="elemento.codigo" class="form-control" />
-            </div>
-          </div>
+          <v-autocomplete v-if="tipo_elemento == 'PASIVO'" label="Dispositivo" class="requerido" v-model="elemento.id_tipo_dispositivo_pasivo"
+            :items="tiposdispositivopasivo" :item-title="titulosAutocompleteTipos" item-value="id"
+            :filter="filterAutocompleteTipotitulosAutocompleteTipos">
+          </v-autocomplete>
 
           <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Referencia" class="requerido" v-model="elemento.id_tipo_referencia"
             :items="tiposreferencias" :item-title="titulosAutocompleteTipos" item-value="id"
@@ -44,6 +39,13 @@
             :items="tiposmarcas" :item-title="titulosAutocompleteTipos" item-value="id"
             :filter="filterAutocompleteTipotitulosAutocompleteTipos">
           </v-autocomplete>
+
+          <div class="form group mt-3">
+            <div class="form-group">
+              <label for="codigo" class="requerido">Código:</label>
+              <input required type="text" placeholder="Ingrese Código" v-model="elemento.codigo" class="form-control" />
+            </div>
+          </div>
 
           <div class="form group mt-3" v-if="tipo_elemento == 'ACTIVO'">
             <div class="form-group">
@@ -89,7 +91,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
-      elemento: { id_tipo_referencia: 1, id_tipo_modelo: 1, id_tipo_marca: 1 },
+      elemento: { id_tipo_dispositivo_activo: 1, id_tipo_dispositivo_pasivo:1, id_tipo_referencia: 1, id_tipo_modelo: 1, id_tipo_marca: 1 },
       tiposelementos: ['ACTIVO', 'PASIVO'],
       tipo_elemento: 'ACTIVO',
       ruta_servidor: this.axios.defaults.baseURL,
@@ -99,6 +101,8 @@ export default {
       tiposreferencias: [],
       tiposmodelos: [],
       tiposmarcas: [],
+      tiposdispositivoactivo: [],
+      tiposdispositivopasivo: [],
       id_gabinete: 0
     }
   },
@@ -108,6 +112,8 @@ export default {
     this.id_gabinete = registroObjeto.id;
   },
   created() {
+    this.verTiposDispositivosActivos()
+    this.verTiposDispositivosPasivos()
     this.verTiposReferencias()
     this.verTiposModelos()
     this.verTiposMarcas()
@@ -153,7 +159,7 @@ export default {
     guardarNuevoelementoActivo() {
       const registroGuardar = this.elemento
       const registro = {
-        descripcion: registroGuardar.descripcion,
+        id_tipo_dispositivo_activo: registroGuardar.id_tipo_dispositivo_activo,
         id_tipo_referencia: registroGuardar.id_tipo_referencia,
         id_tipo_modelo: registroGuardar.id_tipo_modelo,
         id_tipo_marca: registroGuardar.id_tipo_marca,
@@ -175,7 +181,7 @@ export default {
     guardarNuevoelementoPasivo() {
       const registroGuardar = this.elemento
       const registro = {
-        descripcion: registroGuardar.descripcion,
+        id_tipo_dispositivo_pasivo: registroGuardar.id_tipo_dispositivo_pasivo,
         codigo: registroGuardar.codigo,
         id_gabinete: this.id_gabinete,
         id_usuario: this.usuario.id
@@ -227,6 +233,20 @@ export default {
       this.axios.get("tipo/tipo_marca")
         .then((respuesta) => {
           this.tiposmarcas = respuesta.data
+        })
+        .catch(error => console.log(error))
+    },   
+    verTiposDispositivosActivos() {
+      this.axios.get("tipo/tipo_dispositivo_activo")
+        .then((respuesta) => {
+          this.tiposdispositivoactivo = respuesta.data
+        })
+        .catch(error => console.log(error))
+    },
+    verTiposDispositivosPasivos() {
+      this.axios.get("tipo/tipo_dispositivo_pasivo")
+        .then((respuesta) => {
+          this.tiposdispositivopasivo = respuesta.data
         })
         .catch(error => console.log(error))
     },

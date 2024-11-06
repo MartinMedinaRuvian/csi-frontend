@@ -12,13 +12,32 @@
           <div class="row">
             <div class="col-md-6">
 
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo" class="requerido">Descripción:</label>
-                  <input required type="text" placeholder="Ingrese Descripción"
-                    v-model="elemento_actualizar.descripcion" class="form-control" />
-                </div>
-              </div>
+              <span @click="agregarNuevoTipo('tipo_dispositivo_activo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
+                data-toggle="modal" data-target="#modalNuevoTipo">Nueva Dispositivo</span>
+              <v-autocomplete label="Dispositivo" class="requerido"
+                v-model="elemento_actualizar.id_tipo_dispositivo_activo" :items="tiposdispositivoactivo"
+                :item-title="titulosAutocompleteTipos" item-value="id"
+                :filter="filterAutocompleteTipotitulosAutocompleteTipos">
+              </v-autocomplete>
+
+              <span @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')" class="boton-nuevo_elemento"
+                data-toggle="modal" data-target="#modalNuevoTipo">Nueva Referencia</span>
+              <v-autocomplete label="Referencia" class="requerido" v-model="elemento_actualizar.id_tipo_referencia"
+                :items="tiposreferencias" :item-title="titulosAutocompleteTipos" item-value="id"
+                :filter="filterAutocompleteTipos"></v-autocomplete>
+
+
+              <span @click="agregarNuevoTipo('tipo_modelo', 'Nuevo Modelo')" class="boton-nuevo_elemento"
+                data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Modelo</span>
+              <v-autocomplete label="Modelo" class="requerido" v-model="elemento_actualizar.id_tipo_modelo"
+                :items="tiposmodelos" :item-title="titulosAutocompleteTipos" item-value="id"
+                :filter="filterAutocompleteTipos"></v-autocomplete>
+
+              <span @click="agregarNuevoTipo('tipo_marca', 'Nueva Marca')" class="boton-nuevo_elemento"
+                data-toggle="modal" data-target="#modalNuevoTipo">Nueva Marca</span>
+              <v-autocomplete label="Marca" class="requerido" v-model="elemento_actualizar.id_tipo_marca"
+                :items="tiposmarcas" :item-title="titulosAutocompleteTipos" item-value="id"
+                :filter="filterAutocompleteTipos"></v-autocomplete>
 
               <div class="form group mt-3">
                 <div class="form-group">
@@ -35,23 +54,6 @@
                     class="form-control" />
                 </div>
               </div>
-
-              <span @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')" class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipoElemento">Nueva Referencia</span>
-              <v-autocomplete label="Referencia" class="requerido" v-model="elemento_actualizar.id_tipo_referencia"
-                :items="tiposreferencias" :item-title="titulosAutocompleteTipos" item-value="id"
-                :filter="filterAutocompleteTipos"></v-autocomplete>
-
-
-                <span @click="agregarNuevoTipo('tipo_modelo', 'Nuevo Modelo')" class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipoElemento">Nuevo Modelo</span>
-              <v-autocomplete label="Modelo" class="requerido" v-model="elemento_actualizar.id_tipo_modelo"
-                :items="tiposmodelos" :item-title="titulosAutocompleteTipos" item-value="id"
-                :filter="filterAutocompleteTipos"></v-autocomplete>
-
-                <span @click="agregarNuevoTipo('tipo_marca', 'Nueva Marca')" class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipoElemento">Nueva Marca</span>
-              <v-autocomplete label="Marca" class="requerido" v-model="elemento_actualizar.id_tipo_marca"
-                :items="tiposmarcas" :item-title="titulosAutocompleteTipos" item-value="id"
-                :filter="filterAutocompleteTipos"></v-autocomplete>
-
 
               <div class="form-group">
                 <div class="form group mt-3">
@@ -111,8 +113,8 @@
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo">Cat. Puertos Default:</label>
-                  <input required type="number" placeholder="" v-model="elemento_actualizar.cantidad_puertos_por_defecto"
-                    class="form-control" />
+                  <input required type="number" placeholder=""
+                    v-model="elemento_actualizar.cantidad_puertos_por_defecto" class="form-control" />
                 </div>
               </div>
 
@@ -192,21 +194,21 @@
         </div>
       </div>
     </div>
-    <!-- Modal Nuevo Tipo Elemento -->
-    <div class="modal fade" id="modalNuevoTipoElemento" tabindex="-1" role="dialog"
-      aria-labelledby="modalNuevoTipoElemento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <!-- Modal Nuevo Tipo -->
+    <div class="modal fade" id="modalNuevoTipo" tabindex="-1" role="dialog" aria-labelledby="modalNuevoTipo"
+      aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header bg-success">
             <h5 class="modal-title" id="exampleModalLongTitle">
-              Nuevo elemento
+              Nuevo Tipo
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <TipoGuardar  @refrescar="refrescarTipos()" :titulo="tituloTipo" :tabla="tablaTipo" />
+            <TipoGuardar @refrescar="refrescarTipos()" :titulo="tituloTipo" :tabla="tablaTipo" />
           </div>
         </div>
       </div>
@@ -224,6 +226,7 @@ export default {
       tiposreferencias: [],
       tiposmodelos: [],
       tiposmarcas: [],
+      tiposdispositivoactivo: [],
       urlSinImagenActivo: this.axios.defaults.baseURL + '/archivos/elemento_activo_default.svg',
       urlSinImagenPasivo: this.axios.defaults.baseURL + '/archivos/elemento_pasivo_default.svg',
       tablaTipo: 'tipo_referencia',
@@ -236,6 +239,7 @@ export default {
     this.elemento_actualizar = registroObjeto;
   },
   created() {
+    this.verTiposDispositivosActivos()
     this.verTiposReferencias()
     this.verTiposModelos()
     this.verTiposMarcas()
@@ -247,6 +251,9 @@ export default {
     refrescarTipos() {
       const tablaTipo = this.tablaTipo
       switch (tablaTipo) {
+        case 'tipo_dispositivo_activo':
+          this.verTiposDispositivosActivos()
+          break        
         case 'tipo_referencia':
           this.verTiposReferencias()
           break
@@ -260,6 +267,7 @@ export default {
           this.verTiposReferencias()
           break
       }
+      $("#modalNuevoTipo").modal("hide");
     },
     titulosAutocompleteTipos(item) {
       return `${item.descripcion}`;
@@ -270,24 +278,6 @@ export default {
           .toLocaleLowerCase()
           .indexOf(queryText.toLocaleLowerCase()) > -1
       );
-    },
-    refrescarTipos() {
-      const tablaTipo = this.tablaTipo
-      switch (tablaTipo) {
-        case 'tipo_referencia':
-          this.verTiposReferencias()
-          break
-        case 'tipo_modelo':
-          this.verTiposModelos()
-          break
-        case 'tipo_marca':
-          this.verTiposMarcas()
-          break
-        default:
-          this.verTiposReferencias()
-          break
-      }
-      this.guardarTipo = false
     },
     crearMensaje(contenido, color) {
       this.mensaje.ver = true;
@@ -310,6 +300,13 @@ export default {
     },
     propiedadTieneValor(propiedad) {
       return propiedad !== null && propiedad !== undefined
+    },
+    verTiposDispositivosActivos() {
+      this.axios.get("tipo/tipo_dispositivo_activo")
+        .then((respuesta) => {
+          this.tiposdispositivoactivo = respuesta.data
+        })
+        .catch(error => console.log(error))
     },
     verTiposReferencias() {
       this.axios.get("tipo/tipo_referencia")
@@ -343,7 +340,7 @@ export default {
       const registroGuardar = this.elemento_actualizar
       const registro = {
         id: registroGuardar.id,
-        descripcion: registroGuardar.descripcion,
+        id_tipo_dispositivo_activo: registroGuardar.id_tipo_dispositivo_activo,
         id_tipo_referencia: registroGuardar.id_tipo_referencia,
         id_tipo_modelo: registroGuardar.id_tipo_modelo,
         id_tipo_marca: registroGuardar.id_tipo_marca,
@@ -380,6 +377,14 @@ export default {
 }
 </script>
 <style>
+.requerido::before {
+  content: "* ";
+  /* Agrega el asterisco */
+  color: red;
+  /* Asterisco de color rojo */
+  font-weight: bold;
+  /* Opcional, para darle más énfasis */
+}
 .boton-nuevo_elemento {
   padding: 5px;
   background-color: #28a745;

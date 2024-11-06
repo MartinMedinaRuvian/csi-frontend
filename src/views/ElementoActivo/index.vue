@@ -11,7 +11,7 @@
               &#x1F504;
             </span>
           </div>
-          <h6 class="mt-3"><b>{{ elemento.descripcion }}</b></h6>
+          <h6 class="mt-3"><b>{{ elemento.tipo_dispositivo }}</b></h6>
           <h6 class="mt-3"><b>{{ elemento.codigo }}</b></h6>
           <div class="form-group mt-3 observacion">
             <label for="codigo">Observación:</label>
@@ -24,15 +24,14 @@
 
         </div>
 
-        <button class="btn btn-warning mr-2"
-          @click="actualizarElemento2()">Actualizar</button>
+        <button class="btn btn-warning mr-2" @click="actualizarElemento()">Actualizar</button>
         <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
           data-target="#modaleliminarElemento">Eliminar</button>
       </div>
 
       <div class="informacion-secundario">
         <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" />
-        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id}" />
+        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" />
       </div>
     </div>
     <div class="informacion-principal_elemento">
@@ -60,13 +59,14 @@
         elemento.puerto_fisico_por_defecto }}</span>
     </div>
 
-    <button class="btn btn-success" data-toggle="collapse" data-target="#collapseMantenimientoTarjeta" aria-expanded="false"
-      aria-controls="collapseMantenimientoTarjeta">
+    <button class="btn btn-success" data-toggle="collapse" data-target="#collapseMantenimientoTarjeta"
+      aria-expanded="false" aria-controls="collapseMantenimientoTarjeta">
       Mantenimientos
     </button>
 
     <div class="collapse" id="collapseMantenimientoTarjeta">
-      <MantenimientoTarjeta :mantenimientos="mantenimientos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id}" />
+      <MantenimientoTarjeta :mantenimientos="mantenimientos"
+        :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" />
     </div>
 
     <!-- Modal Atualizar Imagen-->
@@ -152,198 +152,6 @@
         </div>
       </div>
     </div>
-    <!-- Modal Actualizar -->
-    <div class="modal fade" id="modalActualizarelemento" tabindex="-1" role="dialog"
-      aria-labelledby="modalActualizarelemento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-success">
-            <h5 class="modal-title" id="exampleModalLongTitle">
-              Actualizar elemento
-            </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body text-left">
-            <form @submit.prevent>
-
-              <TipoGuardar v-if="guardarTipo" @refrescar="refrescarTipos()" @cancelar="guardarTipo = false"
-                :titulo="tituloTipo" :tabla="tablaTipo" />
-
-              <div class="row">
-                <div class="col-md-6">
-
-                  <v-autocomplete label="Referencias" class="requerido"
-                    v-model="elemento_actualizar.id_tipo_referencia" :items="tiposreferencias" :item-title="titulosAutocompleteReferencias"
-                    item-value="id" :filter="filterAutocompleteReferencias"></v-autocomplete>
-
-                  <div class="form-group mt-3">
-                    <label for="tipo_referencia" class="requerido">Referencia: <span class="span-boton_nuevo"
-                        @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')">Agregar</span></label>
-                    <select id="tipo_referencia" class="form-select form-control"
-                      v-model="elemento_actualizar.id_tipo_referencia">
-                      <option v-for="tipo in tiposreferencias" :value="tipo.id" :key="tipo.id" class="text-success">
-                        {{ tipo.descripcion }}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="tipo_modelo" class="requerido">Modelo: <span class="span-boton_nuevo"
-                        @click="agregarNuevoTipo('tipo_modelo', 'Nuevo Modelo')">Agregar</span></label>
-                    <select id="tipo_modelo" class="form-select form-control"
-                      v-model="elemento_actualizar.id_tipo_modelo">
-                      <option v-for="tipo in tiposmodelos" :value="tipo.id" :key="tipo.id" class="text-success">
-                        {{ tipo.descripcion }}
-                      </option>
-                    </select>
-                  </div>
-
-                  <div class="form-group mt-3">
-                    <label for="tipo_marca" class="requerido">Marca: <span class="span-boton_nuevo"
-                        @click="agregarNuevoTipo('tipo_marca', 'Nueva Marca')">Agregar</span></label>
-                    <select id="tipo_marca" class="form-select form-control"
-                      v-model="elemento_actualizar.id_tipo_marca">
-                      <option v-for="tipo in tiposmarcas" :value="tipo.id" :key="tipo.id" class="text-success">
-                        {{ tipo.descripcion }}
-                      </option>
-                    </select>
-                  </div>
-
-
-                  <div class="form group mt-3">
-                    <div class="form-group">
-                      <label for="codigo" class="requerido">Descripción:</label>
-                      <input required type="text" placeholder="Ingrese Descripción"
-                        v-model="elemento_actualizar.descripcion" class="form-control" />
-                    </div>
-                  </div>
-
-                  <div class="form group mt-3">
-                    <div class="form-group">
-                      <label for="codigo" class="requerido">Código:</label>
-                      <input required type="text" placeholder="Ingrese Código" v-model="elemento_actualizar.codigo"
-                        class="form-control" />
-                    </div>
-                  </div>
-
-                  <div class="form group mt-3">
-                    <div class="form-group">
-                      <label for="codigo" class="requerido">Serial:</label>
-                      <input required type="text" placeholder="Ingrese Serial" v-model="elemento_actualizar.serial"
-                        class="form-control" />
-                    </div>
-                  </div>
-
-                  <div class="form group mt-3">
-                    <div class="form-group">
-                      <label for="codigo">Gateway:</label>
-                      <input required type="text" placeholder="" v-model="elemento_actualizar.gateway"
-                        class="form-control" />
-                    </div>
-                  </div>
-
-                  <div class="form group mt-3">
-                    <div class="form-group">
-                      <label for="codigo">Código Inventario:</label>
-                      <input required type="text" placeholder="" v-model="elemento_actualizar.codigo_inventario"
-                        class="form-control" />
-                    </div>
-                  </div>
-
-                </div>
-
-                <div class="col-md-6">
-
-                  <div class="form group mt-3">
-                    <div class="form-group">
-                      <label for="codigo">MAC:</label>
-                      <input required type="text" placeholder="" v-model="elemento_actualizar.mac"
-                        class="form-control" />
-                    </div>
-                  </div>
-
-                  <div class="form group mt-3">
-                    <div class="form-group">
-                      <label for="codigo">S.O:</label>
-                      <input required type="text" placeholder="" v-model="elemento_actualizar.os"
-                        class="form-control" />
-                    </div>
-                  </div>
-                  <div class="form group mt-3">
-                    <div class="form-group">
-                      <label for="codigo">Versión S.O:</label>
-                      <input required type="text" placeholder="" v-model="elemento_actualizar.version_os"
-                        class="form-control" />
-                    </div>
-                  </div>
-                  <div class="form group mt-3">
-                    <div class="form-group">
-                      <label for="codigo">IP V4:</label>
-                      <input required type="text" placeholder="" v-model="elemento_actualizar.ip_v4"
-                        class="form-control" />
-                    </div>
-                  </div>
-                  <div class="form group mt-3">
-                    <div class="form-group">
-                      <label for="codigo">IP V6:</label>
-                      <input required type="text" placeholder="" v-model="elemento_actualizar.ip_v6"
-                        class="form-control" />
-                    </div>
-                  </div>
-
-                  <div class="form group mt-3">
-                    <div class="form-group">
-                      <label for="codigo">Cat. Puertos Default:</label>
-                      <input required type="number" placeholder=""
-                        v-model="elemento_actualizar.cantidad_puertos_por_defecto" class="form-control" />
-                    </div>
-                  </div>
-
-                  <div class="form group mt-3">
-                    <div class="form-group">
-                      <label for="codigo">Puerto Lógico Default:</label>
-                      <input required type="number" placeholder="" v-model="elemento_actualizar.puerto_logico_por_defecto"
-                        class="form-control" />
-                    </div>
-                  </div>
-
-                  <div class="form group mt-3">
-                    <div class="form-group">
-                      <label for="codigo">Puerto Fisico Default:</label>
-                      <input required type="number" placeholder="" v-model="elemento_actualizar.puerto_fisico_por_defecto"
-                        class="form-control" />
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              <div class="form group mt-3 text-center">
-                <div class="form-group">
-                  <label for="codigo">Observación:</label>
-                  <textarea type="text" placeholder="Ingrese una observación" v-model="elemento_actualizar.observacion"
-                    class="form-control" />
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6 mt-3">
-                  <button type="button" class="btn btn-secondary form-control" data-dismiss="modal">
-                    Cancelar
-                  </button>
-                </div>
-                <div class="col-md-6 mt-3">
-                  <input type="button" class="btn btn-success form-control" value="Guardar"
-                    @click="actualizarelemento()" />
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <script>
@@ -371,6 +179,7 @@ export default {
       tiposreferencias: [],
       tiposmodelos: [],
       tiposmarcas: [],
+      tiposdispositivo: [],
       urlSinImagenActivo: this.axios.defaults.baseURL + '/archivos/elemento_activo_default.svg',
       urlSinImagenPasivo: this.axios.defaults.baseURL + '/archivos/elemento_pasivo_default.svg',
       tablaTipo: 'tipo_referencia',
@@ -387,11 +196,6 @@ export default {
     this.verProyectos()
     this.verMantenimientos()
   },
-  created() {
-    this.verTiposReferencias()
-    this.verTiposModelos()
-    this.verTiposMarcas()
-  },
   computed: {
     ...mapGetters(["usuario"]),
   },
@@ -406,42 +210,10 @@ export default {
           .indexOf(queryText.toLocaleLowerCase()) > -1
       );
     },
-    refrescarTipos() {
-      const tablaTipo = this.tablaTipo
-      switch (tablaTipo) {
-        case 'tipo_referencia':
-          this.verTiposReferencias()
-          break
-        case 'tipo_modelo':
-          this.verTiposModelos()
-          break
-        case 'tipo_marca':
-          this.verTiposMarcas()
-          break
-        default:
-          this.verTiposReferencias()
-          break
-      }
-      this.guardarTipo = false
-    },
     crearMensaje(contenido, color) {
       this.mensaje.ver = true;
       this.mensaje.contenido = contenido;
       this.mensaje.color = color;
-    },
-    actualizar() {
-      this.axios
-        .put("elemento_activo", this.elemento)
-        .then((respuesta) => {
-          if (respuesta.status === 200) {
-            //this.$router.push('/elementos')
-            window.location.reload()
-            $("#modalGuardarelemento").modal("hide");
-          }
-        })
-        .catch((error) => {
-          alert(error.response.data);
-        });
     },
     verArchivos() {
       const idelemento = this.elemento.id
@@ -512,39 +284,6 @@ export default {
           alert(error.response.data);
         });
     },
-    actualizarelemento() {
-      const registroGuardar = this.elemento_actualizar
-      const registro = {
-        id: this.elemento.id,
-        descripcion: registroGuardar.descripcion,
-        id_tipo_referencia: registroGuardar.id_tipo_referencia,
-        id_tipo_modelo: registroGuardar.id_tipo_modelo,
-        id_tipo_marca: registroGuardar.id_tipo_marca,
-        codigo: registroGuardar.codigo,
-        serial: registroGuardar.serial,
-        observacion: registroGuardar.observacion,
-        os: registroGuardar.os,
-        version_os: registroGuardar.version_os,
-        mac: registroGuardar.mac,
-        gateway: registroGuardar.gateway,
-        ip_v4: registroGuardar.ip_v4,
-        ip_v6: registroGuardar.ip_v6,
-        codigo_inventario: registroGuardar.codigo_inventario,
-        cantidad_puertos_por_defecto: registroGuardar.cantidad_puertos_por_defecto,
-        puerto_logico_por_defecto: registroGuardar.puerto_logico_por_defecto,
-        puerto_fisico_por_defecto: registroGuardar.puerto_fisico_por_defecto,
-        id_gabinete: this.elemento.id_gabinete,
-        id_usuario: this.elemento.id_usuario
-      }
-      this.axios
-        .put("elemento_activo", registro)
-        .then((respuesta) => {
-          window.location.reload()
-        })
-        .catch((error) => {
-          alert(error.response.data);
-        });
-    },
     rutaImagenVer(ruta_imagen) {
       const ruta = ruta_imagen != null && ruta_imagen != undefined ? ruta_imagen : 'archivos/elemento_activo_default.svg'
       return this.ruta_servidor + '/' + ruta
@@ -569,35 +308,9 @@ export default {
       });
     },
     propiedadTieneValor(propiedad) {
-      return propiedad !== null && propiedad !== undefined && propiedad.length > 0
+      return propiedad !== null && propiedad !== undefined && propiedad != ''
     },
-    verTiposReferencias() {
-      this.axios.get("tipo/tipo_referencia")
-        .then((respuesta) => {
-          this.tiposreferencias = respuesta.data
-        })
-        .catch(error => console.log(error))
-    },
-    verTiposModelos() {
-      this.axios.get("tipo/tipo_modelo")
-        .then((respuesta) => {
-          this.tiposmodelos = respuesta.data
-        })
-        .catch(error => console.log(error))
-    },
-    verTiposMarcas() {
-      this.axios.get("tipo/tipo_marca")
-        .then((respuesta) => {
-          this.tiposmarcas = respuesta.data
-        })
-        .catch(error => console.log(error))
-    },
-    agregarNuevoTipo(tabla, titulo) {
-      this.tablaTipo = tabla
-      this.tituloTipo = titulo
-      this.guardarTipo = !this.guardarTipo
-    },
-    actualizarElemento2(){
+    actualizarElemento() {
       let elemento = this.elemento
       const idGabinete = this.elemento.id_gabinete
       const datosRegistro = {
