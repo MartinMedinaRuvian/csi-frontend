@@ -23,9 +23,9 @@ const routes = [
     meta:{requiereAutorizacion:true}
   },
   {
-    path: '/clientes',
-    name: 'Clientes',
-    component: () => import('@/views/Cliente/Cliente.vue'),
+    path: '/parametros',
+    name: 'Parametros',
+    component: () => import('@/views/Parametro/index.vue'),
     meta:{requiereAutorizacion:true}
   },
   {

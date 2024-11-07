@@ -41,7 +41,6 @@ export default {
       this.axios.post(nombreTabla + '/' + tabla_tipo, registroGuardar).then(async (respuesta) => {
         if (respuesta.status === 200) {
           this.descripcion = ''
-          $("#modalNuevoTipoElemento").modal("hide");
           this.$emit('refrescar')
         }
       }).catch(error => console.log(error))
