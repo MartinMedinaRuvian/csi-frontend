@@ -2,7 +2,7 @@
   <div class="text-center">
     <div class="contenedor-principal">
       <div ref="map" id="map"></div>
-      <button id="boton" class="btn btn-success mt-5" @click="verUbicacionActual()">Guardar Edificio con Ubicación
+      <button v-if="false" id="boton" class="btn btn-success mt-5" @click="verUbicacionActual()">Guardar Edificio con Ubicación
         Actual</button>
     </div>
     <!-- Modal -->

@@ -57,7 +57,7 @@
                 <div class="row">
                   <div class="col-md-12 col-lg-12">
                     <label for="file">Tamaño Máximo: {{ tamanioMaximoArchivo }} Mb</label>
-                    <input type="file" class="form-control" name="archivo" id="archivo" accept="*" ref="inputArchivo"
+                    <input type="file" class="form-control" name="archivo" id="archivo" :accept="fileAccept" ref="inputArchivo"
                       required>
                   </div>
                 </div>
@@ -136,7 +136,18 @@ export default {
       archivo: {},
       ruta_servidor: this.axios.defaults.baseURL,
       urlSinImagen: this.axios.defaults.baseURL + '/archivos/archivo_default.svg',
-      urlImg: ''
+      urlImg: '',
+      fileAccept: [
+        // Extensiones de documentos de Office y PDF
+        ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf",
+        
+        // Extensiones de imágenes
+        ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".svg", 
+        ".tiff", ".ico", ".avif",
+
+        // Extensiones de configuración de switches y routers
+        ".cfg", ".config", ".cnf", ".conf", ".txt", // .txt para configuraciones simples
+      ].join(",") // Convertimos el arreglo en una cadena separada por comas
     };
   },
   computed: {
