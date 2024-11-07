@@ -93,6 +93,7 @@ export default {
       }
       $("#modalNuevoTipo").modal("hide");
       $("#modalActualizarTipo").modal("hide");
+      $("#modalEliminarTipo").modal("hide");     
     },
     verTiposReferencias() {
       this.axios.get("tipo/tipo_referencia")

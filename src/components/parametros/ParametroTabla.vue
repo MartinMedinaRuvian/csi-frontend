@@ -16,10 +16,10 @@
               <p>{{ parametro.descripcion }}</p>
             </td>
             <td>
-              <p>{{ parametro.fecha_creacion }}</p>
+              <p>{{ formatearFecha(parametro.fecha_creacion) }}</p>
             </td>
             <td>
-              <p>{{ parametro.fecha_actualizacion }}</p>
+              <p>{{ parametro.fecha_actualizacion != null &&  parametro.fecha_actualizacion ? formatearFecha(parametro.fecha_actualizacion) : ''}}</p>
             </td>
             <td>
               <button data-toggle="modal" data-target="#modalActualizarTipo" class="btn btn-outline-warning mr-4"
@@ -27,7 +27,7 @@
                 <span class="icon-Lapiz"></span>
               </button>
               <button data-toggle="modal" data-target="#modalEliminarTipo" class="btn btn-outline-danger"
-                @click="eliminar(parametro)">
+                @click="verDatosModal(parametro)">
                 <span class="icon-Papelera"></span>
               </button>
             </td>
@@ -35,6 +35,44 @@
         </tbody>
       </table>
     </div>
+
+        <!-- Modal Eliminar -->
+        <div class="modal fade" id="modalEliminarTipo" tabindex="-1" role="dialog"
+      aria-labelledby="modalEliminarTipo" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-success">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Eliminar
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form @submit.prevent>
+
+              <div class="form-group mt-4">
+                <h5>¿ Eliminar el Registro ?</h5>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mt-3">
+                  <button type="button" class="btn btn-secondary form-control" data-dismiss="modal">
+                    Cancelar
+                  </button>
+                </div>
+                <div class="col-md-6 mt-3">
+                  <input type="button" class="btn btn-danger form-control" value="Eliminar"
+                    @click="eliminar()" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Modal Actualizar Tipo -->
     <div class="modal fade" id="modalActualizarTipo" tabindex="-1" role="dialog" aria-labelledby="modalActualizarTipo"
       aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -75,6 +113,7 @@
   </div>
 </template>
 <script>
+import FechaUtil from "@/util/FechaUtil";
 export default {
   props: {
     parametros: [],
@@ -94,7 +133,8 @@ export default {
       $("#modalActualizarTipo").modal("hide");
       this.$router.push({ name: 'Parametros' })
     },
-    eliminar(parametro) {
+    eliminar() {
+      const parametro = this.parametroActualizar
       const id = parametro.id
       const nombreTabla = 'tipo'
       const tabla_tipo = this.tabla
@@ -117,7 +157,10 @@ export default {
           this.$emit('refrescar')
         }
       }).catch(error => console.log(error))
-    }
+    },
+    formatearFecha(fecha) {
+      return FechaUtil.formatearFecha(fecha);
+    },
   },
 };
 </script>
