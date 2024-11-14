@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <NavegacionAdmin v-if="usuario !== null && usuario.rol_id === 1"/>
-    <NavegacionUsuario v-if="usuario !== null && usuario.rol_id === 2"/>
+    <NavegacionAdmin v-if="usuario !== null && usuario.rol_id === 1 && locationURL !== '/reset-password'"/>
+    <NavegacionUsuario v-if="usuario !== null && usuario.rol_id === 2 && locationURL !== '/reset-password'"/>
     <router-view class="contenedor-vistas"/>
     <Footer/>
   </div>
@@ -16,6 +16,15 @@ export default {
     NavegacionUsuario,
     NavegacionAdmin,
     Footer 
+  },
+  data(){
+    return {
+      locationURL: ''
+    }
+  },
+  mounted() {
+    const pathnameURL = window.location.pathname
+    this.locationURL = pathnameURL
   },
   computed:{
     ...mapGetters(['usuario'])

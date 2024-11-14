@@ -99,6 +99,12 @@ const routes = [
     name: 'Mantenimiento',
     component: () => import('@/views/Mantenimiento/index.vue'),
     meta:{requiereAutorizacion:true}
+  },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: () => import('@/views/Usuario/ResetPassword.vue'),
+    meta:{requiereAutorizacion:true}
   }
 ]
 

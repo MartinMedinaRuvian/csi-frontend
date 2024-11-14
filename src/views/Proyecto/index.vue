@@ -5,7 +5,7 @@
     <div class="informacion">
       <div class="informacion-basica">
 
-        <h5 class="titulo">{{ proyecto.nombre }}</h5>
+        <h5 class="titulo mt-3 mb-5 text-primary">{{ proyecto.descripcion }}</h5>
         
         <h5>{{ proyecto.nombre_empresa }} <br> <b>NIT.</b> {{ proyecto.nit_empresa }}</h5>
         
@@ -78,6 +78,12 @@
               <div class="form group">
                 <label for="nombre" class="requerido">Código:</label>
                 <input required type="text" placeholder="Ingrese el Código" v-model="proyecto_actualizar.codigo"
+                  class="form-control" />
+              </div>
+
+              <div class="form group mt-3">
+                <label for="nombre" class="requerido">Descripción:</label>
+                <input required type="text" placeholder="Ingrese la descripción" v-model="proyecto_actualizar.descripcion"
                   class="form-control" />
               </div>
 
@@ -210,6 +216,8 @@ export default {
       const proyecto = this.proyecto_actualizar
       const dato = {
         id: proyecto.id,
+        codigo: proyecto.codigo,
+        descripcion: proyecto.descripcion,
         nombre_empresa: proyecto.nombre_empresa,
         nit_empresa: proyecto.nit_empresa,
         fecha: proyecto.fecha,

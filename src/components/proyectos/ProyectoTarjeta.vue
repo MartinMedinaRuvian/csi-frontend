@@ -55,6 +55,11 @@
               </div>
 
               <div class="form group mt-3">
+                <label for="nombrecompleto" class="requerido">Descripción:</label>
+                <input type="text" placeholder="Ingrese la Descripción" v-model="proyecto.descripcion" class="form-control" />
+              </div>
+
+              <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Nombre de la Empresa:</label>
                 <input type="text" placeholder="Ingrese el Nombre de la Empresa" v-model="proyecto.nombre_empresa"
                   class="form-control" />
@@ -163,6 +168,7 @@ export default {
       const registroGuardar = this.proyecto
       const registro = {
         codigo: registroGuardar.codigo,
+        descripcion: registroGuardar.descripcion,
         nombre_empresa: registroGuardar.nombre_empresa,
         nit_empresa: registroGuardar.nit_empresa,
         certificacion: registroGuardar.certificacion,

@@ -15,7 +15,8 @@
             </select>
           </div>
 
-          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_dispositivo_activo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
+          <span v-if="tipo_elemento == 'ACTIVO'"
+            @click="agregarNuevoTipo('tipo_dispositivo_activo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
             data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Dispositivo</span>
           <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Dispositivo" class="requerido"
             v-model="elemento.id_tipo_dispositivo_activo" :items="tiposdispositivoactivo"
@@ -23,7 +24,8 @@
             :filter="filterAutocompleteTipotitulosAutocompleteTipos">
           </v-autocomplete>
 
-          <span v-if="tipo_elemento == 'PASIVO'" @click="agregarNuevoTipo('tipo_dispositivo_pasivo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
+          <span v-if="tipo_elemento == 'PASIVO'"
+            @click="agregarNuevoTipo('tipo_dispositivo_pasivo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
             data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Dispositivo</span>
           <v-autocomplete v-if="tipo_elemento == 'PASIVO'" label="Dispositivo" class="requerido"
             v-model="elemento.id_tipo_dispositivo_pasivo" :items="tiposdispositivopasivo"
@@ -31,22 +33,22 @@
             :filter="filterAutocompleteTipotitulosAutocompleteTipos">
           </v-autocomplete>
 
-          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')" class="boton-nuevo_elemento"
-            data-toggle="modal" data-target="#modalNuevoTipo">Nueva Referencia</span>
+          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')"
+            class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nueva Referencia</span>
           <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Referencia" class="requerido"
             v-model="elemento.id_tipo_referencia" :items="tiposreferencias" :item-title="titulosAutocompleteTipos"
             item-value="id" :filter="filterAutocompleteTipotitulosAutocompleteTipos">
           </v-autocomplete>
 
-          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_modelo', 'Nuevo Modelo')" class="boton-nuevo_elemento"
-            data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Modelo</span>
+          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_modelo', 'Nuevo Modelo')"
+            class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Modelo</span>
           <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Modelo" class="requerido"
             v-model="elemento.id_tipo_modelo" :items="tiposmodelos" :item-title="titulosAutocompleteTipos"
             item-value="id" :filter="filterAutocompleteTipotitulosAutocompleteTipos">
           </v-autocomplete>
 
-          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_marca', 'Nueva Marca')" class="boton-nuevo_elemento" data-toggle="modal"
-            data-target="#modalNuevoTipo">Nueva Marca</span>
+          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_marca', 'Nueva Marca')"
+            class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nueva Marca</span>
           <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Marca" class="requerido"
             v-model="elemento.id_tipo_marca" :items="tiposmarcas" :item-title="titulosAutocompleteTipos" item-value="id"
             :filter="filterAutocompleteTipotitulosAutocompleteTipos">
@@ -63,6 +65,14 @@
             <div class="form-group">
               <label for="codigo" class="requerido">Serial:</label>
               <input required type="text" placeholder="Ingrese Serial" v-model="elemento.serial" class="form-control" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form group mt-3">
+              <label for="codigo">Código Inventario:</label>
+              <input required type="text" placeholder="" v-model="elemento.codigo_inventario"
+                class="form-control" />
             </div>
           </div>
 
@@ -121,7 +131,7 @@
 import TipoGuardar from "@/components/tipo/TipoGuardar.vue";
 import { mapGetters } from "vuex";
 export default {
-  components: { TipoGuardar }, 
+  components: { TipoGuardar },
   data() {
     return {
       elemento: { id_tipo_dispositivo_activo: 1, id_tipo_dispositivo_pasivo: 1, id_tipo_referencia: 1, id_tipo_modelo: 1, id_tipo_marca: 1 },
@@ -224,6 +234,7 @@ export default {
         id_tipo_marca: registroGuardar.id_tipo_marca,
         codigo: registroGuardar.codigo,
         serial: registroGuardar.serial,
+        codigo_inventario: registroGuardar.codigo_inventario,
         id_gabinete: this.id_gabinete,
         id_usuario: this.usuario.id
       }
@@ -367,6 +378,7 @@ export default {
   border: solid #039BE5 1px;
   border-radius: 15px;
 }
+
 .boton-nuevo_elemento {
   padding: 5px;
   background-color: #28a745;
