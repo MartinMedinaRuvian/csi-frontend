@@ -104,12 +104,18 @@ export default {
       urlSinImagenPasivo: this.axios.defaults.baseURL + '/archivos/elemento_pasivo_default.svg',
       tablaTipo: 'tipo_referencia',
       tituloTipo: 'Nueva Referencia',
+      info_edificio: {},
+      info_centro_cableado: {},
+      info_gabinete: {}
     }
   },
   mounted() {
     const registroString = this.$route.query.registro;
     const registroObjeto = JSON.parse(registroString);
     this.elemento_actualizar = registroObjeto;
+    this.info_edificio = registroObjeto.info_edificio
+    this.info_centro_cableado = registroObjeto.info_centro_cableado
+    this.info_gabinete = registroObjeto.info_gabinete
   },
   created() {
     this.verTiposDispositivosPasivos()
@@ -158,7 +164,10 @@ export default {
     volver() {
       const id = this.elemento_actualizar.id
       const datosRegistro = {
-        id
+        id,
+        info_edificio: this.info_edificio,
+        info_centro_cableado: this.info_centro_cableado,
+        info_gabinete: this.info_gabinete
       }
       location.href = "/elemento-pasivo?registro=" + JSON.stringify(datosRegistro)
     },
@@ -173,7 +182,7 @@ export default {
         categoria: registroGuardar.categoria,
         numero_puertos: registroGuardar.numero_puertos,
         tipo_conector: registroGuardar.tipo_conector,
-        id_gabinete: registroGuardar.id_gabinete,
+        id_gabinete: registroGuardar.info_gabinete.id,
         id_usuario: registroGuardar.id_usuario
       }
       this.axios

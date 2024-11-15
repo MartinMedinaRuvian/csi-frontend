@@ -1,7 +1,13 @@
 <template>
   <div class="text-center">
-    <h4 class="text-success mb-5"><span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
-      Información del Elemento Pasivo</h4>
+    <h4 class="text-success mb-5">
+      <span class="text-primary">
+        <h6>{{ info_edificio.nombre }} - C. CABLEADO #{{ info_centro_cableado.numero }} - GABINETE R{{
+          info_gabinete.numero }}</h6>
+      </span>
+      <span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
+      Información del Elemento Pasivo
+    </h4>
     <div class="informacion">
       <div class="informacion-basica">
         <div class="contenedor-imagen">
@@ -24,15 +30,14 @@
 
         </div>
 
-        <button class="btn btn-warning mr-2"
-          @click="actualizarElemento()">Actualizar</button>
+        <button class="btn btn-warning mr-2" @click="actualizarElemento()">Actualizar</button>
         <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
           data-target="#modaleliminarElemento">Eliminar</button>
       </div>
 
       <div class="informacion-secundario">
         <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'elemento_pasivo', id: elemento.id }" />
-        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_pasivo', id: elemento.id}" />
+        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_pasivo', id: elemento.id }" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" :info_elemento="info_elemento" />
       </div>
     </div>
     <div class="propiedades-elemento mb-5">
@@ -47,13 +52,14 @@
         }}<br></span>
     </div>
 
-    <button class="btn btn-success" data-toggle="collapse" data-target="#collapseMantenimientoTarjeta" aria-expanded="false"
-      aria-controls="collapseMantenimientoTarjeta">
+    <button class="btn btn-success" data-toggle="collapse" data-target="#collapseMantenimientoTarjeta"
+      aria-expanded="false" aria-controls="collapseMantenimientoTarjeta">
       Mantenimientos
     </button>
 
     <div class="collapse" id="collapseMantenimientoTarjeta">
-      <MantenimientoTarjeta :mantenimientos="mantenimientos" :info_tabla="{ nombre_tabla: 'elemento_pasivo', id: elemento.id}" />
+      <MantenimientoTarjeta :mantenimientos="mantenimientos"
+        :info_tabla="{ nombre_tabla: 'elemento_pasivo', id: elemento.id }" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" :info_elemento="info_elemento" />
     </div>
 
     <!-- Modal Atualizar Imagen-->
@@ -165,12 +171,19 @@ export default {
       tiposdispositivo: [],
       urlSinImagenActivo: this.axios.defaults.baseURL + '/archivos/elemento_activo_default.svg',
       urlSinImagenPasivo: this.axios.defaults.baseURL + '/archivos/elemento_pasivo_default.svg',
+      info_edificio: {},
+      info_centro_cableado: {},
+      info_gabinete: {},
+      info_elemento: {}
     };
   },
   mounted() {
     const registroString = this.$route.query.registro;
     const registroObjeto = JSON.parse(registroString);
     this.elemento = registroObjeto;
+    this.info_edificio = registroObjeto.info_edificio
+    this.info_centro_cableado = registroObjeto.info_centro_cableado
+    this.info_gabinete = registroObjeto.info_gabinete
     this.verInfo()
     this.verArchivos()
     this.verProyectos()
@@ -255,12 +268,14 @@ export default {
           alert(error.response.data);
         });
     },
-    actualizarElemento(){
+    actualizarElemento() {
       let elemento = this.elemento
       const idGabinete = this.elemento.id_gabinete
       const datosRegistro = {
         ...elemento,
-        id_gabinete: idGabinete
+        info_edificio: this.info_edificio,
+        info_centro_cableado: this.info_centro_cableado,
+        info_gabinete: this.info_gabinete
       }
       location.href = "/actualizar-elemento-pasivo?registro=" + JSON.stringify(datosRegistro)
     },
@@ -275,7 +290,9 @@ export default {
     volver() {
       const id = this.elemento.id_gabinete
       const datosRegistro = {
-        id
+        id,
+        info_edificio: this.info_edificio,
+        info_centro_cableado: this.info_centro_cableado
       }
       location.href = "/gabinete?registro=" + JSON.stringify(datosRegistro)
     },
@@ -284,6 +301,10 @@ export default {
       this.axios.get("elemento_pasivo/info/" + id).then((respuesta) => {
         if (respuesta.status === 200) {
           this.elemento = respuesta.data;
+          this.info_elemento = {
+            id: this.elemento.id,
+            codigo: this.elemento.codigo
+          }
         }
       });
     },

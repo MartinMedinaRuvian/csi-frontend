@@ -6,13 +6,13 @@
         <div v-if="elementosActivos && elementosActivos.length > 0" class="col columna-elementos_activos mr-2">
           <div class="contenedor-elementos">
             <h6 class="text-success"><b>ELEMENTOS ACTIVOS</b></h6>
-            <ElementoTabla :elementos="elementosActivos" :es_activo="true" />
+            <ElementoTabla :elementos="elementosActivos" :es_activo="true" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" />
           </div>
         </div>
         <div v-if="elementosPasivos && elementosPasivos.length > 0" class="col columna-elementos_pasivos">
           <div class="contenedor-elementos">
             <h6 class="text-primary"><b>ELEMENTOS PASIVOS</b></h6>
-            <ElementoTabla :elementos="elementosPasivos" :es_activo="false" />
+            <ElementoTabla :elementos="elementosPasivos" :es_activo="false" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" />
           </div>
         </div>
       </div>
@@ -137,7 +137,9 @@ export default {
   props: {
     elementosActivos: [],
     elementosPasivos: [],
-    id_gabinete: {}
+    info_gabinete: {},
+    info_edificio: {},
+    info_centro_cableado:{}
   },
   data() {
     return {
@@ -196,7 +198,7 @@ export default {
         id_tipo_marca: registroGuardar.id_tipo_marca,
         codigo: registroGuardar.codigo,
         serial: registroGuardar.serial,
-        id_gabinete: this.id_gabinete,
+        id_gabinete: this.info_gabinete.id,
         id_usuario: this.usuario.id
       }
       const nombreTabla = "elemento_activo"
@@ -215,7 +217,7 @@ export default {
       const registro = {
         descripcion: registroGuardar.descripcion,
         codigo: registroGuardar.codigo,
-        id_gabinete: this.id_gabinete,
+        id_gabinete: this.info_gabinete.id,
         id_usuario: this.usuario.id
       }
       const nombreTabla = "elemento_pasivo"
@@ -270,9 +272,12 @@ export default {
         .catch(error => console.log(error))
     },
     guardarElemento(){
-      const id = this.id_gabinete
+      const id = this.info_gabinete.id
       const datosRegistro = {
-        id
+        id,
+        info_edificio: this.info_edificio,
+        info_centro_cableado: this.info_centro_cableado,
+        info_gabinete: this.info_gabinete
       }
       location.href = "/nuevo-elemento?registro=" + JSON.stringify(datosRegistro)
     }

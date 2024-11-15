@@ -121,7 +121,8 @@
 export default {
   props: {
     gabinetes: [],
-    id_centro_cableado: {}
+    info_edificio: {},
+    info_centro_cableado: {}
   },
   data() {
     return {
@@ -157,7 +158,7 @@ export default {
         aterrizado: registroGuardar.aterrizado,
         observacion: registroGuardar.observacion,
         id_tipo_gabinete: registroGuardar.id_tipo_gabinete,
-        id_centro_cableado: this.id_centro_cableado
+        id_centro_cableado: this.info_centro_cableado.id
       }
       const nombreTabla = "gabinete"
       this.axios.post(nombreTabla, registro).then((respuesta) => {
@@ -197,7 +198,15 @@ export default {
     },
     verInfo(registro){
       const datosRegistro = {
-        id: registro.id
+        id: registro.id,
+        info_edificio: {
+          id: this.info_edificio.id,
+          nombre: this.info_edificio.nombre
+        },
+        info_centro_cableado: {
+          id: this.info_centro_cableado.id,
+          numero: this.info_centro_cableado.numero
+        }
       }
       this.$router.push({
         name: "Gabinete",

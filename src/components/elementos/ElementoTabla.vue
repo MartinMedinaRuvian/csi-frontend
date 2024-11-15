@@ -43,7 +43,10 @@
 export default {
   props: {
     elementos: [],
-    es_activo: Boolean
+    es_activo: Boolean,
+    info_gabinete: {},
+    info_edificio: {},
+    info_centro_cableado: {}
   },
   data() {
     return {
@@ -60,7 +63,10 @@ export default {
     },
     verInfo(registro) {
       const datosRegistro = {
-        id: registro.id
+        id: registro.id,
+        info_edificio: this.info_edificio,
+        info_centro_cableado: this.info_centro_cableado,
+        info_gabinete: this.info_gabinete
       }
       if (this.es_activo) {
         this.$router.push({

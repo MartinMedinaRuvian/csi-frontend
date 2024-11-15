@@ -144,7 +144,11 @@ import FechaUtil from "@/util/FechaUtil";
 export default {
   props: {
     proyectos: [],
-    info_tabla: {}
+    info_tabla: {},
+    info_edificio: {},
+    info_centro_cableado: {},
+    info_gabinete: {},
+    info_elemento: {}
   },
   data() {
     return {
@@ -211,7 +215,11 @@ export default {
       const datosRegistro = {
         id: proyecto.id,
         id_volver: this.info_tabla.id,
-        ruta_volver: this.verTablaRutaVolver(this.info_tabla.nombre_tabla)
+        ruta_volver: this.verTablaRutaVolver(this.info_tabla.nombre_tabla),
+        info_edificio: this.info_edificio,
+        info_centro_cableado: this.info_centro_cableado,
+        info_gabinete: this.info_gabinete,
+        info_elemento: this.info_elemento
       }
       this.$router.push({
         name: "Proyecto",

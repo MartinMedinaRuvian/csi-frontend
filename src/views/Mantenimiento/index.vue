@@ -1,10 +1,17 @@
 <template>
   <div class="text-center">
-    <h4 class="text-success mb-5"><span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
-      Información Del Mantenimiento</h4>
+    <h4 class="text-success mb-5">
+      <span class="text-primary">
+        <h6>{{ info_edificio.nombre }} - C. CABLEADO #{{
+          info_centro_cableado.numero }} - GABINETE R{{
+            info_gabinete.numero }} - ELEMENTO {{ info_elemento.codigo }}</h6>
+      </span>
+      <span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
+      Información Del Mantenimiento
+    </h4>
     <div class="informacion">
       <div class="informacion-basica">
-        
+
         <p><b>Realizado Por:</b> {{ mantenimiento.realizado_por }}</p>
 
         <p><b>Fecha:</b> {{ formatearFecha(mantenimiento.fecha) }}</p>
@@ -13,12 +20,12 @@
 
         <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarMantenimiento"
           @click="verDatosModal()">Actualizar</button>
-        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal" data-target="#modaleliminarMantenimiento">Eliminar</button>
+        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
+          data-target="#modaleliminarMantenimiento">Eliminar</button>
       </div>
 
       <div class="informacion-secundario">
-        <ArchivoTarjeta :archivos="archivos"
-          :info_tabla="{ nombre_tabla: 'mantenimiento', id: mantenimiento.id }" />
+        <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'mantenimiento', id: mantenimiento.id }" />
       </div>
     </div>
 
@@ -75,20 +82,21 @@
             <form @submit.prevent>
               <div class="form group">
                 <label for="nombrecompleto" class="requerido">Código:</label>
-                <input type="text" placeholder="Ingrese Código" v-model="mantenimiento_actualizar.codigo" class="form-control" />
+                <input type="text" placeholder="Ingrese Código" v-model="mantenimiento_actualizar.codigo"
+                  class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Realizado Por:</label>
-                <input type="text" placeholder="Ingrese el Realizado Por" v-model="mantenimiento_actualizar.realizado_por"
-                  class="form-control" />
+                <input type="text" placeholder="Ingrese el Realizado Por"
+                  v-model="mantenimiento_actualizar.realizado_por" class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo">Observación:</label>
-                  <textarea type="text" placeholder="Ingrese una observación" v-model="mantenimiento_actualizar.observacion"
-                    class="form-control" />
+                  <textarea type="text" placeholder="Ingrese una observación"
+                    v-model="mantenimiento_actualizar.observacion" class="form-control" />
                 </div>
               </div>
 
@@ -130,7 +138,11 @@ export default {
       archivos: [],
       mensaje: { ver: false },
       mantenimiento_actualizar: {},
-      rutaVolver: ''
+      rutaVolver: '',
+      info_edificio: {},
+      info_centro_cableado: {},
+      info_gabinete: {},
+      info_elemento: {}
     };
   },
   mounted() {
@@ -138,7 +150,11 @@ export default {
     const registroObjeto = JSON.parse(registroString);
     this.rutaVolver = registroObjeto.ruta_volver
     this.idVolver = registroObjeto.id_volver
-    this.mantenimiento = registroObjeto
+    this.mantenimiento = registroObjeto,
+    this.info_edificio = registroObjeto.info_edificio
+    this.info_centro_cableado = registroObjeto.info_centro_cableado
+    this.info_gabinete = registroObjeto.info_gabinete
+    this.info_elemento = registroObjeto.info_elemento
     this.verInfo(registroObjeto.id);
     this.verArchivos()
   },
@@ -229,7 +245,10 @@ export default {
       const rutaVolver = this.rutaVolver
       console.log(rutaVolver)
       const datosRegistro = {
-        id
+        id,
+        info_edificio: this.info_edificio,
+        info_centro_cableado: this.info_centro_cableado,
+        info_gabinete: this.info_gabinete
       }
       location.href = "/" + rutaVolver + "?registro=" + JSON.stringify(datosRegistro)
     },

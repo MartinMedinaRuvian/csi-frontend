@@ -1,7 +1,13 @@
 <template>
   <div class="text-center">
-    <h4 class="text-success mb-5"><span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
-      Información del Elemento Activo</h4>
+    <h4 class="text-success mb-5">
+      <span class="text-primary">
+        <h6>{{ info_edificio.nombre }} - C. CABLEADO #{{ info_centro_cableado.numero }} - GABINETE R{{
+          info_gabinete.numero }}</h6>
+      </span>
+      <span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
+      Información del Elemento Activo
+    </h4>
     <div class="informacion">
       <div class="informacion-basica">
         <div class="contenedor-imagen">
@@ -31,7 +37,7 @@
 
       <div class="informacion-secundario">
         <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" />
-        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" />
+        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" :info_elemento="info_elemento" />
       </div>
     </div>
     <div class="informacion-principal_elemento">
@@ -66,7 +72,7 @@
 
     <div class="collapse" id="collapseMantenimientoTarjeta">
       <MantenimientoTarjeta :mantenimientos="mantenimientos"
-        :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" />
+        :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" :info_elemento="info_elemento" />
     </div>
 
     <!-- Modal Atualizar Imagen-->
@@ -184,13 +190,20 @@ export default {
       urlSinImagenPasivo: this.axios.defaults.baseURL + '/archivos/elemento_pasivo_default.svg',
       tablaTipo: 'tipo_referencia',
       tituloTipo: 'Nueva Referencia',
-      guardarTipo: false
+      guardarTipo: false,
+      info_edificio: {},
+      info_centro_cableado: {},
+      info_gabinete: {},
+      info_elemento: {}
     };
   },
   mounted() {
     const registroString = this.$route.query.registro;
     const registroObjeto = JSON.parse(registroString);
     this.elemento = registroObjeto;
+    this.info_edificio = registroObjeto.info_edificio
+    this.info_centro_cableado = registroObjeto.info_centro_cableado
+    this.info_gabinete = registroObjeto.info_gabinete
     this.verInfo()
     this.verArchivos()
     this.verProyectos()
@@ -295,7 +308,9 @@ export default {
     volver() {
       const id = this.elemento.id_gabinete
       const datosRegistro = {
-        id
+        id,
+        info_edificio: this.info_edificio,
+        info_centro_cableado: this.info_centro_cableado
       }
       location.href = "/gabinete?registro=" + JSON.stringify(datosRegistro)
     },
@@ -304,6 +319,10 @@ export default {
       this.axios.get("elemento_activo/info/" + id).then((respuesta) => {
         if (respuesta.status === 200) {
           this.elemento = respuesta.data;
+          this.info_elemento = {
+            id: this.elemento.id,
+            codigo: this.elemento.codigo
+          }
         }
       });
     },
@@ -315,7 +334,9 @@ export default {
       const idGabinete = this.elemento.id_gabinete
       const datosRegistro = {
         ...elemento,
-        id_gabinete: idGabinete
+        info_edificio: this.info_edificio,
+        info_centro_cableado: this.info_centro_cableado,
+        info_gabinete: this.info_gabinete
       }
       location.href = "/actualizar-elemento-activo?registro=" + JSON.stringify(datosRegistro)
     }

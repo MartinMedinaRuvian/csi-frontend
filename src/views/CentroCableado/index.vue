@@ -1,6 +1,8 @@
 <template>
   <div class="text-center">
-    <h4 class="text-success mb-5"><span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
+    <h4 class="text-success mb-5">
+      <span class="text-primary"><h6>{{ info_edificio.nombre }}</h6></span>
+      <span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
       Información Centro de Cableado</h4>
     <div class="informacion">
       <div class="informacion-basica">
@@ -27,13 +29,15 @@
 
         <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalactualizarCentroCableado"
           @click="verDatosModal()">Actualizar</button>
-        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal" data-target="#modaleliminarCentroCableado">Eliminar</button>
+        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
+          data-target="#modaleliminarCentroCableado">Eliminar</button>
       </div>
 
       <div class="informacion-secundario">
         <ArchivoTarjeta :archivos="archivos"
           :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" />
-          <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id}" />
+        <ProyectoTarjeta :proyectos="proyectos"
+          :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" />
       </div>
     </div>
 
@@ -53,7 +57,8 @@
       Gabinetes - RAWs
     </button>
     <div class="collapse contenedor-tarjeta" id="collapseGabineteTarjeta">
-      <GabineteTarjeta :gabinetes="gabinetes" :id_centro_cableado="centro_cableado.id" />
+      <GabineteTarjeta :gabinetes="gabinetes" :info_centro_cableado="info_centro_cableado"
+        :info_edificio="info_edificio" />
     </div>
     <!-- Modal Atualizar Imagen-->
     <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"
@@ -263,13 +268,19 @@ export default {
       ruta_servidor: this.axios.defaults.baseURL,
       tiposCentroCableado: ['EN OFICINA', 'INDEPENDIENTE'],
       opcionesRespuesta: [{ descripcion: 'SI', valor: 'S' }, { descripcion: 'NO', valor: 'N' }],
-      centro_cableado_actualizar: {}
+      centro_cableado_actualizar: {},
+      info_edificio: {},
+      info_centro_cableado: {}
     };
   },
   mounted() {
     const registroString = this.$route.query.registro;
     const registroObjeto = JSON.parse(registroString);
     this.centro_cableado = registroObjeto;
+    console.log(registroObjeto, 'registrocentro')
+
+    this.info_edificio = registroObjeto.info_edificio
+
     this.verInfo()
     this.verGabinetes()
     this.verArchivos()
@@ -314,7 +325,7 @@ export default {
           this.archivos = respuesta.data;
         }
       });
-    }, 
+    },
     verProyectos() {
       const id = this.centro_cableado.id
       this.axios.get("proyecto/centro_cableado/" + id).then((respuesta) => {
@@ -385,6 +396,10 @@ export default {
         if (respuesta.status === 200) {
           this.centro_cableado = respuesta.data;
           console.log(this.centro_cableado, 'centro_cableadooo')
+          this.info_centro_cableado = {
+            id: this.centro_cableado.id,
+            numero: this.centro_cableado.numero
+          }
         }
       });
     },

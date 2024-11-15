@@ -31,7 +31,7 @@
       Centros de Cableado
     </button>
     <div class="collapse contenedor-tarjeta" id="collapseCentroCableadoTarjeta">
-      <CentroCableadoTarjeta :centros_cableados="centros_cableados" :id_edificio="edificio.id" />
+      <CentroCableadoTarjeta :centros_cableados="centros_cableados" :info_edificio="edificio" />
     </div>
     <!-- Modal Atualizar Imagen-->
     <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"

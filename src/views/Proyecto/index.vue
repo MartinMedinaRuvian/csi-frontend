@@ -1,26 +1,35 @@
 <template>
   <div class="text-center">
-    <h4 class="text-success mb-5"><span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
-      Información Del Proyecto</h4>
+    <h4 class="text-success mb-5">
+      <span class="text-primary">
+        <h6 v-if="rutaVolver !== 'centro-cableado'">{{ info_edificio.nombre }} - C. CABLEADO #{{
+          info_centro_cableado.numero }} - GABINETE R{{
+            info_gabinete.numero }} - ELEMENTO {{ info_elemento.codigo }}</h6>
+        <h6 v-else>{{ info_edificio.nombre }} - C. CABLEADO #{{ info_centro_cableado.numero }}</h6>
+      </span>
+      <span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
+      Información Del Proyecto
+    </h4>
     <div class="informacion">
       <div class="informacion-basica">
 
         <h5 class="titulo mt-3 mb-5 text-primary">{{ proyecto.descripcion }}</h5>
-        
+
         <h5>{{ proyecto.nombre_empresa }} <br> <b>NIT.</b> {{ proyecto.nit_empresa }}</h5>
-        
-        <p> <b>Código:</b> {{ proyecto.codigo }} <br> <b>Certificación:</b> {{ proyecto.certificacion != null && proyecto.certificacion != undefined ? proyecto.certificacion : 'N/A' }}</p>
+
+        <p> <b>Código:</b> {{ proyecto.codigo }} <br> <b>Certificación:</b> {{ proyecto.certificacion != null &&
+          proyecto.certificacion != undefined ? proyecto.certificacion : 'N/A' }}</p>
 
         <p><b>Fecha:</b> {{ formatearFecha(proyecto.fecha) }}</p>
 
         <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarProyecto"
           @click="verDatosModal()">Actualizar</button>
-        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal" data-target="#modaleliminarProyecto">Eliminar</button>
+        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
+          data-target="#modaleliminarProyecto">Eliminar</button>
       </div>
 
       <div class="informacion-secundario">
-        <ArchivoTarjeta :archivos="archivos"
-          :info_tabla="{ nombre_tabla: 'proyecto', id: proyecto.id }" />
+        <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'proyecto', id: proyecto.id }" />
       </div>
     </div>
 
@@ -83,15 +92,15 @@
 
               <div class="form group mt-3">
                 <label for="nombre" class="requerido">Descripción:</label>
-                <input required type="text" placeholder="Ingrese la descripción" v-model="proyecto_actualizar.descripcion"
-                  class="form-control" />
+                <input required type="text" placeholder="Ingrese la descripción"
+                  v-model="proyecto_actualizar.descripcion" class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo" class="requerido">Nombre de la Empresa:</label>
-                  <input required type="text" placeholder="Ingrese el nombre Empresa" v-model="proyecto_actualizar.nombre_empresa"
-                    class="form-control" />
+                  <input required type="text" placeholder="Ingrese el nombre Empresa"
+                    v-model="proyecto_actualizar.nombre_empresa" class="form-control" />
                 </div>
               </div>
 
@@ -112,8 +121,8 @@
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo" class="requerido">Certificación:</label>
-                  <input required type="text" placeholder="Ingrese la certificación" v-model="proyecto_actualizar.certificacion"
-                    class="form-control" />
+                  <input required type="text" placeholder="Ingrese la certificación"
+                    v-model="proyecto_actualizar.certificacion" class="form-control" />
                 </div>
               </div>
 
@@ -149,7 +158,11 @@ export default {
       archivos: [],
       mensaje: { ver: false },
       proyecto_actualizar: {},
-      rutaVolver: ''
+      rutaVolver: '',
+      info_edificio: {},
+      info_centro_cableado: {},
+      info_gabinete: {},
+      info_elemento: {}
     };
   },
   mounted() {
@@ -158,6 +171,10 @@ export default {
     this.rutaVolver = registroObjeto.ruta_volver
     this.idVolver = registroObjeto.id_volver
     this.proyecto = registroObjeto
+    this.info_edificio = registroObjeto.info_edificio
+    this.info_centro_cableado = registroObjeto.info_centro_cableado
+    this.info_gabinete = registroObjeto.info_gabinete
+    this.info_elemento = registroObjeto.info_elemento
     this.verInfo(registroObjeto.id);
     this.verArchivos()
   },
@@ -250,7 +267,10 @@ export default {
       const rutaVolver = this.rutaVolver
       console.log(rutaVolver)
       const datosRegistro = {
-        id
+        id,
+        info_edificio: this.info_edificio,
+        info_centro_cableado: this.info_centro_cableado,
+        info_gabinete: this.info_gabinete
       }
       location.href = "/" + rutaVolver + "?registro=" + JSON.stringify(datosRegistro)
     },

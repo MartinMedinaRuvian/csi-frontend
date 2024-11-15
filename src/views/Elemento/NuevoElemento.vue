@@ -2,7 +2,7 @@
   <div class="container mx-auto d-flex justify-content-center">
     <div class="card">
       <div class="card-header text-center">
-        <h5 class="text-success">Nuevo Elemento Activo</h5>
+        <h5 class="text-success">Nuevo Elemento</h5>
       </div>
       <div class="card-body">
         <form @submit.prevent>
@@ -68,7 +68,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" v-if="tipo_elemento == 'ACTIVO'">
             <div class="form group mt-3">
               <label for="codigo">Código Inventario:</label>
               <input required type="text" placeholder="" v-model="elemento.codigo_inventario"
@@ -148,13 +148,19 @@ export default {
       tiposdispositivopasivo: [],
       id_gabinete: 0,
       tablaTipo: 'tipo_referencia',
-      tituloTipo: 'Nueva Referencia'
+      tituloTipo: 'Nueva Referencia',
+      info_edificio: {},
+      info_centro_cableado: {},
+      info_gabinete: {}
     }
   },
   mounted() {
     const registroString = this.$route.query.registro;
     const registroObjeto = JSON.parse(registroString);
     this.id_gabinete = registroObjeto.id;
+    this.info_edificio = registroObjeto.info_edificio
+    this.info_centro_cableado = registroObjeto.info_centro_cableado
+    this.info_gabinete = registroObjeto.info_gabinete
   },
   created() {
     this.verTiposDispositivosActivos()
@@ -323,7 +329,9 @@ export default {
     volver() {
       const id = this.id_gabinete
       const datosRegistro = {
-        id
+        id,
+        info_edificio: this.info_edificio,
+        info_centro_cableado: this.info_centro_cableado
       }
       location.href = "/gabinete?registro=" + JSON.stringify(datosRegistro)
     },

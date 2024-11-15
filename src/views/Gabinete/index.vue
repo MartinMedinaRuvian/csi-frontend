@@ -1,7 +1,12 @@
 <template>
   <div class="text-center">
-    <h4 class="text-success mb-5"><span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
-      Información Gabinete</h4>
+    <h4 class="text-success mb-5">
+      <span class="text-primary">
+        <h6>{{ info_edificio.nombre }} - C. CABLEADO #{{ info_centro_cableado.numero }}</h6>
+      </span>
+      <span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
+      Información Gabinete
+    </h4>
     <div class="informacion">
       <div class="informacion-basica">
         <h5 class="titulo">{{ gabinete.nombre }}</h5>
@@ -27,12 +32,12 @@
 
         <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarGabinete"
           @click="verDatosModal()">Actualizar</button>
-        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal" data-target="#modaleliminarGabinete">Eliminar</button>
+        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
+          data-target="#modaleliminarGabinete">Eliminar</button>
       </div>
 
       <div class="informacion-secundario">
-        <ArchivoTarjeta :archivos="archivos"
-          :info_tabla="{ nombre_tabla: 'gabinete', id: gabinete.id }" />
+        <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'gabinete', id: gabinete.id }" />
       </div>
     </div>
 
@@ -47,7 +52,8 @@
       Elementos
     </button>
     <div class="collapse contenedor-tarjeta" id="collapseElementoTarjeta">
-      <ElementoTarjeta :elementosActivos="elementosActivos" :elementosPasivos="elementosPasivos" :id_gabinete="gabinete.id" />
+      <ElementoTarjeta :elementosActivos="elementosActivos" :elementosPasivos="elementosPasivos"
+        :info_gabinete="info_gabinete" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" />
     </div>
     <!-- Modal Atualizar Imagen-->
     <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"
@@ -70,13 +76,11 @@
                 <div class="row">
                   <div class="col-md-12 col-lg-12">
                     <input type="file" class="form-control" name="archivo_gabinete" id="archivo_gabinete"
-                      @change="verImagen(gabinete.ruta_imagen)" accept="image/*"
-                      ref="inputArchivogabinete" required>
+                      @change="verImagen(gabinete.ruta_imagen)" accept="image/*" ref="inputArchivogabinete" required>
                   </div>
                   <div class="col-md-12 col-lg-12 mt-3">
                     <img class="imagen-previsualizacion" alt="imagen" id="imagenPrevisualizaciongabinete"
-                      ref="imagenPrevisualizaciongabinete"
-                      :src="rutaImagenVer(gabinete.ruta_imagen)">
+                      ref="imagenPrevisualizaciongabinete" :src="rutaImagenVer(gabinete.ruta_imagen)">
                   </div>
                 </div>
               </div>
@@ -154,7 +158,7 @@
                 <input required type="number" placeholder="Ingrese el Número" v-model="gabinete_actualizar.numero"
                   class="form-control" />
               </div>
-              
+
               <div class="form-group mt-3">
                 <label for="tipo" class="requerido">Tipo:</label>
                 <select id="tipo" class="form-select form-control" v-model="gabinete_actualizar.id_tipo_gabinete">
@@ -167,7 +171,8 @@
               <div class="form-group">
                 <label for="tipo" class="requerido">¿Esta Aterrizado?</label>
                 <select id="tipo" class="form-select form-control" v-model="gabinete_actualizar.aterrizado">
-                  <option v-for="opcion in opcionesRespuesta" :value="opcion.valor" :key="opcion.valor" class="text-success">
+                  <option v-for="opcion in opcionesRespuesta" :value="opcion.valor" :key="opcion.valor"
+                    class="text-success">
                     {{ opcion.descripcion }}
                   </option>
                 </select>
@@ -180,7 +185,7 @@
                     class="form-control" />
                 </div>
               </div>
-       
+
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo">Observación:</label>
@@ -223,18 +228,24 @@ export default {
       ruta_servidor: this.axios.defaults.baseURL,
       tiposCentroCableado: ['EN OFICINA', 'INDEPENDIENTE'],
       opcionesRespuesta: [{ descripcion: 'SI', valor: 'S' }, { descripcion: 'NO', valor: 'N' }],
-      gabinete_actualizar: {}
+      gabinete_actualizar: {},
+      info_edificio: {},
+      info_centro_cableado: {},
+      info_gabinete: {}
     };
   },
   mounted() {
     const registroString = this.$route.query.registro;
     const registroObjeto = JSON.parse(registroString);
     this.gabinete = registroObjeto;
+    this.info_edificio = registroObjeto.info_edificio
+    this.info_centro_cableado = registroObjeto.info_centro_cableado
     this.verInfo()
     this.verElemenosActivos()
     this.verElemenosPasivos()
     this.verArchivos()
     this.verTiposGabinetes()
+
   },
   computed: {
     ...mapGetters(["usuario"]),
@@ -355,6 +366,10 @@ export default {
           this.gabinete = respuesta.data;
           console.log(this.gabinete, 'gabineteoo')
           this.verTipoGabinetePorId()
+          this.info_gabinete = {
+            id: this.gabinete.id,
+            numero: this.gabinete.numero
+          }
         }
       });
     },
@@ -369,24 +384,25 @@ export default {
     volver() {
       const id = this.gabinete.id_centro_cableado
       const datosRegistro = {
-        id
+        id,
+        info_edificio: this.info_edificio
       }
       location.href = "/centro-cableado?registro=" + JSON.stringify(datosRegistro)
     },
-    verTipoGabinetePorId(){
+    verTipoGabinetePorId() {
       const idTipoGabinete = this.gabinete.id_tipo_gabinete
       this.axios.get("tipo_gabinete/" + idTipoGabinete)
-      .then((respuesta)=>{
-        this.gabinete.tipo = respuesta.data.descripcion
-      })
-      .catch(error => console.log(error))
+        .then((respuesta) => {
+          this.gabinete.tipo = respuesta.data.descripcion
+        })
+        .catch(error => console.log(error))
     },
-    verTiposGabinetes(){
+    verTiposGabinetes() {
       this.axios.get("tipo_gabinete")
-      .then((respuesta)=>{
-        this.tiposGabinetes = respuesta.data
-      })
-      .catch(error => console.log(error))
+        .then((respuesta) => {
+          this.tiposGabinetes = respuesta.data
+        })
+        .catch(error => console.log(error))
     }
   }
 };
