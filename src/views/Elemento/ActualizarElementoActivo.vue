@@ -366,7 +366,7 @@ export default {
         cantidad_puertos_por_defecto: registroGuardar.cantidad_puertos_por_defecto,
         puerto_logico_por_defecto: registroGuardar.puerto_logico_por_defecto,
         puerto_fisico_por_defecto: registroGuardar.puerto_fisico_por_defecto,
-        id_gabinete: registroGuardar.id_gabinete,
+        id_gabinete: registroGuardar.info_gabinete.id,
         id_usuario: registroGuardar.id_usuario
       }
       this.axios
