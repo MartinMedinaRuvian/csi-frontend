@@ -13,7 +13,7 @@
           <ul class="list-group" v-for="proyecto in proyectos" :key="proyecto.id">
             <li class="list-group-item d-flex justify-content-between">
               <div class="texto-proyectos">
-                <p> <b>Código: </b> {{ proyecto.codigo }} - <b>Empresa: {{ proyecto.nombre_empresa }}</b>
+                <p> <b>Código: </b> {{ proyecto.codigo }} - <b>{{ proyecto.descripcion }}</b>
                 </p>
               </div>
               <div class="botones-proyectos">
@@ -49,36 +49,48 @@
           <div class="modal-body">
             <form @submit.prevent>
 
-              <div class="form group">
+              <div>
+                <v-autocomplete label="Buscar Proyecto Existente"
+                v-model="proyecto.id" :items="proyectosExistentes"
+                :item-title="titulosAutocompleteProyectosExistentes" item-value="id"
+                :filter="filterAutocompleteTipotitulosAutocompleteProyectosExistentes">
+              </v-autocomplete>
+              <button class="btn btn-success" @click="buscarInfoProyectoExistente()"  v-if="proyecto.id !== null && proyecto.id !== undefined">Agregar Proyecto Seleccionado</button>
+            </div>
+
+            <button class="btn btn-success mt-5" @click="agregarNuevoProyecto()" v-if="proyecto.id !== null && proyecto.id !== undefined">Agregar Nuevo</button>
+
+              <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Código:</label>
-                <input type="text" placeholder="Ingrese Código" v-model="proyecto.codigo" class="form-control" />
+                <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese Código" v-model="proyecto.codigo" class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Descripción:</label>
-                <input type="text" placeholder="Ingrese la Descripción" v-model="proyecto.descripcion" class="form-control" />
+                <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese la Descripción" v-model="proyecto.descripcion"
+                  class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Nombre de la Empresa:</label>
-                <input type="text" placeholder="Ingrese el Nombre de la Empresa" v-model="proyecto.nombre_empresa"
+                <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese el Nombre de la Empresa" v-model="proyecto.nombre_empresa"
                   class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">NIT de la Empresa:</label>
-                <input type="text" placeholder="Ingrese el NIT de la Empresa" v-model="proyecto.nit_empresa"
+                <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese el NIT de la Empresa" v-model="proyecto.nit_empresa"
                   class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Fecha:</label>
-                <input type="date" placeholder="Fecha" v-model="proyecto.fecha" class="form-control" />
+                <input :disabled="esProyectoExistente" type="date" placeholder="Fecha" v-model="proyecto.fecha" class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto">Certificación:</label>
-                <input type="text" placeholder="Certificación" v-model="proyecto.certificacion" class="form-control" />
+                <input :disabled="esProyectoExistente" type="text" placeholder="Certificación" v-model="proyecto.certificacion" class="form-control" />
               </div>
 
 
@@ -155,11 +167,14 @@ export default {
       proyecto: {},
       ruta_servidor: this.axios.defaults.baseURL,
       urlSinImagen: this.axios.defaults.baseURL + '/proyectos/proyecto_default.svg',
-      urlImg: ''
+      urlImg: '',
+      proyectosExistentes: [],
+      esProyectoExistente: false
     };
   },
   created() {
-    this.verFechaActual()
+    this.verFechaActual(),
+      this.verInfoPrincipalProyectosExistentes()
   },
   computed: {
     ...mapGetters(["usuario"]),
@@ -167,6 +182,16 @@ export default {
   methods: {
     verFechaActual() {
       this.proyecto.fecha = FechaUtil.fechaActual()
+    },
+    titulosAutocompleteProyectosExistentes(item) {
+      return `${item.codigo} - ${item.descripcion}`;
+    },
+    filterAutocompleteProyectosExistentes(item, queryText, itemText) {
+      return (
+        item.descripcion
+          .toLocaleLowerCase()
+          .indexOf(queryText.toLocaleLowerCase()) > -1
+      );
     },
     guardar() {
       const registroGuardar = this.proyecto
@@ -225,6 +250,28 @@ export default {
         name: "Proyecto",
         query: { registro: JSON.stringify(datosRegistro) },
       });
+    },
+    verInfoPrincipalProyectosExistentes() {
+      this.axios.get("/proyecto").then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.proyectosExistentes = respuesta.data;
+        }
+      });
+    },
+    buscarInfoProyectoExistente(){
+      const idProyecto = this.proyecto.id
+      this.axios.get("/proyecto/" + idProyecto).then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.proyecto = respuesta.data;
+          this.proyecto.fecha = FechaUtil.formatearFecha(this.proyecto.fecha)
+          this.esProyectoExistente = true
+        }
+      });
+    },
+    agregarNuevoProyecto(){
+      this.proyecto = {}
+      this.esProyectoExistente = false
+      this.verFechaActual()
     }
   }
 };
