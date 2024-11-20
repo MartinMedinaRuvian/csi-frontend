@@ -23,8 +23,8 @@
                     <span class="icon-Lupa"></span></button>
                 </span>
                 <span>
-                  <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2"
-                    @click="eliminarSoloProyectoTabla(proyecto)">
+                  <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2" data-toggle="modal"
+                    data-target="#modalEliminarProyectoTabla" @click="verDatosModal(proyecto)">
                     <span class="icon-Papelera"></span></button>
                 </span>
               </div>
@@ -55,47 +55,51 @@
             <form @submit.prevent>
 
               <div>
-                <v-autocomplete label="Buscar Proyecto Existente"
-                v-model="proyecto.id" :items="proyectosExistentes"
-                :item-title="titulosAutocompleteProyectosExistentes" item-value="id"
-                :filter="filterAutocompleteTipotitulosAutocompleteProyectosExistentes">
-              </v-autocomplete>
-              <button class="btn btn-success" @click="buscarInfoProyectoExistente()"  v-if="proyecto.id !== null && proyecto.id !== undefined">Agregar Proyecto Seleccionado</button>
-            </div>
+                <v-autocomplete label="Buscar Proyecto Existente" v-model="proyecto.id" :items="proyectosExistentes"
+                  :item-title="titulosAutocompleteProyectosExistentes" item-value="id"
+                  :filter="filterAutocompleteTipotitulosAutocompleteProyectosExistentes">
+                </v-autocomplete>
+                <button class="btn btn-success" @click="buscarInfoProyectoExistente()"
+                  v-if="proyecto.id !== null && proyecto.id !== undefined">Agregar Proyecto Seleccionado</button>
+              </div>
 
-            <button class="btn btn-success mt-5" @click="agregarNuevoProyecto()" v-if="proyecto.id !== null && proyecto.id !== undefined">Agregar Nuevo</button>
+              <button class="btn btn-success mt-5" @click="agregarNuevoProyecto()"
+                v-if="proyecto.id !== null && proyecto.id !== undefined">Agregar Nuevo</button>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Código:</label>
-                <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese Código" v-model="proyecto.codigo" class="form-control" />
+                <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese Código"
+                  v-model="proyecto.codigo" class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Descripción:</label>
-                <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese la Descripción" v-model="proyecto.descripcion"
-                  class="form-control" />
+                <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese la Descripción"
+                  v-model="proyecto.descripcion" class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Nombre de la Empresa:</label>
-                <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese el Nombre de la Empresa" v-model="proyecto.nombre_empresa"
-                  class="form-control" />
+                <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese el Nombre de la Empresa"
+                  v-model="proyecto.nombre_empresa" class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">NIT de la Empresa:</label>
-                <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese el NIT de la Empresa" v-model="proyecto.nit_empresa"
-                  class="form-control" />
+                <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese el NIT de la Empresa"
+                  v-model="proyecto.nit_empresa" class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Fecha:</label>
-                <input :disabled="esProyectoExistente" type="date" placeholder="Fecha" v-model="proyecto.fecha" class="form-control" />
+                <input :disabled="esProyectoExistente" type="date" placeholder="Fecha" v-model="proyecto.fecha"
+                  class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto">Certificación:</label>
-                <input :disabled="esProyectoExistente" type="text" placeholder="Certificación" v-model="proyecto.certificacion" class="form-control" />
+                <input :disabled="esProyectoExistente" type="text" placeholder="Certificación"
+                  v-model="proyecto.certificacion" class="form-control" />
               </div>
 
 
@@ -145,6 +149,44 @@
                 <div class="col-md-6 mt-3">
                   <input type="button" class="btn btn-danger form-control" value="Eliminar"
                     @click="eliminarProyecto()" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Eliminar Proyecto Tabla -->
+    <div class="modal fade" id="modalEliminarProyectoTabla" tabindex="-1" role="dialog"
+      aria-labelledby="modalEliminarProyectoTabla" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-success">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              ¿Eliminar Proyecto?
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="proyecto = {}">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form @submit.prevent>
+
+              <div class="form-group mt-4">
+                <p>Proyecto: <br> {{ proyecto.descripcion }}</p>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mt-3">
+                  <button type="button" class="btn btn-secondary form-control" data-dismiss="modal"
+                    @click="proyecto = {}">
+                    Cancelar
+                  </button>
+                </div>
+                <div class="col-md-6 mt-3">
+                  <input type="button" class="btn btn-danger form-control" value="Eliminar"
+                    @click="eliminarSoloProyectoTabla()" />
                 </div>
               </div>
             </form>
@@ -256,7 +298,7 @@ export default {
         }
       });
     },
-    buscarInfoProyectoExistente(){
+    buscarInfoProyectoExistente() {
       const idProyecto = this.proyecto.id
       this.axios.get("/proyecto/" + idProyecto).then((respuesta) => {
         if (respuesta.status === 200) {
@@ -266,19 +308,22 @@ export default {
         }
       });
     },
-    agregarNuevoProyecto(){
+    agregarNuevoProyecto() {
       this.proyecto = {}
       this.esProyectoExistente = false
       this.verFechaActual()
     },
-    eliminarSoloProyectoTabla(proyecto){
-      const idProyecto = proyecto.id
+    eliminarSoloProyectoTabla() {
+      const idProyecto = this.proyecto.id
       this.axios.delete('proyecto/eliminar_proyecto_tabla/' + this.info_tabla.nombre_tabla + '/' + this.info_tabla.id + '/' + idProyecto).then((respuesta) => {
         if (respuesta.status === 200) {
           location.reload()
         }
       }).catch(error => console.log(error))
-    }
+    },
+    verDatosModal(proyecto) {
+      this.proyecto = proyecto
+    },
   }
 };
 </script>
