@@ -2,11 +2,11 @@
   <div>
     <div class="container-principal_proyectos mt-5" v-if="(proyectos != null || proyectos != undefined)
       && proyectos.length > 0">
-      <h4 class="mb-5">Proyectos
+      <h5 class="mb-5">Proyectos
         <span>
           <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarProyecto">+</button>
         </span>
-      </h4>
+      </h5>
 
       <div id="dialog-window">
         <div id="scrollable-content" class="containe-imagenes mb-5">

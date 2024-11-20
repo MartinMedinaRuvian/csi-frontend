@@ -2,11 +2,11 @@
   <div>
     <div class="container-principal_archivos mt-5" v-if="(archivos != null || archivos != undefined)
       && archivos.length > 0">
-      <h4 class="mb-5">Archivos
+      <h5 class="mb-5">Archivos
         <span>
           <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarArchivo">+</button>
         </span>
-      </h4>
+      </h5>
 
       <div id="dialog-window">
         <div id="scrollable-content" class="containe-imagenes mb-5">
