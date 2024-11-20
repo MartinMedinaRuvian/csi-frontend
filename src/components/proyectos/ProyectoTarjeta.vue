@@ -22,6 +22,11 @@
                     @click="verProyecto(proyecto)">
                     <span class="icon-Lupa"></span></button>
                 </span>
+                <span>
+                  <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2"
+                    @click="eliminarSoloProyectoTabla(proyecto)">
+                    <span class="icon-Papelera"></span></button>
+                </span>
               </div>
             </li>
           </ul>
@@ -214,15 +219,8 @@ export default {
       const nombreTabla = this.info_tabla.nombre_tabla
       const id = this.info_tabla.id
       const idProyecto = this.proyecto.id
-      var formData = new FormData();
-      var file = document.querySelector("#proyecto");
-      formData.append("proyecto", file.files[0]);
       this.axios
-        .delete("proyecto/" + nombreTabla + "/" + id + "/" + idProyecto, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
+        .delete("proyecto/" + nombreTabla + "/" + id + "/" + idProyecto)
         .then((respuesta) => {
           if (respuesta.status == 200) {
             location.reload()
@@ -272,6 +270,14 @@ export default {
       this.proyecto = {}
       this.esProyectoExistente = false
       this.verFechaActual()
+    },
+    eliminarSoloProyectoTabla(proyecto){
+      const idProyecto = proyecto.id
+      this.axios.delete('proyecto/eliminar_proyecto_tabla/' + this.info_tabla.nombre_tabla + '/' + this.info_tabla.id + '/' + idProyecto).then((respuesta) => {
+        if (respuesta.status === 200) {
+          location.reload()
+        }
+      }).catch(error => console.log(error))
     }
   }
 };
