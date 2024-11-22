@@ -18,7 +18,7 @@
               </div>
               <div class="botones-mantenimientos">
                 <span>
-                  <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-success ml-2"
+                  <button class="btn-eliminar_item btn btn-success ml-2"
                     @click="verMantenimiento(mantenimiento)">
                     <span class="icon-Lupa"></span></button>
                 </span>

@@ -18,7 +18,7 @@
               </div>
               <div class="botones-proyectos">
                 <span>
-                  <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-success ml-2"
+                  <button class="btn-eliminar_item btn btn-success ml-2"
                     @click="verProyecto(proyecto)">
                     <span class="icon-Lupa"></span></button>
                 </span>
