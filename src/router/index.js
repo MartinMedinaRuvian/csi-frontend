@@ -101,10 +101,14 @@ const routes = [
     meta:{requiereAutorizacion:true}
   },
   {
+    path: '/recuperar-password',
+    name: 'RecuperarPassword',
+    component: () => import('@/views/Usuario/RecuperarPassword.vue')
+  },
+  {
     path: '/reset-password',
     name: 'ResetPassword',
-    component: () => import('@/views/Usuario/ResetPassword.vue'),
-    meta:{requiereAutorizacion:true}
+    component: () => import('@/views/Usuario/ResetPassword.vue')
   }
 ]
 

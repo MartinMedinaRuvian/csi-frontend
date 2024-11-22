@@ -26,6 +26,9 @@
           <div class="form-group">
             <button type="submit" class="btn btn-success">Continuar</button>
           </div>
+          <div class="form-group">
+            <a @click="cancelar()" class="btn btn-secondary">Cancelar</a>
+          </div>
         </form>
       </div>
     </div>
@@ -70,6 +73,9 @@ export default {
       } else {
         alert('Las contraseñas no coinciden.');
       }
+    },
+    cancelar(){
+      location.href = '/';
     }
   }
 };

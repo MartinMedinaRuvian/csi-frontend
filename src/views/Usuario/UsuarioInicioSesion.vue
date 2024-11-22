@@ -30,7 +30,10 @@
             </div>
           </div>
           <div class="form-group">
-            <button type="submit" class="btn btn-success">Continuar</button>
+            <button type="submit" class="btn btn-success mb-3">Continuar</button>
+          </div>
+          <div class="container-recuperar_password mt-5">
+            <a class="text-success" href="/recuperar-password">Olvide mi contraseña</a>
           </div>
         </form>
       </div>
