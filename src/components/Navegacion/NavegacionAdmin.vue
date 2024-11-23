@@ -26,6 +26,11 @@
             class="text-dark">Parámetros</router-link>
         </li>
 
+        <li class="nav-item ml-4">
+          <router-link data-toggle="collapse" data-target=".navbar-collapse.show" to="/logs"
+            class="text-dark">Histórico</router-link>
+        </li>
+
 
         <li class="nav-item ml-4">
           <button @click="cerrarSesion" data-toggle="collapse" data-target=".navbar-collapse.show"

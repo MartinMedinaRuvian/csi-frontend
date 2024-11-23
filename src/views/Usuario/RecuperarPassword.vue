@@ -13,7 +13,7 @@
           </div>
           <div v-show="loading" class="spinner-border spinner-border text-success" role="status">
           </div>
-          <div class="form-group">
+          <div class="form-group mt-5">
             <a @click="cancelar()" class="btn btn-secondary">Cancelar</a>
           </div>
         </form>
