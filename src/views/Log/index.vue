@@ -138,13 +138,4 @@ export default {
   align-content: center;
   align-items: center;
 }
-
-.requerido::before {
-  content: "* ";
-  /* Agrega el asterisco */
-  color: red;
-  /* Asterisco de color rojo */
-  font-weight: bold;
-  /* Opcional, para darle más énfasis */
-}
 </style>
