@@ -37,7 +37,9 @@
 
       <div class="informacion-secundario">
         <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" />
-        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" :info_elemento="info_elemento" @filtrar="filtrar" />
+        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }"
+          :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete"
+          :info_elemento="info_elemento" @filtrar="filtrar" />
       </div>
     </div>
     <div class="informacion-principal_elemento">
@@ -71,8 +73,78 @@
     </button>
 
     <div class="collapse" id="collapseMantenimientoTarjeta">
+      
+      <div class="container">
+        <div class="row mt-5">
+          <div class="form-group col-md-12">
+            <label for="select">Forma de busqueda:</label>
+            <select id="select" class="form-select form-control" aria-label="Default select example" v-model="buscarPorMantenimiento"
+              @change="paginaActualMantenimiento = 1">
+              <option :value="buscar.valor" v-for="buscar in tipoBusquedaMantenimiento" :key="buscar.valor" class="text-success">
+                {{ buscar.descripcion }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row" v-if="buscarPorMantenimiento !== 1">
+          <div class="form-group col-md-6">
+            <label for="fecha">Fecha Inicial:</label>
+            <input type="date" class="form-control" id="fecha" v-model="fechaInicialMantenimiento" :max="maximaFechaMantenimiento"
+              @change="paginaActualMantenimiento = 1" />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="fecha">Fecha Final:</label>
+            <input type="date" class="form-control" id="fecha" v-model="fechaFinalMantenimiento" :max="maximaFechaMantenimiento"
+              @change="paginaActualMantenimiento = 1" />
+          </div>
+          <div class="form-group col-md-12" v-if="buscarPorMantenimiento === 2">
+            <button class="btn btn-success" @click="verMantenimientos()">Buscar</button>
+          </div>
+        </div>
+        <div class="row" v-if="buscarPorMantenimiento !== 2">
+          <div class="form-group col-md-6">
+            <label for="select">Condicion:</label>
+            <select id="select" class="form-select form-control" aria-label="Default select example" v-model="condicionMantenimiento"
+              @change="paginaActualMantenimiento = 1">
+              <option :value="condicion.valor" v-for="condicion in condicionesMantenimiento" :key="condicion.valor"
+                class="text-success">
+                {{ condicion.descripcion }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="select">Buscar:</label>
+            <div class="input-buscar">
+              <input class="form-control" type="text" v-model="buscarMantenimiento" @keypress.enter="verMantenimientos()"
+                @keyup="paginaActual = 1" />
+              <button class="btn btn-success" @click="verMantenimientos()">
+                &#128269;
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <MantenimientoTarjeta :mantenimientos="mantenimientos"
-        :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" :info_elemento="info_elemento" />
+        :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" :info_edificio="info_edificio"
+        :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" :info_elemento="info_elemento" />
+
+      <div class="paginacion mt-5">
+        <button :disabled="paginaActualMantenimiento === 1" @click="cambiarPaginaMantenimiento(paginaActualMantenimiento - 1)" class="btn btn-success mr-2">
+          &laquo;
+        </button>
+
+        <button v-for="pagina in paginasVisiblesMantenimiento" :key="pagina" @click="cambiarPaginaMantenimiento(pagina)"
+          :class="['mr-2 btn', pagina === paginaActualMantenimiento ? 'btn-success' : 'btn-outline-success']">
+          {{ pagina }}
+        </button>
+
+        <button :disabled="paginaActualMantenimiento === Math.ceil(totalRegistrosMantenimiento / registrosPorPaginaMantenimiento)"
+          @click="cambiarPaginaMantenimiento(paginaActualMantenimiento + 1)" class="btn btn-success">
+          &raquo;
+        </button>
+      </div>
+
     </div>
 
     <!-- Modal Atualizar Imagen-->
@@ -194,7 +266,26 @@ export default {
       info_edificio: {},
       info_centro_cableado: {},
       info_gabinete: {},
-      info_elemento: {}
+      info_elemento: {},
+      condicionesMantenimiento: [
+        { descripcion: "CÓDIGO", valor: "m.codigo" },
+        { descripcion: "RESPONSABLE", valor: "m.responsable" },
+        { descripcion: "OBSERVACIÓN", valor: "m.observacion" }
+      ],
+      tipoBusquedaMantenimiento: [
+        { descripcion: "BUSCAR POR CONDICIÓN", valor: 1 },
+        { descripcion: "BUSCAR ENTRE FECHAS", valor: 2 },
+        { descripcion: "BUSCAR ENTRE FECHAS MÁS CONDICIÓN", valor: 3 },
+      ],
+      buscarPorMantenimiento: 1,
+      condicionMantenimiento: "m.codigo",
+      buscarMantenimiento: "",
+      fechaInicialMantenimiento: null,
+      fechaFinalMantenimiento: null,
+      maximaFechaMantenimiento: null,
+      totalRegistrosMantenimiento: 0,
+      paginaActualMantenimiento: 1,
+      registrosPorPaginaMantenimiento: 10
     };
   },
   mounted() {
@@ -207,17 +298,56 @@ export default {
     this.verInfo()
     this.verArchivos()
     this.verProyectos('p.codigo', '')
+    this.cargarFechaActual()
     this.verMantenimientos()
   },
   computed: {
     ...mapGetters(["usuario"]),
+    totalPaginas() {
+      return Math.ceil(this.totalRegistrosMantenimiento / this.registrosPorPaginaMantenimiento);
+    },
+    paginasVisiblesMantenimiento() {
+      const totalPaginas = Math.ceil(this.totalRegistrosMantenimiento / this.registrosPorPaginaMantenimiento);
+      const paginasPorMostrar = 5; // Número de páginas visibles
+      const inicio = Math.max(1, this.paginaActualMantenimiento - Math.floor(paginasPorMostrar / 2));
+      const fin = Math.min(totalPaginas, inicio + paginasPorMostrar - 1);
+
+      // Asegurarnos de que el rango sea fijo
+      const paginas = [];
+      for (let i = inicio; i <= fin; i++) {
+        paginas.push(i);
+      }
+
+      return paginas;
+    }
   },
   methods: {
-    filtrar(datos){
-      console.log(datos, 'titin')
+    cambiarPaginaMantenimiento(pagina) {
+      if (pagina > 0 && pagina <= this.totalPaginasMantenimiento) {
+        this.paginaActualMantenimiento = pagina;
+        this.verMantenimientos();
+      }
+    },
+    filtrar(datos) {
       const condicion = datos.condicion
       const buscar = datos.buscar
       this.verProyectos(condicion, buscar)
+    },
+    cargarFechaActual() {
+      let date = new Date();
+
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+
+      const dia = day < 10 ? "0" + day : day;
+      const mes = month < 10 ? "0" + month : month;
+
+      const fechaActual = year + "-" + mes + "-" + dia;
+
+      this.fechaInicialMantenimiento = fechaActual;
+      this.fechaFinalMantenimiento = fechaActual;
+      this.maximaFechaMantenimiento = fechaActual;
     },
     titulosAutocompleteReferencias(item) {
       return `${item.descripcion}`;
@@ -256,11 +386,49 @@ export default {
     },
     verMantenimientos() {
       const idelemento = this.elemento.id
-      this.axios.get("mantenimiento/elemento_activo/" + idelemento).then((respuesta) => {
-        if (respuesta.status === 200) {
-          this.mantenimientos = respuesta.data;
-        }
-      });
+
+      let buscarPor = {
+        limite: this.registrosPorPaginaMantenimiento,
+        pagina: this.paginaActualMantenimiento,
+      };
+
+      if (this.buscarPorMantenimiento === 1) {
+        // Buscar por condición
+        buscarPor = {
+          ...buscarPor,
+          condicion: this.condicionMantenimiento,
+          buscar: this.buscarMantenimiento,
+          buscarPor: this.buscarPorMantenimiento
+        };
+      } else if (this.buscarPorMantenimiento === 2) {
+        // Buscar entre fechas
+        buscarPor = {
+          ...buscarPor,
+          fechaInicial: this.fechaInicialMantenimiento,
+          fechaFinal: this.fechaFinalMantenimiento,
+          buscarPor: this.buscarPorMantenimiento
+        };
+      } else if (this.buscarPorMantenimiento === 3) {
+        // Buscar entre fechas más condición
+        buscarPor = {
+          ...buscarPor,
+          condicion: this.condicionMantenimiento,
+          buscar: this.buscarMantenimiento,
+          fechaInicial: this.fechaInicialMantenimiento,
+          fechaFinal: this.fechaFinalMantenimiento,
+          buscarPor: this.buscarPorMantenimiento
+        };
+      }
+      console.log(buscarPor, 'djtitin')
+        this.axios.post("mantenimiento/buscarporcondicion/elemento_activo/" + idelemento, buscarPor).then((respuesta) => {
+          if (respuesta.status === 200) {
+            this.mantenimientos = respuesta.data.datos;
+            this.totalRegistrosMantenimiento = respuesta.data.total;
+          }
+        })
+        .catch((error) => {
+          console.error("Error al obtener logs:", error);
+        });
     },
     actualizarImagen() {
       const nombreTabla = 'elemento_activo'

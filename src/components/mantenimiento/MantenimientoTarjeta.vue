@@ -1,7 +1,6 @@
 <template>
   <div>
-    <div class="container-principal_mantenimientos mt-5" v-if="(mantenimientos != null || mantenimientos != undefined)
-      && mantenimientos.length > 0">
+    <div class="container-principal_mantenimientos mt-5">
       <h4 class="mb-5">Mantenimientos
         <span>
           <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarMantenimiento">+</button>
@@ -13,7 +12,7 @@
           <ul class="list-group" v-for="mantenimiento in mantenimientos" :key="mantenimiento.id">
             <li class="list-group-item d-flex justify-content-between">
               <div class="texto-mantenimientos">
-                <p> <b>Código: </b> {{ mantenimiento.codigo }} - <b>Realizado Por:</b> {{ mantenimiento.realizado_por }} - <b>Fecha: </b> {{ formatearFecha(mantenimiento.fecha) }}
+                <p> <b>Código: </b> {{ mantenimiento.codigo }} - <b>Observación: </b> {{ mantenimiento.observacion }} - <b>Realizado Por:</b> {{ mantenimiento.realizado_por }} - <b>Fecha: </b> {{ formatearFecha(mantenimiento.fecha) }}
                 </p>
               </div>
               <div class="botones-mantenimientos">
@@ -27,11 +26,6 @@
           </ul>
         </div>
       </div>
-    </div>
-    <div v-else class="mt-5">
-      <h5>No hay Mantenimientos</h5>
-      <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarMantenimiento">Agregar
-        Mantenimiento</button>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="modalGuardarMantenimiento" tabindex="-1" role="dialog" aria-labelledby="modalGuardarMantenimiento"
