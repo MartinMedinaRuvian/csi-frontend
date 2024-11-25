@@ -29,8 +29,13 @@
                 </div>
               </div>
             </div>
-            <ElementoTabla :elementos="elementosActivos" :es_activo="true" :info_edificio="info_edificio"
-              :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" />
+            <div v-if="elementosActivos && elementosActivos.length > 0">
+              <ElementoTabla :elementos="elementosActivos" :es_activo="true" :info_edificio="info_edificio"
+                :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" />
+            </div>
+            <div class="mt-5" v-else>
+              <h5>No se encontraron coincidencias</h5>
+            </div>
           </div>
         </div>
         <div class="col columna-elementos_pasivos">
@@ -58,8 +63,13 @@
                 </div>
               </div>
             </div>
-            <ElementoTabla :elementos="elementosPasivos" :es_activo="false" :info_edificio="info_edificio"
-              :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" />
+            <div v-if="elementosPasivos && elementosPasivos.length > 0">
+              <ElementoTabla :elementos="elementosPasivos" :es_activo="false" :info_edificio="info_edificio"
+                :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" />
+            </div>
+            <div class="mt-5" v-else>
+              <h5>No se encontraron coincidencias</h5>
+            </div>
           </div>
         </div>
       </div>
