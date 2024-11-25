@@ -1,7 +1,6 @@
 <template>
   <div>
-    <div class="container-principal_proyectos mt-5" v-if="(proyectos != null || proyectos != undefined)
-      && proyectos.length > 0">
+    <div class="container-principal_proyectos mt-5">
       <h5 class="mb-5">Proyectos
         <span>
           <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarProyecto">+</button>
@@ -9,8 +8,30 @@
       </h5>
 
       <div id="dialog-window">
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="select">Condicion:</label>
+            <select id="select" class="form-select form-control" aria-label="Default select example"
+              v-model="condicion">
+              <option :value="condicion.valor" v-for="condicion in condiciones" :key="condicion.valor"
+                class="text-success">
+                {{ condicion.descripcion }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="select">Buscar:</label>
+            <div class="input-buscar">
+              <input class="form-control" type="text" v-model="buscar" @keypress.enter="filtrar()" />
+              <button class="btn btn-success" @click="filtrar()">
+                &#128269;
+              </button>
+            </div>
+          </div>
+        </div>
         <div id="scrollable-content" class="containe-imagenes mb-5">
-          <ul class="list-group" v-for="proyecto in proyectos" :key="proyecto.id">
+          <ul class="list-group" v-for="proyecto in proyectos" :key="proyecto.id" v-if="(proyectos != null || proyectos != undefined)
+            && proyectos.length > 0">
             <li class="list-group-item d-flex justify-content-between">
               <div class="texto-proyectos">
                 <p> <b>Código: </b> {{ proyecto.codigo }} - <b>{{ proyecto.descripcion }}</b>
@@ -18,8 +39,7 @@
               </div>
               <div class="botones-proyectos">
                 <span>
-                  <button class="btn-eliminar_item btn btn-success ml-2"
-                    @click="verProyecto(proyecto)">
+                  <button class="btn-eliminar_item btn btn-success ml-2" @click="verProyecto(proyecto)">
                     <span class="icon-Lupa"></span></button>
                 </span>
                 <span>
@@ -32,11 +52,6 @@
           </ul>
         </div>
       </div>
-    </div>
-    <div v-else class="mt-5">
-      <h5>No hay Proyectos</h5>
-      <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarProyecto">Agregar
-        Proyecto</button>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="modalGuardarProyecto" tabindex="-1" role="dialog" aria-labelledby="modalGuardarProyecto"
@@ -216,7 +231,13 @@ export default {
       urlSinImagen: this.axios.defaults.baseURL + '/proyectos/proyecto_default.svg',
       urlImg: '',
       proyectosExistentes: [],
-      esProyectoExistente: false
+      esProyectoExistente: false,
+      condiciones: [
+        { descripcion: "CÓDIGO", valor: "p.codigo" },
+        { descripcion: "DESCRIPCIÓN", valor: "p.descripcion" }
+      ],
+      condicion: 'p.codigo',
+      buscar: '',
     };
   },
   created() {
@@ -227,6 +248,14 @@ export default {
     ...mapGetters(["usuario"]),
   },
   methods: {
+    filtrar() {
+      const datosEnviar = {
+        condicion: this.condicion,
+        buscar: this.buscar
+      }
+      console.log(datosEnviar)
+      this.$emit('filtrar', datosEnviar)
+    },
     verFechaActual() {
       this.proyecto.fecha = FechaUtil.fechaActual()
     },
@@ -442,5 +471,12 @@ export default {
 
 .botones-proyectos {
   width: 15%;
+}
+
+.input-password,
+.input-buscar {
+  display: flex;
+  align-content: center;
+  align-items: center;
 }
 </style>

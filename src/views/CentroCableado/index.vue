@@ -37,7 +37,7 @@
         <ArchivoTarjeta :archivos="archivos"
           :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" />
         <ProyectoTarjeta :proyectos="proyectos"
-          :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" />
+          :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" @filtrar="filtrar" />
       </div>
     </div>
 
@@ -284,12 +284,18 @@ export default {
     this.verInfo()
     this.verGabinetes()
     this.verArchivos()
-    this.verProyectos()
+    this.verProyectos('p.codigo', '')
   },
   computed: {
     ...mapGetters(["usuario"]),
   },
   methods: {
+    filtrar(datos){
+      console.log(datos, 'titin')
+      const condicion = datos.condicion
+      const buscar = datos.buscar
+      this.verProyectos(condicion, buscar)
+    },
     crearMensaje(contenido, color) {
       this.mensaje.ver = true;
       this.mensaje.contenido = contenido;
@@ -326,9 +332,14 @@ export default {
         }
       });
     },
-    verProyectos() {
+    verProyectos(condicion, buscar) {
       const id = this.centro_cableado.id
-      this.axios.get("proyecto/centro_cableado/" + id).then((respuesta) => {
+      const buscarPor = {
+        condicion,
+        buscar
+      }
+      console.log(buscarPor, 'djtitin')
+      this.axios.post("proyecto/info_principal/centro_cableado/" + id, buscarPor).then((respuesta) => {
         if (respuesta.status === 200) {
           this.proyectos = respuesta.data;
         }
@@ -507,6 +518,10 @@ export default {
 .informacion-secundario {
   flex-basis: 100%;
   max-width: 100%;
+}
+
+.informacion-secundario {
+  margin-bottom: 180px;
 }
 
 .numero {

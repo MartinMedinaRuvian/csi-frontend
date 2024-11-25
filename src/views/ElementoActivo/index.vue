@@ -37,7 +37,7 @@
 
       <div class="informacion-secundario">
         <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" />
-        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" :info_elemento="info_elemento" />
+        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" :info_elemento="info_elemento" @filtrar="filtrar" />
       </div>
     </div>
     <div class="informacion-principal_elemento">
@@ -206,13 +206,19 @@ export default {
     this.info_gabinete = registroObjeto.info_gabinete
     this.verInfo()
     this.verArchivos()
-    this.verProyectos()
+    this.verProyectos('p.codigo', '')
     this.verMantenimientos()
   },
   computed: {
     ...mapGetters(["usuario"]),
   },
   methods: {
+    filtrar(datos){
+      console.log(datos, 'titin')
+      const condicion = datos.condicion
+      const buscar = datos.buscar
+      this.verProyectos(condicion, buscar)
+    },
     titulosAutocompleteReferencias(item) {
       return `${item.descripcion}`;
     },
@@ -236,9 +242,13 @@ export default {
         }
       });
     },
-    verProyectos() {
+    verProyectos(condicion, buscar) {
       const idelemento = this.elemento.id
-      this.axios.get("proyecto/elemento_activo/" + idelemento).then((respuesta) => {
+      const buscarPor = {
+        condicion,
+        buscar
+      }
+      this.axios.post("proyecto/info_principal/elemento_activo/" + idelemento, buscarPor).then((respuesta) => {
         if (respuesta.status === 200) {
           this.proyectos = respuesta.data;
         }
@@ -429,6 +439,10 @@ export default {
 .informacion-secundario {
   flex-basis: 100%;
   max-width: 100%;
+}
+
+.informacion-secundario {
+  margin-bottom: 180px;
 }
 
 .numero {
