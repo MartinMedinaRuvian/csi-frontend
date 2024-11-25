@@ -5,7 +5,8 @@
       <div class="row">
         <div class="form-group col-md-12">
           <label for="select">Forma de busqueda:</label>
-          <select id="select" class="form-select form-control" aria-label="Default select example" v-model="buscarPor" @change="paginaActual = 1">
+          <select id="select" class="form-select form-control" aria-label="Default select example" v-model="buscarPor"
+            @change="paginaActual = 1">
             <option :value="buscar.valor" v-for="buscar in tipoBusqueda" :key="buscar.valor" class="text-success">
               {{ buscar.descripcion }}
             </option>
@@ -15,11 +16,13 @@
       <div class="row" v-if="buscarPor !== 1">
         <div class="form-group col-md-6">
           <label for="fecha">Fecha Inicial:</label>
-          <input type="date" class="form-control" id="fecha" v-model="fechaInicial" :max="maximaFecha"  @change="paginaActual = 1"/>
+          <input type="date" class="form-control" id="fecha" v-model="fechaInicial" :max="maximaFecha"
+            @change="paginaActual = 1" />
         </div>
         <div class="form-group col-md-6">
           <label for="fecha">Fecha Final:</label>
-          <input type="date" class="form-control" id="fecha" v-model="fechaFinal" :max="maximaFecha"  @change="paginaActual = 1"/>
+          <input type="date" class="form-control" id="fecha" v-model="fechaFinal" :max="maximaFecha"
+            @change="paginaActual = 1" />
         </div>
         <div class="form-group col-md-12" v-if="buscarPor === 2">
           <button class="btn btn-success" @click="verLogs()">Buscar</button>
@@ -28,7 +31,8 @@
       <div class="row" v-if="buscarPor !== 2">
         <div class="form-group col-md-6">
           <label for="select">Condicion:</label>
-          <select id="select" class="form-select form-control" aria-label="Default select example" v-model="condicion" @change="paginaActual = 1">
+          <select id="select" class="form-select form-control" aria-label="Default select example" v-model="condicion"
+            @change="paginaActual = 1">
             <option :value="condicion.valor" v-for="condicion in condiciones" :key="condicion.valor"
               class="text-success">
               {{ condicion.descripcion }}
@@ -38,7 +42,8 @@
         <div class="form-group col-md-6">
           <label for="select">Buscar:</label>
           <div class="input-buscar">
-            <input class="form-control" type="text" v-model="buscar" @keypress.enter="verLogs()" @keyup="paginaActual = 1" />
+            <input class="form-control" type="text" v-model="buscar" @keypress.enter="verLogs()"
+              @keyup="paginaActual = 1" />
             <button class="btn btn-success" @click="verLogs()">
               &#128269;
             </button>
@@ -47,22 +52,22 @@
       </div>
     </div>
     <TablaLogs :logs="logs" />
-    <div class="mt-3">
-      <nav aria-label="Paginación">
-        <ul class="pagination justify-content-center">
-          <li class="page-item" :class="{ disabled: paginaActual === 1 }">
-            <button class="page-link" @click="cambiarPagina(paginaActual - 1)">Anterior</button>
-          </li>
-          <li class="page-item" v-for="pagina in totalPaginas" :key="pagina"
-            :class="{ active: pagina === paginaActual }">
-            <button class="page-link" @click="cambiarPagina(pagina)">{{ pagina }}</button>
-          </li>
-          <li class="page-item" :class="{ disabled: paginaActual === totalPaginas }">
-            <button class="page-link" @click="cambiarPagina(paginaActual + 1)">Siguiente</button>
-          </li>
-        </ul>
-      </nav>
+    <div class="paginacion">
+      <button :disabled="paginaActual === 1" @click="cambiarPagina(paginaActual - 1)" class="btn btn-success mr-2">
+        &laquo;
+      </button>
+
+      <button v-for="pagina in paginasVisibles" :key="pagina" @click="cambiarPagina(pagina)"
+        :class="['mr-2 btn', pagina === paginaActual ? 'btn-success' : 'btn-outline-success']">
+        {{ pagina }}
+      </button>
+
+      <button :disabled="paginaActual === Math.ceil(totalRegistros / registrosPorPagina)"
+        @click="cambiarPagina(paginaActual + 1)" class="btn btn-success">
+        &raquo;
+      </button>
     </div>
+
 
   </div>
 </template>
@@ -96,7 +101,20 @@ export default {
   computed: {
     totalPaginas() {
       return Math.ceil(this.totalRegistros / this.registrosPorPagina);
-    }
+    },
+    paginasVisibles() {
+      const totalPaginas = Math.ceil(this.totalRegistros / this.registrosPorPagina);
+      const paginasPorMostrar = 5; // Número de páginas visibles
+      const inicio = Math.max(1, this.paginaActual - Math.floor(paginasPorMostrar / 2));
+      const fin = Math.min(totalPaginas, inicio + paginasPorMostrar - 1);
+
+      // Asegurarnos de que el rango sea fijo
+      const paginas = [];
+      for (let i = inicio; i <= fin; i++) {
+        paginas.push(i);
+      }
+      return paginas;
+    },
   },
   created() {
     this.cargarFechaActual()
@@ -174,7 +192,7 @@ export default {
       const fechaMostrar = tipo === 'INICIAL' ? fecha + ' 00:00:00' : fecha + ' 23:59:59'
       return fechaMostrar
     },
-    reiniciarPaginacion(){
+    reiniciarPaginacion() {
       this.paginaActual = 1
     }
   },

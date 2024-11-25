@@ -53,7 +53,7 @@
     </button>
     <div class="collapse contenedor-tarjeta" id="collapseElementoTarjeta">
       <ElementoTarjeta :elementosActivos="elementosActivos" :elementosPasivos="elementosPasivos"
-        :info_gabinete="info_gabinete" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" />
+        :info_gabinete="info_gabinete" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :condicion="condicion" :buscar="buscar" @filtrar="filtrar" />
     </div>
     <!-- Modal Atualizar Imagen-->
     <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"
@@ -223,6 +223,8 @@ export default {
     return {
       gabinete: {},
       elementos: [],
+      elementosActivos: [],
+      elementosPasivos: [],
       archivos: [],
       mensaje: { ver: false },
       ruta_servidor: this.axios.defaults.baseURL,
@@ -241,8 +243,8 @@ export default {
     this.info_edificio = registroObjeto.info_edificio
     this.info_centro_cableado = registroObjeto.info_centro_cableado
     this.verInfo()
-    this.verElemenosActivos()
-    this.verElemenosPasivos()
+    this.verElemenosActivos('e.codigo', '')
+    this.verElemenosPasivos('e.codigo', '')
     this.verArchivos()
     this.verTiposGabinetes()
 
@@ -251,6 +253,16 @@ export default {
     ...mapGetters(["usuario"]),
   },
   methods: {
+    filtrar(datos){
+      console.log(datos,'dt')
+      const condicion = datos.condicion
+      const buscar = datos.buscar
+      if (datos.tipo === 'ACTIVO'){
+        this.verElemenosActivos(condicion, buscar)
+      } else {
+        this.verElemenosPasivos(condicion, buscar)
+      }
+    },
     crearMensaje(contenido, color) {
       this.mensaje.ver = true;
       this.mensaje.contenido = contenido;
@@ -270,17 +282,25 @@ export default {
           alert(error.response.data);
         });
     },
-    verElemenosActivos() {
+    verElemenosActivos(condicion, buscar) {
       const id = this.gabinete.id
-      this.axios.get("elemento_activo/info_principal/" + id).then((respuesta) => {
+      const buscarPor = {
+        condicion,
+        buscar
+      }
+      this.axios.post("elemento_activo/info_principal/" + id, buscarPor).then((respuesta) => {
         if (respuesta.status === 200) {
           this.elementosActivos = respuesta.data;
         }
       });
     },
-    verElemenosPasivos() {
+    verElemenosPasivos(condicion, buscar) {
       const id = this.gabinete.id
-      this.axios.get("elemento_pasivo/info_principal/" + id).then((respuesta) => {
+      const buscarPor = {
+        condicion,
+        buscar
+      }
+      this.axios.post("elemento_pasivo/info_principal/" + id, buscarPor).then((respuesta) => {
         if (respuesta.status === 200) {
           this.elementosPasivos = respuesta.data;
         }

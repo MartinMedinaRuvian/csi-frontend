@@ -8,7 +8,7 @@ import VueAxios from 'vue-axios'
 /**
  * Agregamos la URL base de nuestra API. Para conectarse al backend local:
  */
-const ipBackend = '192.168.0.111'
+const ipBackend = 'localhost'
 const puertoBackend = '5000'
 axios.defaults.baseURL = `http://${ipBackend}:${puertoBackend}`;
 

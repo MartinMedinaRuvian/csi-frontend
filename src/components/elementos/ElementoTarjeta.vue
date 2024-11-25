@@ -1,18 +1,65 @@
 <template>
   <div>
     <div class="container-principal">
-      <h4 class="mb-5">Elemento <span> <button class="btn btn-success" @click="guardarElemento()">+ </button></span></h4>
-        <div class="row">
-        <div v-if="elementosActivos && elementosActivos.length > 0" class="col columna-elementos_activos mr-2">
+      <h4 class="mb-5">Elemento <span> <button class="btn btn-success" @click="guardarElemento()">+ </button></span>
+      </h4>
+      <div class="row">
+        <div class="col columna-elementos_activos mr-2">
           <div class="contenedor-elementos">
             <h6 class="text-success"><b>ELEMENTOS ACTIVOS</b></h6>
-            <ElementoTabla :elementos="elementosActivos" :es_activo="true" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" />
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="select">Condición:</label>
+                <select id="select" class="form-select form-control" aria-label="Default select example"
+                  v-model="condicion">
+                  <option :value="condicion.valor" v-for="condicion in condiciones" :key="condicion.valor"
+                    class="text-success">
+                    {{ condicion.descripcion }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="select">Buscar:</label>
+                <div class="input-buscar">
+                  <input class="form-control" type="text" v-model="buscar"
+                    @keypress.enter="filtrarElementosActivos()" />
+                  <button class="btn btn-success" @click="filtrarElementosActivos()">
+                    &#128269;
+                  </button>
+                </div>
+              </div>
+            </div>
+            <ElementoTabla :elementos="elementosActivos" :es_activo="true" :info_edificio="info_edificio"
+              :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" />
           </div>
         </div>
-        <div v-if="elementosPasivos && elementosPasivos.length > 0" class="col columna-elementos_pasivos">
+        <div class="col columna-elementos_pasivos">
           <div class="contenedor-elementos">
             <h6 class="text-primary"><b>ELEMENTOS PASIVOS</b></h6>
-            <ElementoTabla :elementos="elementosPasivos" :es_activo="false" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" />
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="select">Condicion:</label>
+                <select id="select" class="form-select form-control" aria-label="Default select example"
+                  v-model="condicionElementoPasivo">
+                  <option :value="condicion.valor" v-for="condicion in condiciones" :key="condicion.valor"
+                    class="text-success">
+                    {{ condicion.descripcion }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="select">Buscar:</label>
+                <div class="input-buscar">
+                  <input class="form-control" type="text" v-model="buscarElementoPasivo"
+                    @keypress.enter="filtrarElementosPasivos()" />
+                  <button class="btn btn-success" @click="filtrarElementosPasivos()">
+                    &#128269;
+                  </button>
+                </div>
+              </div>
+            </div>
+            <ElementoTabla :elementos="elementosPasivos" :es_activo="false" :info_edificio="info_edificio"
+              :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" />
           </div>
         </div>
       </div>
@@ -67,7 +114,7 @@
                   </option>
                 </select>
               </div>
-              
+
               <div class="form-group mt-3" v-if="tipo_elemento == 'ACTIVO'">
                 <label for="tipo" class="requerido">Modelo:</label>
                 <select id="tipo" class="form-select form-control" v-model="elemento.id_tipo_modelo">
@@ -76,7 +123,7 @@
                   </option>
                 </select>
               </div>
-              
+
               <div class="form-group mt-3" v-if="tipo_elemento == 'ACTIVO'">
                 <label for="tipo" class="requerido">Marca:</label>
                 <select id="tipo" class="form-select form-control" v-model="elemento.id_tipo_marca">
@@ -104,7 +151,8 @@
                   </div>
                   <div class="col-md-12 col-lg-12 mt-3">
                     <img class="imagen-previsualizacion" alt="imagen" id="imagenPrevisualizacionCentroCableado"
-                      ref="imagenPrevisualizacionCentroCableado" :src="tipo_elemento == 'ACTIVO' ? urlSinImagenActivo : urlSinImagenPasivo">
+                      ref="imagenPrevisualizacionCentroCableado"
+                      :src="tipo_elemento == 'ACTIVO' ? urlSinImagenActivo : urlSinImagenPasivo">
                   </div>
                 </div>
               </div>
@@ -139,7 +187,7 @@ export default {
     elementosPasivos: [],
     info_gabinete: {},
     info_edificio: {},
-    info_centro_cableado:{}
+    info_centro_cableado: {}
   },
   data() {
     return {
@@ -153,18 +201,43 @@ export default {
       tiposreferencias: [],
       tiposmodelos: [],
       tiposmarcas: [],
-      opcionesRespuesta: ['S', 'N']
+      opcionesRespuesta: ['S', 'N'],
+      condiciones: [
+        { descripcion: "CÓDIGO", valor: "e.codigo" },
+        { descripcion: "DISPOSITIVO", valor: "td.descripcion" },
+        { descripcion: "ESTADO", valor: "e.estado" }
+      ],
+      condicion: 'e.codigo',
+      buscar: '',
+      condicionElementoPasivo: 'e.codigo',
+      buscarElementoPasivo: ''
     };
   },
-  created(){
+  created() {
     this.verTiposReferencias()
     this.verTiposModelos()
     this.verTiposMarcas()
-  },  
+  },
   computed: {
     ...mapGetters(["usuario"]),
   },
   methods: {
+    filtrarElementosActivos() {
+      const datosEnviar = {
+        tipo: 'ACTIVO',
+        condicion: this.condicion,
+        buscar: this.buscar
+      }
+      this.$emit('filtrar', datosEnviar)
+    },
+    filtrarElementosPasivos() {
+      const datosEnviar = {
+        tipo: 'PASIVO',
+        condicion: this.condicionElementoPasivo,
+        buscar: this.buscarElementoPasivo
+      }
+      this.$emit('filtrar', datosEnviar)
+    },
     verImagen() {
       const archivos = this.$refs.inputArchivoelemento.files;
       console.log(archivos)
@@ -271,7 +344,7 @@ export default {
         })
         .catch(error => console.log(error))
     },
-    guardarElemento(){
+    guardarElemento() {
       const id = this.info_gabinete.id
       const datosRegistro = {
         id,
@@ -356,16 +429,15 @@ export default {
   font-size: 20px;
 }
 
-.columna-elementos_activos{
+.columna-elementos_activos {
   padding: 20px;
   border: solid #28a745 1.5px;
   border-radius: 15px;
 }
 
-.columna-elementos_pasivos{
+.columna-elementos_pasivos {
   padding: 20px;
   border: solid #039BE5 1px;
   border-radius: 15px;
 }
-
 </style>
