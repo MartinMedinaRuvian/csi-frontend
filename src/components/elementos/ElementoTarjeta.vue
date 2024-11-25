@@ -450,4 +450,11 @@ export default {
   border: solid #039BE5 1px;
   border-radius: 15px;
 }
+
+.input-password,
+.input-buscar {
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
 </style>
