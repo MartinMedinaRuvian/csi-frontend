@@ -1,7 +1,6 @@
 <template>
   <div>
-    <div class="container-principal_archivos mt-5" v-if="(archivos != null || archivos != undefined)
-      && archivos.length > 0">
+    <div class="container-principal_archivos mt-5">
       <h5 class="mb-5">Archivos
         <span>
           <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarArchivo">+</button>
@@ -30,11 +29,6 @@
           </ul>
         </div>
       </div>
-    </div>
-    <div v-else class="mt-5">
-      <h5>No hay Archivos</h5>
-      <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarArchivo">Agregar
-        Archivo</button>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="modalGuardarArchivo" tabindex="-1" role="dialog" aria-labelledby="modalGuardarArchivo"
