@@ -285,7 +285,7 @@ export default {
       maximaFechaMantenimiento: null,
       totalRegistrosMantenimiento: 0,
       paginaActualMantenimiento: 1,
-      registrosPorPaginaMantenimiento: 10
+      registrosPorPaginaMantenimiento: 8
     };
   },
   mounted() {
@@ -303,12 +303,12 @@ export default {
   },
   computed: {
     ...mapGetters(["usuario"]),
-    totalPaginas() {
+    totalPaginasMantenimiento() {
       return Math.ceil(this.totalRegistrosMantenimiento / this.registrosPorPaginaMantenimiento);
     },
     paginasVisiblesMantenimiento() {
       const totalPaginas = Math.ceil(this.totalRegistrosMantenimiento / this.registrosPorPaginaMantenimiento);
-      const paginasPorMostrar = 5; // Número de páginas visibles
+      const paginasPorMostrar = 4; // Número de páginas visibles
       const inicio = Math.max(1, this.paginaActualMantenimiento - Math.floor(paginasPorMostrar / 2));
       const fin = Math.min(totalPaginas, inicio + paginasPorMostrar - 1);
 

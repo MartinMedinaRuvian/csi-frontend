@@ -50,48 +50,63 @@
     <!-- Modal -->
     <div class="modal fade" id="modalGuardarMantenimiento" tabindex="-1" role="dialog"
       aria-labelledby="modalGuardarMantenimiento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-      <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header bg-success">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Guardar Mantenimiento
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="mantenimiento = {}">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="agregarNuevoMantenimiento()">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
             <form @submit.prevent>
 
-              <div class="form group">
+              <div>
+                <v-autocomplete label="Buscar Mantenimiento Existente" v-model="mantenimiento.id"
+                  :items="mantenimientosExistentes" :item-title="titulosAutocompleteMantenimientosExistentes"
+                  item-value="id" :filter="filterAutocompleteMantenimientosExistentes">
+                </v-autocomplete>
+                <button class="btn btn-success" @click="buscarInfoMantenimientoExistente()"
+                  v-if="mantenimiento.id !== null && mantenimiento.id !== undefined">Agregar mantenimiento
+                  Seleccionado</button>
+              </div>
+
+              <button class="btn btn-success mt-5" @click="agregarNuevoMantenimiento()"
+              v-if="mantenimiento.id !== null && mantenimiento.id !== undefined">Agregar Nuevo</button>
+
+              <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Código:</label>
-                <input type="text" placeholder="Ingrese Código" v-model="mantenimiento.codigo" class="form-control" />
+                <input :disabled="esExistente" type="text" placeholder="Ingrese Código" v-model="mantenimiento.codigo"
+                  class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Realizado Por:</label>
-                <input type="text" placeholder="Ingrese el Realizado Por" v-model="mantenimiento.realizado_por"
-                  class="form-control" />
+                <input :disabled="esExistente" type="text" placeholder="Ingrese el Realizado Por"
+                  v-model="mantenimiento.realizado_por" class="form-control" />
               </div>
 
               <div class="form group mt-3">
                 <div class="form-group">
                   <label for="codigo" class="requerido">Observación:</label>
-                  <textarea type="text" placeholder="Ingrese una observación" v-model="mantenimiento.observacion"
-                    class="form-control" />
+                  <textarea :disabled="esExistente" type="text" placeholder="Ingrese una observación"
+                    v-model="mantenimiento.observacion" class="form-control" />
                 </div>
               </div>
 
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Fecha:</label>
-                <input type="date" placeholder="Fecha" v-model="mantenimiento.fecha" class="form-control" />
+                <input :disabled="esExistente" type="date" placeholder="Fecha" v-model="mantenimiento.fecha"
+                  class="form-control" />
               </div>
 
               <div class="row">
                 <div class="col-md-6 mt-3">
                   <button type="button" class="btn btn-secondary form-control" data-dismiss="modal"
-                    @click="mantenimiento = {}">
+                    @click="agregarNuevoMantenimiento()">
                     Cancelar
                   </button>
                 </div>
@@ -113,7 +128,7 @@
             <h5 class="modal-title" id="exampleModalLongTitle">
               Eliminar Mantenimiento
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="mantenimiento = {}">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="agregarNuevoMantenimiento()">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -127,7 +142,7 @@
               <div class="row">
                 <div class="col-md-6 mt-3">
                   <button type="button" class="btn btn-secondary form-control" data-dismiss="modal"
-                    @click="mantenimiento = {}">
+                    @click="agregarNuevoMantenimiento()">
                     Cancelar
                   </button>
                 </div>
@@ -161,11 +176,14 @@ export default {
       mantenimiento: {},
       ruta_servidor: this.axios.defaults.baseURL,
       urlSinImagen: this.axios.defaults.baseURL + '/mantenimientos/mantenimiento_default.svg',
-      urlImg: ''
+      urlImg: '',
+      mantenimientosExistentes: [],
+      esExistente: false
     };
   },
   created() {
     this.verFechaActual()
+    this.verInfoPrincipalMantenimientosExistentes()
   },
   computed: {
     ...mapGetters(["usuario"]),
@@ -173,6 +191,42 @@ export default {
   methods: {
     verFechaActual() {
       this.mantenimiento.fecha = FechaUtil.fechaActual()
+    },
+    titulosAutocompleteMantenimientosExistentes(item) {
+      return `${item.codigo} - ${this.observacionVer(item.observacion)} - ${item.realizado_por}`;
+    },
+    observacionVer(observacion){
+      const limiteTexto = 50
+      return observacion && observacion.length >= limiteTexto ? observacion.slice(0, limiteTexto) + '...' : observacion
+    },
+    filterAutocompleteMantenimientosExistentes(item, queryText, itemText) {
+      return (
+        item.observacion
+          .toLocaleLowerCase()
+          .indexOf(queryText.toLocaleLowerCase()) > -1
+      );
+    },
+    verInfoPrincipalMantenimientosExistentes() {
+      this.axios.get("/mantenimiento").then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.mantenimientosExistentes = respuesta.data;
+        }
+      });
+    },
+    buscarInfoMantenimientoExistente() {
+      const idMantenimiento = this.mantenimiento.id
+      this.axios.get("/mantenimiento/" + idMantenimiento).then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.mantenimiento = respuesta.data;
+          this.mantenimiento.fecha = FechaUtil.formatearFecha(this.mantenimiento.fecha)
+          this.esExistente = true
+        }
+      });
+    },
+    agregarNuevoMantenimiento(){
+      this.mantenimiento = {}
+      this.esExistente = false
+      this.verFechaActual()
     },
     guardar() {
       const registroGuardar = this.mantenimiento
@@ -320,12 +374,12 @@ export default {
 
 #dialog-window {
   width: 90%;
-  height: 550px;
+  height: 625px;
   margin-bottom: 40px;
 }
 
 #scrollable-content {
-  height: 550px;
+  height: 625px;
   overflow: auto;
   border: solid 0.3px #BDBDBD;
   border-radius: 10px
