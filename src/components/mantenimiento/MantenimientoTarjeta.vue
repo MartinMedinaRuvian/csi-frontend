@@ -40,6 +40,11 @@
                     <button class="btn-eliminar_item btn btn-success ml-2" @click="verMantenimiento(mantenimiento)">
                       <span class="icon-Lupa"></span></button>
                   </span>
+                  <span>
+                    <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2"
+                      data-toggle="modal" data-target="#modalEliminarMantenimiento" @click="verDatosModal(mantenimiento)">
+                      <span class="icon-Papelera"></span></button>
+                  </span>
                 </td>
               </tr>
             </tbody>
@@ -56,7 +61,8 @@
             <h5 class="modal-title" id="exampleModalLongTitle">
               Guardar Mantenimiento
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="agregarNuevoMantenimiento()">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+              @click="agregarNuevoMantenimiento()">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -74,7 +80,7 @@
               </div>
 
               <button class="btn btn-success mt-5" @click="agregarNuevoMantenimiento()"
-              v-if="mantenimiento.id !== null && mantenimiento.id !== undefined">Agregar Nuevo</button>
+                v-if="mantenimiento.id !== null && mantenimiento.id !== undefined">Agregar Nuevo</button>
 
               <div class="form group mt-3">
                 <label for="nombrecompleto" class="requerido">Código:</label>
@@ -128,7 +134,8 @@
             <h5 class="modal-title" id="exampleModalLongTitle">
               Eliminar Mantenimiento
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="agregarNuevoMantenimiento()">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+              @click="agregarNuevoMantenimiento()">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -195,7 +202,7 @@ export default {
     titulosAutocompleteMantenimientosExistentes(item) {
       return `${item.codigo} - ${this.observacionVer(item.observacion)} - ${item.realizado_por}`;
     },
-    observacionVer(observacion){
+    observacionVer(observacion) {
       const limiteTexto = 50
       return observacion && observacion.length >= limiteTexto ? observacion.slice(0, limiteTexto) + '...' : observacion
     },
@@ -223,7 +230,7 @@ export default {
         }
       });
     },
-    agregarNuevoMantenimiento(){
+    agregarNuevoMantenimiento() {
       this.mantenimiento = {}
       this.esExistente = false
       this.verFechaActual()
@@ -244,18 +251,12 @@ export default {
       }).catch(error => console.log(error))
     },
     eliminarMantenimiento() {
-      const id = this.centro_cableado.id
-      this.axios
-        .delete("centro_cableado/" + id)
-        .then((respuesta) => {
-          if (respuesta.status == 200) {
-            $("#modalEliminarMantenimiento").modal("hide");
-            this.volver()
-          }
-        })
-        .catch((error) => {
-          alert(error.response.data);
-        });
+      const idMantenimiento = this.mantenimiento.id
+      this.axios.delete('mantenimiento/eliminar_mantenimiento_tabla/' + this.info_tabla.nombre_tabla + '/' + this.info_tabla.id + '/' + idMantenimiento).then((respuesta) => {
+        if (respuesta.status === 200) {
+          location.reload()
+        }
+      }).catch(error => console.log(error))
     },
     verDatosModal(dato) {
       this.mantenimiento = { ...dato };
