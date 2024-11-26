@@ -9,27 +9,47 @@
 
       <div id="dialog-window">
         <div id="scrollable-content" class="containe-imagenes mb-5">
-          <ul class="list-group" v-for="mantenimiento in mantenimientos" :key="mantenimiento.id">
-            <li class="list-group-item d-flex justify-content-between">
-              <div class="texto-mantenimientos">
-                <p> <b>Código: </b> {{ mantenimiento.codigo }} - <b>Observación: </b> {{ mantenimiento.observacion }} - <b>Realizado Por:</b> {{ mantenimiento.realizado_por }} - <b>Fecha: </b> {{ formatearFecha(mantenimiento.fecha) }}
-                </p>
-              </div>
-              <div class="botones-mantenimientos">
-                <span>
-                  <button class="btn-eliminar_item btn btn-success ml-2"
-                    @click="verMantenimiento(mantenimiento)">
-                    <span class="icon-Lupa"></span></button>
-                </span>
-              </div>
-            </li>
-          </ul>
+
+
+          <table class="table table-responsive-md" v-if="mantenimientos.length > 0">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Observación</th>
+                <th scope="col">Realizado Por</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="mantenimiento in mantenimientos" :key="mantenimiento.id">
+                <td>
+                  <p>{{ mantenimiento.codigo }}</p>
+                </td>
+                <td>
+                  <p>{{ mantenimiento.observacion }}</p>
+                </td>
+                <td>
+                  <p>{{ mantenimiento.realizado_por }}</p>
+                </td>
+                <td>
+                  <p>{{ formatearFecha(mantenimiento.fecha) }}</p>
+                </td>
+                <td>
+                  <span>
+                    <button class="btn-eliminar_item btn btn-success ml-2" @click="verMantenimiento(mantenimiento)">
+                      <span class="icon-Lupa"></span></button>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="modalGuardarMantenimiento" tabindex="-1" role="dialog" aria-labelledby="modalGuardarMantenimiento"
-      aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal fade" id="modalGuardarMantenimiento" tabindex="-1" role="dialog"
+      aria-labelledby="modalGuardarMantenimiento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header bg-success">
@@ -212,7 +232,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container-principal_mantenimientos {
   display: flex;
   justify-content: center;
@@ -300,14 +320,15 @@ export default {
 
 #dialog-window {
   width: 90%;
-  height: 200px;
+  height: 550px;
   margin-bottom: 40px;
 }
 
 #scrollable-content {
-  height: 250px;
+  height: 550px;
   overflow: auto;
-  border: solid 1px #212121;
+  border: solid 0.3px #BDBDBD;
+  border-radius: 10px
 }
 
 #imagenMantenimientoVer {

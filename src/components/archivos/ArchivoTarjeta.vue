@@ -334,7 +334,8 @@ export default {
 #scrollable-content {
   height: 250px;
   overflow: auto;
-  border: solid 1px #212121;
+  border: solid 0.3px #BDBDBD;
+  border-radius: 10px;
 }
 
 #imagenArchivoVer {

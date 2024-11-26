@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container-principal_proyectos mt-5">
-      <h5 class="mb-5">Proyectos
+      <h5 class="mb-1 mt-5">Proyectos
         <span>
           <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarProyecto">+</button>
         </span>
@@ -357,7 +357,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container-principal_proyectos {
   display: flex;
   justify-content: center;
@@ -452,7 +452,8 @@ export default {
 #scrollable-content {
   height: 250px;
   overflow: auto;
-  border: solid 1px #212121;
+  border: solid 0.3px #BDBDBD;
+  border-radius: 10px;
 }
 
 #imagenProyectoVer {
