@@ -45,7 +45,7 @@
                 <span>
                   <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2" data-toggle="modal"
                     data-target="#modalEliminarProyectoTabla" @click="verDatosModal(proyecto)">
-                    <span class="icon-Papelera"></span></button>
+                    X</button>
                 </span>
               </div>
             </li>
@@ -179,7 +179,7 @@
         <div class="modal-content">
           <div class="modal-header bg-success">
             <h5 class="modal-title" id="exampleModalLongTitle">
-              ¿Eliminar Proyecto?
+              Quitar Proyecto
             </h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="proyecto = {}">
               <span aria-hidden="true">&times;</span>
@@ -189,7 +189,7 @@
             <form @submit.prevent>
 
               <div class="form-group mt-4">
-                <p>Proyecto: <br> {{ proyecto.descripcion }}</p>
+                <p>¿ Desea <b>Quitar</b> el Proyecto: <br> <b>{{ proyecto.codigo }}</b> del {{ info_tabla.nombre_tabla }} ?</p>
               </div>
 
               <div class="row">
@@ -200,7 +200,7 @@
                   </button>
                 </div>
                 <div class="col-md-6 mt-3">
-                  <input type="button" class="btn btn-danger form-control" value="Eliminar"
+                  <input type="button" class="btn btn-danger form-control" value="Quitar"
                     @click="eliminarSoloProyectoTabla()" />
                 </div>
               </div>

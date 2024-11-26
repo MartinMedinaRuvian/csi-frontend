@@ -23,7 +23,7 @@
               <div class="botones-archivos">
                 <span>
                   <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2" @click="verDatosModal(archivo)"
-                    data-toggle="modal" data-target="#modalEliminarArchivo">&#10006;</button>
+                    data-toggle="modal" data-target="#modalEliminarArchivo"><span class="icon-Papelera"></span></button>
                 </span>
               </div>
             </li>
