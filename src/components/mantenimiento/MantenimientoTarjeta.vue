@@ -3,7 +3,7 @@
     <div class="container-principal_mantenimientos mt-5">
       <h4 class="mb-5">Mantenimientos
         <span>
-          <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarMantenimiento">+</button>
+          <button data-placement="top" title="Agregar" class="btn btn-success" data-toggle="modal" data-target="#modalGuardarMantenimiento">+</button>
         </span>
       </h4>
 
@@ -37,12 +37,12 @@
                 </td>
                 <td>
                   <span>
-                    <button class="btn-eliminar_item btn btn-success ml-2" @click="verMantenimiento(mantenimiento)">
+                    <button data-placement="top" title="Ver" class="btn-eliminar_item btn btn-success ml-2" @click="verMantenimiento(mantenimiento)">
                       <span class="icon-Lupa"></span></button>
                   </span>
                   <span>
                     <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2"
-                      data-toggle="modal" data-target="#modalEliminarMantenimiento" @click="verDatosModal(mantenimiento)">
+                    data-placement="top" title="Quitar" data-toggle="modal" data-target="#modalEliminarMantenimiento" @click="verDatosModal(mantenimiento)">
                       X</button>
                   </span>
                 </td>

@@ -3,7 +3,7 @@
     <div class="container-principal_proyectos mt-5">
       <h5 class="mb-1 mt-5">Proyectos
         <span>
-          <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarProyecto">+</button>
+          <button data-placement="top" title="Agregar" class="btn btn-success" data-toggle="modal" data-target="#modalGuardarProyecto">+</button>
         </span>
       </h5>
 
@@ -23,7 +23,7 @@
             <label for="select">Buscar:</label>
             <div class="input-buscar">
               <input class="form-control" type="text" v-model="buscar" @keypress.enter="filtrar()" />
-              <button class="btn btn-success" @click="filtrar()">
+              <button data-placement="top" title="Ver" class="btn btn-success" @click="filtrar()">
                 &#128269;
               </button>
             </div>
@@ -39,11 +39,11 @@
               </div>
               <div class="botones-proyectos">
                 <span>
-                  <button class="btn-eliminar_item btn btn-success ml-2" @click="verProyecto(proyecto)">
+                  <button data-placement="top" title="Ver" class="btn-eliminar_item btn btn-success ml-2" @click="verProyecto(proyecto)">
                     <span class="icon-Lupa"></span></button>
                 </span>
                 <span>
-                  <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2" data-toggle="modal"
+                  <button data-placement="top" title="Quitar" v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2" data-toggle="modal"
                     data-target="#modalEliminarProyectoTabla" @click="verDatosModal(proyecto)">
                     X</button>
                 </span>

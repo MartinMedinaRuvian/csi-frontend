@@ -3,7 +3,7 @@
     <div class="container-principal_archivos mt-5">
       <h5 class="mb-5">Archivos
         <span>
-          <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarArchivo">+</button>
+          <button data-placement="top" title="Agregar" class="btn btn-success" data-toggle="modal" data-target="#modalGuardarArchivo">+</button>
         </span>
       </h5>
 
@@ -22,7 +22,7 @@
               <div class="botones-archivos">
                 <span>
                   <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2" @click="verDatosModal(archivo)"
-                    data-toggle="modal" data-target="#modalEliminarArchivo"><span class="icon-Papelera"></span></button>
+                   data-placement="top" title="Eliminar" data-toggle="modal" data-target="#modalEliminarArchivo"><span class="icon-Papelera"></span></button>
                 </span>
               </div>
             </li>

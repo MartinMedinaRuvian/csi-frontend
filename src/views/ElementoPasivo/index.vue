@@ -5,7 +5,7 @@
         <h6>{{ info_edificio.nombre }} - C. CABLEADO #{{ info_centro_cableado.numero }} - GABINETE R{{
           info_gabinete.numero }}</h6>
       </span>
-      <span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
+      <span><button class="btn btn-success"  data-placement="top" title="Volver" @click="volver()">&#8630;</button></span>
       Información del Elemento Pasivo
     </h4>
     <div class="informacion">
@@ -105,7 +105,7 @@
             <div class="input-buscar">
               <input class="form-control" type="text" v-model="buscarMantenimiento"
                 @keypress.enter="verMantenimientos()" @keyup="paginaActual = 1" />
-              <button class="btn btn-success" @click="verMantenimientos()">
+              <button data-placement="top" title="Ver" class="btn btn-success" @click="verMantenimientos()">
                 &#128269;
               </button>
             </div>

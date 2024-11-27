@@ -21,6 +21,7 @@
           </td>
           <td>
             <button
+              data-placement="top" title="Modificar"
               data-toggle="modal"
               data-target="#modalUsuarioEditar"
               class="btn btn-outline-warning"
@@ -31,6 +32,7 @@
           </td>
           <td>
             <button
+              data-placement="top" title="Desactivar"
               class="btn"
               :class="
                 usuario.estado === '1'
@@ -46,6 +48,7 @@
           </td>
           <td>
             <button
+              data-placement="top" title="Cambiar Clave"
               data-toggle="modal"
               data-target="#modalUsuarioCambiarPassword"
               class="btn btn-outline-danger"
@@ -56,6 +59,7 @@
           </td>
           <td>
             <button
+              data-placement="top" title="Eliminar"
               data-toggle="modal"
               data-target="#modalUsuarioEliminar"
               class="btn btn-outline-danger"

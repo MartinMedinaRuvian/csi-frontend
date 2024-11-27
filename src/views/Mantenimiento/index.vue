@@ -6,7 +6,7 @@
           info_centro_cableado.numero }} - GABINETE R{{
             info_gabinete.numero }} - ELEMENTO {{ info_elemento.codigo }}</h6>
       </span>
-      <span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
+      <span><button data-placement="top" title="Volver" class="btn btn-success" @click="volver()">&#8630;</button></span>
       Información Del Mantenimiento
     </h4>
     <div class="informacion">

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container-principal">
-      <h4 class="mb-5">Elemento <span> <button class="btn btn-success" @click="guardarElemento()">+ </button></span>
+      <h4 class="mb-5">Elemento <span> <button data-placement="top" title="Agregar" class="btn btn-success" @click="guardarElemento()">+ </button></span>
       </h4>
       <div class="row">
         <div class="col columna-elementos_activos mr-2">
@@ -23,7 +23,7 @@
                 <div class="input-buscar">
                   <input class="form-control" type="text" v-model="buscar"
                     @keypress.enter="filtrarElementosActivos()" />
-                  <button class="btn btn-success" @click="filtrarElementosActivos()">
+                  <button data-placement="top" title="Ver" class="btn btn-success" @click="filtrarElementosActivos()">
                     &#128269;
                   </button>
                 </div>
@@ -54,7 +54,7 @@
                 <div class="input-buscar">
                   <input class="form-control" type="text" v-model="buscarElementoPasivo"
                     @keypress.enter="filtrarElementosPasivos()" />
-                  <button class="btn btn-success" @click="filtrarElementosPasivos()">
+                  <button data-placement="top" title="Ver" class="btn btn-success" @click="filtrarElementosPasivos()">
                     &#128269;
                   </button>
                 </div>

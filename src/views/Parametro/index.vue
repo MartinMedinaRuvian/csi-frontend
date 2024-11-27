@@ -14,8 +14,7 @@
           </select>
         </div>
         <div class="col-md-6">
-          <button class="btn btn-success" data-toggle="modal"
-            data-target="#modalNuevoTipo">{{ tituloTipo }}</button>
+          <button class="btn btn-success" data-toggle="modal" data-target="#modalNuevoTipo">{{ tituloTipo }}</button>
         </div>
       </div>
       <ParametroTabla :parametros="parametros" :tabla="tabla" @refrescar="verTipos()" />
@@ -58,7 +57,8 @@ export default {
       opcionesTabla: [{ descripcion: 'Dispositivos Activos', valor: 'tipo_dispositivo_activo' },
       { descripcion: 'Dispositivos Pasivos', valor: 'tipo_dispositivo_pasivo' },
       { descripcion: 'Referencias', valor: 'tipo_referencia' },
-      { descripcion: 'Modelos', valor: 'tipo_modelo' }, { descripcion: 'Marcas', valor: 'tipo_marca' }],
+      { descripcion: 'Modelos', valor: 'tipo_modelo' }, { descripcion: 'Marcas', valor: 'tipo_marca' },
+      { descripcion: 'Gabinetes', valor: 'tipo_gabinete' }],
       tituloTipo: 'Nuevo Dispositivo'
     };
   },
@@ -87,13 +87,16 @@ export default {
         case 'tipo_marca':
           this.verTiposMarcas()
           break
+        case 'tipo_gabinete':
+          this.verTiposGabinetes()
+          break
         default:
           this.verTiposReferencias()
           break
       }
       $("#modalNuevoTipo").modal("hide");
       $("#modalActualizarTipo").modal("hide");
-      $("#modalEliminarTipo").modal("hide");     
+      $("#modalEliminarTipo").modal("hide");
     },
     verTiposReferencias() {
       this.axios.get("tipo/tipo_referencia")
@@ -132,6 +135,14 @@ export default {
         .then((respuesta) => {
           this.parametros = respuesta.data
           this.tituloTipo = 'Nuevo Dispositivo'
+        })
+        .catch(error => console.log(error))
+    },
+    verTiposGabinetes() {
+      this.axios.get("tipo/tipo_gabinete")
+        .then((respuesta) => {
+          this.parametros = respuesta.data
+          this.tituloTipo = 'Nuevo Gabinete'
         })
         .catch(error => console.log(error))
     },

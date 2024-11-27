@@ -2,7 +2,7 @@
   <div class="text-center">
     <h4 class="text-success mb-5">
       <span class="text-primary"><h6>{{ info_edificio.nombre }}</h6></span>
-      <span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
+      <span><button class="btn btn-success" data-placement="top" title="Volver" @click="volver()">&#8630;</button></span>
       Información Centro de Cableado</h4>
     <div class="informacion">
       <div class="informacion-basica">

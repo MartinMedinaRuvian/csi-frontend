@@ -7,7 +7,7 @@
             info_gabinete.numero }} - ELEMENTO {{ info_elemento.codigo }}</h6>
         <h6 v-else>{{ info_edificio.nombre }} - C. CABLEADO #{{ info_centro_cableado.numero }}</h6>
       </span>
-      <span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
+      <span><button data-placement="top" title="Volver" class="btn btn-success" @click="volver()">&#8630;</button></span>
       Información Del Proyecto
     </h4>
     <div class="informacion">

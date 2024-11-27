@@ -4,7 +4,7 @@
       <span class="text-primary">
         <h6>{{ info_edificio.nombre }} - C. CABLEADO #{{ info_centro_cableado.numero }}</h6>
       </span>
-      <span><button class="btn btn-success" @click="volver()">&#8630;</button></span>
+      <span><button data-placement="top" title="Volver" class="btn btn-success" @click="volver()">&#8630;</button></span>
       Información Gabinete
     </h4>
     <div class="informacion">

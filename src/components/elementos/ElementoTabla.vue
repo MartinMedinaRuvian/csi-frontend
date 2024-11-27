@@ -28,7 +28,7 @@
               <p>{{ elemento.estado }}</p>
             </td>
             <td>
-              <button data-toggle="modal" data-target="#modalelementoEditar" class="btn btn-outline-success"
+              <button data-placement="top" title="Ver" data-toggle="modal" data-target="#modalelementoEditar" class="btn btn-outline-success"
                 @click="verInfo(elemento)">
                 <span class="icon-Lupa"></span>
               </button>

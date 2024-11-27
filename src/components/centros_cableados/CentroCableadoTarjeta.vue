@@ -2,7 +2,7 @@
   <div>
     <div class="container-principal" v-if="(centros_cableados != null || centros_cableados != undefined)
       && centros_cableados.length > 0">
-      <h4 class="mb-5">Centros de Cableados <span> <button class="btn btn-success" data-toggle="modal"
+      <h4 class="mb-5">Centros de Cableados <span> <button data-placement="top" title="Agregar" class="btn btn-success" data-toggle="modal"
             data-target="#modalGuardarCentroCableado">+ </button></span></h4>
       <div class="row mt-5">
         <div class="col-sm-12 col-md-6 col-lg-3 mb-4" v-for="centro_cableado in centros_cableados"

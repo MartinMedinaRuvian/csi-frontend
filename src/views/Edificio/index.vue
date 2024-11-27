@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <h4 class="text-success mb-5"><span><button class="btn btn-success" @click="volver()">&#8630;</button></span> Información Edificio</h4>
+    <h4 class="text-success mb-5"><span><button data-placement="top" title="Volver" class="btn btn-success" @click="volver()">&#8630;</button></span> Información Edificio</h4>
     <div class="informacion">
       <div class="informacion-basica">
         <h5 class="titulo">{{ edificio.nombre }} - {{ edificio.codigo }}</h5>
