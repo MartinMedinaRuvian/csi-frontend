@@ -13,7 +13,7 @@
             data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Dispositivo</span>
           <v-autocomplete label="Dispositivo" class="requerido" v-model="elemento_actualizar.id_tipo_dispositivo_pasivo"
             :items="tiposdispositivopasivo" :item-title="titulosAutocompleteTipos" item-value="id"
-            :filter="filterAutocompleteTipotitulosAutocompleteTipos">
+            :filter="filterAutocompleteTipos">
           </v-autocomplete>
 
           <div class="form group mt-3">

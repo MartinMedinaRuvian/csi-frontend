@@ -17,7 +17,7 @@
               <v-autocomplete label="Dispositivo" class="requerido"
                 v-model="elemento_actualizar.id_tipo_dispositivo_activo" :items="tiposdispositivoactivo"
                 :item-title="titulosAutocompleteTipos" item-value="id"
-                :filter="filterAutocompleteTipotitulosAutocompleteTipos">
+                :filter="filterAutocompleteTipos">
               </v-autocomplete>
 
               <span @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')" class="boton-nuevo_elemento"
