@@ -21,7 +21,7 @@
           <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Dispositivo" class="requerido"
             v-model="elemento.id_tipo_dispositivo_activo" :items="tiposdispositivoactivo"
             :item-title="titulosAutocompleteTipos" item-value="id"
-            :filter="filterAutocompleteTipotitulosAutocompleteTipos">
+            :filter="filterAutocompleteTipos">
           </v-autocomplete>
 
           <span v-if="tipo_elemento == 'PASIVO'"
@@ -30,28 +30,28 @@
           <v-autocomplete v-if="tipo_elemento == 'PASIVO'" label="Dispositivo" class="requerido"
             v-model="elemento.id_tipo_dispositivo_pasivo" :items="tiposdispositivopasivo"
             :item-title="titulosAutocompleteTipos" item-value="id"
-            :filter="filterAutocompleteTipotitulosAutocompleteTipos">
+            :filter="filterAutocompleteTipos">
           </v-autocomplete>
 
           <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')"
             class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nueva Referencia</span>
           <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Referencia" class="requerido"
             v-model="elemento.id_tipo_referencia" :items="tiposreferencias" :item-title="titulosAutocompleteTipos"
-            item-value="id" :filter="filterAutocompleteTipotitulosAutocompleteTipos">
+            item-value="id" :filter="filterAutocompleteTipos">
           </v-autocomplete>
 
           <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_modelo', 'Nuevo Modelo')"
             class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Modelo</span>
           <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Modelo" class="requerido"
             v-model="elemento.id_tipo_modelo" :items="tiposmodelos" :item-title="titulosAutocompleteTipos"
-            item-value="id" :filter="filterAutocompleteTipotitulosAutocompleteTipos">
+            item-value="id" :filter="filterAutocompleteTipos">
           </v-autocomplete>
 
           <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_marca', 'Nueva Marca')"
             class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nueva Marca</span>
           <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Marca" class="requerido"
             v-model="elemento.id_tipo_marca" :items="tiposmarcas" :item-title="titulosAutocompleteTipos" item-value="id"
-            :filter="filterAutocompleteTipotitulosAutocompleteTipos">
+            :filter="filterAutocompleteTipos">
           </v-autocomplete>
 
           <div class="form group mt-3">
