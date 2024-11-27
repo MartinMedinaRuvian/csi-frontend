@@ -7,7 +7,6 @@
             <th scope="col">Imagen</th>
             <th scope="col">Dispositivo</th>
             <th scope="col">Código</th>
-            <th scope="col">Estado</th>
             <th scope="col">Acción</th>
           </tr>
         </thead>
@@ -23,9 +22,6 @@
             </td>
             <td>
               <p>{{ elemento.codigo }}</p>
-            </td>
-            <td>
-              <p>{{ elemento.estado }}</p>
             </td>
             <td>
               <button data-placement="top" title="Ver" data-toggle="modal" data-target="#modalelementoEditar" class="btn btn-outline-success"
