@@ -12,7 +12,7 @@
 
 
           <table class="table table-responsive-md" v-if="mantenimientos.length > 0">
-            <thead class="thead-light">
+            <thead class="thead-dark">
               <tr>
                 <th scope="col">Código</th>
                 <th scope="col">Observación</th>

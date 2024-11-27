@@ -1,11 +1,38 @@
 <template>
   <div class="text-center">
+    <div class="ruta">
+      <h6>
+        <span>
+          <v-icon color="red-accent-4" icon="mdi-domain"></v-icon>
+        </span>
+        <span class="ml-1">
+          {{ info_edificio.nombre }}
+        </span>
+        -
+        <span>
+          <v-icon color="red-accent-4" icon="mdi-ethernet"></v-icon>
+        </span>
+        <span>
+          C. CABLEADO #{{ info_centro_cableado.numero }}
+        </span>
+        -
+        <span>
+          <v-icon color="red-accent-4" icon="mdi-desktop-tower"></v-icon>
+        </span>
+        <span>
+          GABINETE R{{
+          info_gabinete.numero }}
+        </span>
+        -
+        <span>
+          <v-icon color="red-accent-4" icon="mdi-devices"></v-icon>
+        </span>
+        <span>
+          ELEMENTO {{ info_elemento.codigo }}
+        </span>
+      </h6>
+    </div>
     <h4 class="text-success mb-5">
-      <span class="text-primary">
-        <h6>{{ info_edificio.nombre }} - C. CABLEADO #{{
-          info_centro_cableado.numero }} - GABINETE R{{
-            info_gabinete.numero }} - ELEMENTO {{ info_elemento.codigo }}</h6>
-      </span>
       <span><button data-placement="top" title="Volver" class="btn btn-success" @click="volver()">&#8630;</button></span>
       Información Del Mantenimiento
     </h4>

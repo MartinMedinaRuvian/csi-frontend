@@ -1,9 +1,23 @@
 <template>
   <div class="text-center">
+    <div class="ruta">
+      <h6>
+        <span>
+          <v-icon color="red-accent-4" icon="mdi-domain"></v-icon>
+        </span>
+        <span class="ml-1">
+          {{ info_edificio.nombre }}
+        </span>
+        -
+        <span>
+          <v-icon color="red-accent-4" icon="mdi-database"></v-icon>
+        </span>
+        <span>
+          C. CABLEADO #{{ info_centro_cableado.numero }}
+        </span>
+      </h6>
+    </div>
     <h4 class="text-success mb-5">
-      <span class="text-primary">
-        <h6>{{ info_edificio.nombre }} - C. CABLEADO #{{ info_centro_cableado.numero }}</h6>
-      </span>
       <span><button data-placement="top" title="Volver" class="btn btn-success" @click="volver()">&#8630;</button></span>
       Información Gabinete
     </h4>
@@ -22,10 +36,8 @@
           <div class="form-group mt-3 observacion">
             <label for="codigo">Observación:</label>
             <textarea
-              v-if="gabinete.observacion != null && gabinete.observacion != undefined && gabinete.observacion.length > 0"
               disabled type="text" placeholder="Observación" v-model="gabinete.observacion"
               class="form-control textarea-center" />
-            <h6 v-else>Sin Observación</h6>
           </div>
 
         </div>

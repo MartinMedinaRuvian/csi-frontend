@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar fixed-top navbar-expand-md" id="navegacion">
     <router-link data-toggle="collapse" data-target=".navbar-collapse.show" class="navbar-brand titulo" to="/"><span
-        class="text-dark">CSI</span><span class="color-verde-principal">Control</span></router-link>
+        class="text-white">CSI</span><span class="text-dark">Control</span></router-link>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +34,7 @@
 
         <li class="nav-item ml-4">
           <button @click="cerrarSesion" data-toggle="collapse" data-target=".navbar-collapse.show"
-            class="btn btn-outline-success">Cerrar sesión</button>
+            class="btn btn-outline-light">Cerrar sesión</button>
         </li>
 
       </ul>

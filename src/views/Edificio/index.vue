@@ -1,37 +1,66 @@
 <template>
   <div class="text-center">
-    <h4 class="text-success mb-5"><span><button data-placement="top" title="Volver" class="btn btn-success" @click="volver()">&#8630;</button></span> Información Edificio</h4>
-    <div class="informacion">
-      <div class="informacion-basica">
-        <h5 class="titulo">{{ edificio.nombre }} - {{ edificio.codigo }}</h5>
-        <div class="contenedor-imagen">
-          <div class="imagen-wrapper">
-            <img id="imagen" :src="ruta_servidor + '/' + edificio.ruta_imagen" alt="">
+    <h4 class="text-success mb-5"><span><button class="btn btn-success"
+          @click="volver()">&#8630; <v-tooltip activator="parent" location="top">Volver</v-tooltip></button></span>
+      Información Edificio</h4>
+    <v-row class="mt-5">
+      <v-col>
+        <v-card class="mx-auto" max-width="500">
+
+          <div class="contenedor-imagen">
             <span class="icono-actualizar" data-toggle="modal" data-target="#modalActualizarImagen">
               &#x1F504;
+              <v-tooltip activator="parent" location="top">Cambiar Imagen</v-tooltip>
             </span>
+            <v-img height="300px" :src="ruta_servidor + '/' + edificio.ruta_imagen" alt="Imagen Edificio" cover></v-img>
           </div>
-          <div class="form-group mt-3 observacion">
-            <label for="codigo">Observación:</label>
-            <textarea v-if="edificio.observacion != null && edificio.observacion != undefined && edificio.observacion.length > 0" disabled type="text"
-              placeholder="Observación" v-model="edificio.observacion" class="form-control textarea-center" />
-            <h6 v-else>Sin Observación</h6>
-          </div>
-        </div>
-        <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarEdificio" @click="verDatosModal()">Actualizar</button>
-        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal" data-target="#modalEliminarEdificio">Eliminar</button>
-      </div>
-      <div class="informacion-secundario">
+
+          <v-card-title>
+            {{ edificio.nombre }} - {{ edificio.codigo }}
+          </v-card-title>
+
+          <v-card-actions>
+            <v-btn color="red-accent-4" text="Más información" @click="show = !show"></v-btn>
+
+            <v-spacer></v-spacer>
+
+            <v-btn :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn>
+          </v-card-actions>
+
+          <v-expand-transition>
+            <div v-show="show">
+              <v-card-text align="left">
+                <p v-if="edificio.observacion && edificio.observacion.length > 0"> <b>Observación:</b> <br> {{
+                  edificio.observacion }}</p>
+              </v-card-text>
+              <div class="botones mb-5">
+                <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarEdificio"
+                  @click="verDatosModal()">Actualizar</button>
+                <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
+                  data-target="#modalEliminarEdificio">Eliminar</button>
+              </div>
+            </div>
+          </v-expand-transition>
+        </v-card>
+      </v-col>
+      <v-col>
         <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'edificio', id: edificio.id }" />
-      </div>
+      </v-col>
+    </v-row>
+
+    <div class="mt-5">
+      <h4 class="text-danger"></h4>
+      <v-btn color="green-darken-1" @click="showCentroCableatoTarjeta = !showCentroCableatoTarjeta">Centros de Cableado
+        <v-icon :icon="showCentroCableatoTarjeta ? 'mdi-chevron-up' : 'mdi-chevron-down'" end></v-icon></v-btn>
     </div>
 
-    <button class="btn btn-success mt-5" data-toggle="collapse" data-target="#collapseCentroCableadoTarjeta"
-      aria-expanded="false" aria-controls="collapseCentroCableadoTarjeta">
-      Centros de Cableado
-    </button>
+    <v-expand-transition class="mt-5">
+      <div v-show="showCentroCableatoTarjeta">
+        <CentroCableadoTarjeta :centros_cableados="centros_cableados" :info_edificio="edificio" />
+      </div>
+    </v-expand-transition>
     <div class="collapse contenedor-tarjeta" id="collapseCentroCableadoTarjeta">
-      <CentroCableadoTarjeta :centros_cableados="centros_cableados" :info_edificio="edificio" />
+
     </div>
     <!-- Modal Atualizar Imagen-->
     <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"
@@ -116,9 +145,9 @@
         </div>
       </div>
     </div>
-        <!-- Modal Actualizar -->
-        <div class="modal fade" id="modalActualizarEdificio" tabindex="-1" role="dialog" aria-labelledby="modalActualizarEdificio"
-      aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <!-- Modal Actualizar -->
+    <div class="modal fade" id="modalActualizarEdificio" tabindex="-1" role="dialog"
+      aria-labelledby="modalActualizarEdificio" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header bg-success">
@@ -185,7 +214,9 @@ export default {
       archivos: [],
       mensaje: { ver: false },
       ruta_servidor: this.axios.defaults.baseURL,
-      edificio_actualizar: {}
+      edificio_actualizar: {},
+      show: false,
+      showCentroCableatoTarjeta: false
     };
   },
   mounted() {
@@ -302,7 +333,7 @@ export default {
       const dato = this.edificio
       this.edificio_actualizar = { ...dato };
     },
-    volver(){
+    volver() {
       location.href = '/'
     }
   }
@@ -339,13 +370,25 @@ export default {
 
 .icono-actualizar {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: rgba(255, 255, 255, 0.7);
-  /* Fondo para que se vea mejor sobre la imagen */
+  top: 8px;
+  /* Ajusta según tu diseño */
+  right: 8px;
+  /* Ajusta según tu diseño */
+  background-color: rgba(255, 255, 255, 0.8);
+  /* Fondo blanco semi-transparente para mejor visibilidad */
   border-radius: 50%;
+  /* Para hacer el fondo redondeado */
   padding: 5px;
+  /* Espaciado interno */
   cursor: pointer;
+  /* Cambia el cursor para indicar que es interactivo */
+  font-size: 20px;
+  /* Tamaño del ícono */
+  z-index: 10;
+  /* Asegura que esté por encima de la imagen */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .icono-actualizar {
@@ -353,6 +396,13 @@ export default {
   /* Tamaño del ícono */
   color: #212121;
   /* Color del ícono */
+}
+
+.icono-actualizar:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Cambia el fondo al pasar el mouse */
+  color: white;
+  /* Cambia el color del ícono al pasar el mouse */
 }
 
 .imagen-previsualizacion {

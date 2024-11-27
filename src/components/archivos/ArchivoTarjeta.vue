@@ -3,7 +3,7 @@
     <div class="container-principal_archivos mt-5">
       <h5 class="mb-5">Archivos
         <span>
-          <button data-placement="top" title="Agregar" class="btn btn-success" data-toggle="modal" data-target="#modalGuardarArchivo">+</button>
+          <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarArchivo">+ <v-tooltip activator="parent" location="top">Agregar</v-tooltip></button>
         </span>
       </h5>
 
@@ -12,17 +12,19 @@
           <ul class="list-group" v-for="archivo in archivos" :key="archivo.id">
             <li class="list-group-item d-flex justify-content-between">
               <div class="texto-archivos">
-                <span v-if="elArchivoEsUnaImagen(archivo.nombre)" class="texto-mediano text-success pointer-hand"
-                  data-toggle="modal" data-target="#modalVerImagen" @click="verDatosModal(archivo)">{{ archivo.nombre }}
-                </span>
-                <span v-else class="texto-mediano text-success pointer-hand" @click="descargarArchivo(archivo.ruta)">{{
-                  archivo.nombre }}
-                </span>
+                <p v-if="elArchivoEsUnaImagen(archivo.nombre)" class="texto-mediano text-white pointer-hand"
+                  data-toggle="modal" data-target="#modalVerImagen" @click="verDatosModal(archivo)"><b>{{ archivo.nombre }}</b>
+                  <v-tooltip activator="parent" location="top">Ver</v-tooltip>
+                </p>
+                <p v-else class="texto-mediano text-white pointer-hand" @click="descargarArchivo(archivo.ruta)"> <b>{{
+                  archivo.nombre }}</b>
+                  <v-tooltip activator="parent" location="top">Descargar</v-tooltip>
+                </p>
               </div>
               <div class="botones-archivos">
                 <span>
                   <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2" @click="verDatosModal(archivo)"
-                   data-placement="top" title="Eliminar" data-toggle="modal" data-target="#modalEliminarArchivo"><span class="icon-Papelera"></span></button>
+                  data-toggle="modal" data-target="#modalEliminarArchivo"><span class="icon-Papelera"></span> <v-tooltip activator="parent" location="top">Eliminar</v-tooltip></button>
                 </span>
               </div>
             </li>
@@ -233,7 +235,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container-principal_archivos {
   display: flex;
   justify-content: center;
@@ -328,8 +330,9 @@ export default {
 #scrollable-content {
   height: 250px;
   overflow: auto;
-  border: solid 0.3px #BDBDBD;
-  border-radius: 10px;
+  border: solid 0.5px #212121;
+  border-radius: 15px;
+  background-color: #fff;
 }
 
 #imagenArchivoVer {
@@ -341,7 +344,16 @@ export default {
   width: 85%;
   word-wrap: break-word !important;
 }
+
+.texto-archivos p {
+  font-size: 15px;
+}
+
 .botones-archivos{
   width: 15%;
+}
+#scrollable-content li {
+  background-color: #42A5F5;
+  color: #fff ;
 }
 </style>

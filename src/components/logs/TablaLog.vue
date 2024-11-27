@@ -1,7 +1,7 @@
 <template>
   <div class="mt-5">
     <table class="table table-responsive-md" v-if="logs.length > 0">
-      <thead class="thead-light">
+      <thead class="thead-dark">
         <tr>
           <th scope="col">Id Usuario</th>
           <th scope="col">Email Usuario</th>

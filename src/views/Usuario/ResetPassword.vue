@@ -7,21 +7,11 @@
         <form @submit.prevent="cambiarContraseña()" class="formulario">
           <div class="form-group mt-3">
             <label for="password">Nueva Contraseña:</label>
-            <input
-              type="password"
-              placeholder="Contraseña"
-              class="form-control"
-              v-model="usuario.password"
-            />
+            <input type="password" placeholder="Contraseña" class="form-control" v-model="usuario.password" />
           </div>
           <div class="form-group mt-3">
             <label for="confirmar_password">Confirmar Nueva Contraseña:</label>
-            <input
-              type="password"
-              placeholder="Contraseña"
-              class="form-control"
-              v-model="usuario.confirmar_password"
-            />
+            <input type="password" placeholder="Contraseña" class="form-control" v-model="usuario.confirmar_password" />
           </div>
           <div class="form-group">
             <button type="submit" class="btn btn-success">Continuar</button>
@@ -74,7 +64,7 @@ export default {
         alert('Las contraseñas no coinciden.');
       }
     },
-    cancelar(){
+    cancelar() {
       location.href = '/';
     }
   }

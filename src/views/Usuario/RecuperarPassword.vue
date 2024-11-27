@@ -1,11 +1,11 @@
 <template>
   <div class="text-center container-inicio-sesion">
-    <h5 class="text-success">Recuperar Contraseña</h5>
+    <h5 class="text-white">Recuperar Contraseña</h5>
     <div class="d-flex justify-content-center align-items-center container">
       <div class="row">
-        <form @submit.prevent="recuperarContraseña()" class="formulario">
+        <form @submit.prevent="recuperarContraseña()" class="formulario text-white">
           <div class="form-group mt-3">
-            <label for="password">Enviar un correo de recuperación al email:</label>
+            <label for="password"><b>Enviar un correo de recuperación al email:</b></label>
             <input type="email" placeholder="Ingrese el email" class="form-control" v-model="usuario.email" />
           </div>
           <div class="form-group">

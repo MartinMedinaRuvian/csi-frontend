@@ -1,10 +1,31 @@
 <template>
   <div class="text-center">
+    <div class="ruta">
+      <h6>
+        <span>
+          <v-icon color="red-accent-4" icon="mdi-domain"></v-icon>
+        </span>
+        <span class="ml-1">
+          {{ info_edificio.nombre }}
+        </span>
+        -
+        <span>
+          <v-icon color="red-accent-4" icon="mdi-ethernet"></v-icon>
+        </span>
+        <span>
+          C. CABLEADO #{{ info_centro_cableado.numero }}
+        </span>
+        -
+        <span>
+          <v-icon color="red-accent-4" icon="mdi-desktop-tower"></v-icon>
+        </span>
+        <span>
+          GABINETE R{{
+          info_gabinete.numero }}
+        </span>
+      </h6>
+    </div>
     <h4 class="text-success mb-5">
-      <span class="text-primary">
-        <h6>{{ info_edificio.nombre }} - C. CABLEADO #{{ info_centro_cableado.numero }} - GABINETE R{{
-          info_gabinete.numero }}</h6>
-      </span>
       <span><button class="btn btn-success" data-placement="top" title="Volver" @click="volver()">&#8630;</button></span>
       Información del Elemento Activo
     </h4>
@@ -22,10 +43,8 @@
           <div class="form-group mt-3 observacion">
             <label for="codigo">Observación:</label>
             <textarea
-              v-if="elemento.observacion != null && elemento.observacion != undefined && elemento.observacion.length > 0"
               disabled type="text" placeholder="Observación" v-model="elemento.observacion"
               class="form-control textarea-center" />
-            <h6 v-else>Sin Observación</h6>
           </div>
 
         </div>

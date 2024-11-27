@@ -1,9 +1,20 @@
 <template>
   <div class="text-center">
+    <div class="ruta">
+      <h6>
+        <span>
+          <v-icon color="red-accent-4" icon="mdi-domain"></v-icon>
+        </span>
+        <span class="ml-1">
+          {{ info_edificio.nombre }}
+        </span>
+      </h6>
+    </div>
     <h4 class="text-success mb-5">
-      <span class="text-primary"><h6>{{ info_edificio.nombre }}</h6></span>
-      <span><button class="btn btn-success" data-placement="top" title="Volver" @click="volver()">&#8630;</button></span>
-      Información Centro de Cableado</h4>
+      <span><button class="btn btn-success" data-placement="top" title="Volver"
+          @click="volver()">&#8630;</button></span>
+      Información Centro de Cableado
+    </h4>
     <div class="informacion">
       <div class="informacion-basica">
         <h5 class="titulo">{{ centro_cableado.nombre }}</h5>
@@ -18,11 +29,8 @@
           <h6 class="mt-3"><b>{{ centro_cableado.ubicacion }} - {{ centro_cableado.tipo }}</b></h6>
           <div class="form-group mt-3 observacion">
             <label for="codigo">Observación:</label>
-            <textarea
-              v-if="centro_cableado.observacion != null && centro_cableado.observacion != undefined && centro_cableado.observacion.length > 0"
-              disabled type="text" placeholder="Observación" v-model="centro_cableado.observacion"
+            <textarea disabled type="text" placeholder="Observación" v-model="centro_cableado.observacion"
               class="form-control textarea-center" />
-            <h6 v-else>Sin Observación</h6>
           </div>
 
         </div>
@@ -37,7 +45,8 @@
         <ArchivoTarjeta :archivos="archivos"
           :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" />
         <ProyectoTarjeta :proyectos="proyectos"
-          :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" @filtrar="filtrar" />
+          :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" :info_edificio="info_edificio"
+          :info_centro_cableado="info_centro_cableado" @filtrar="filtrar" />
       </div>
     </div>
 
@@ -290,7 +299,7 @@ export default {
     ...mapGetters(["usuario"]),
   },
   methods: {
-    filtrar(datos){
+    filtrar(datos) {
       console.log(datos, 'titin')
       const condicion = datos.condicion
       const buscar = datos.buscar

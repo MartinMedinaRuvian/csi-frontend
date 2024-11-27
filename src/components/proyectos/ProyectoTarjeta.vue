@@ -452,8 +452,9 @@ export default {
 #scrollable-content {
   height: 250px;
   overflow: auto;
-  border: solid 0.3px #BDBDBD;
+  border: solid 0.5px #212121;
   border-radius: 10px;
+  background-color: #fff;
 }
 
 #imagenProyectoVer {
@@ -479,5 +480,10 @@ export default {
   display: flex;
   align-content: center;
   align-items: center;
+}
+
+#scrollable-content li {
+  background-color: #FFCA28;
+  color: #000 ;
 }
 </style>
