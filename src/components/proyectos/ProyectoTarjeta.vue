@@ -3,7 +3,7 @@
     <div class="container-principal_proyectos mt-5">
       <h5 class="mb-1 mt-5">Proyectos
         <span>
-          <button data-placement="top" title="Agregar" class="btn btn-success" data-toggle="modal" data-target="#modalGuardarProyecto">+</button>
+          <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarProyecto">+ <v-tooltip activator="parent" location="top">Agregar</v-tooltip></button>
         </span>
       </h5>
 
@@ -23,8 +23,9 @@
             <label for="select">Buscar:</label>
             <div class="input-buscar">
               <input class="form-control" type="text" v-model="buscar" @keypress.enter="filtrar()" />
-              <button data-placement="top" title="Ver" class="btn btn-success" @click="filtrar()">
+              <button class="btn btn-success" @click="filtrar()">
                 &#128269;
+                <v-tooltip activator="parent" location="top">Ver</v-tooltip>
               </button>
             </div>
           </div>
@@ -39,13 +40,13 @@
               </div>
               <div class="botones-proyectos">
                 <span>
-                  <button data-placement="top" title="Ver" class="btn-eliminar_item btn btn-success ml-2" @click="verProyecto(proyecto)">
-                    <span class="icon-Lupa"></span></button>
+                  <button class="btn-eliminar_item btn btn-success ml-2" @click="verProyecto(proyecto)">
+                    <span class="icon-Lupa"></span> <v-tooltip activator="parent" location="top">Ver</v-tooltip></button>
                 </span>
                 <span>
-                  <button data-placement="top" title="Quitar" v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2" data-toggle="modal"
+                  <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2" data-toggle="modal"
                     data-target="#modalEliminarProyectoTabla" @click="verDatosModal(proyecto)">
-                    X</button>
+                    X <v-tooltip activator="parent" location="top">Quitar</v-tooltip></button>
                 </span>
               </div>
             </li>

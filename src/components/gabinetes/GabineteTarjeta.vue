@@ -3,7 +3,7 @@
     <div class="container-principal" v-if="(gabinetes != null || gabinetes != undefined)
       && gabinetes.length > 0">
       <h4 class="mb-5">Gabinetes (RAW) <span> <button class="btn btn-success" data-toggle="modal"
-        data-placement="top" title="Agregar" data-target="#modalGuardarCentroCableado">+ </button></span></h4>
+        data-placement="top" title="Agregar" data-target="#modalGuardarCentroCableado">+ <v-tooltip activator="parent" location="top">Agregar</v-tooltip></button></span></h4>
       <div class="row mt-5">
         <div class="col-sm-12 col-md-6 col-lg-3 mb-4" v-for="gabinete in gabinetes"
           :key="gabinete.id">

@@ -10,65 +10,100 @@
         </span>
       </h6>
     </div>
-    <h4 class="text-success mb-5">
+    <h4 class="text-danger mb-5">
       <span><button class="btn btn-success" data-placement="top" title="Volver"
           @click="volver()">&#8630;</button></span>
-      Información Centro de Cableado
+      Información Centro de Cableado <b> #{{ centro_cableado.numero }} </b>
     </h4>
-    <div class="informacion">
-      <div class="informacion-basica">
-        <h5 class="titulo">{{ centro_cableado.nombre }}</h5>
-        <div class="contenedor-imagen">
-          <div class="imagen-wrapper">
-            <img id="imagen" :src="rutaImagenVer(centro_cableado.ruta_imagen)" alt="">
-            <div class="numero"># {{ centro_cableado.numero }}</div>
+    <v-row>
+      <v-col>
+        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Información Principal</v-btn>
+      </v-col>
+      <v-col>
+        <v-btn color="green-darken-2" @click="sesionMostrar('gabinetes')">Gabinetes (RAWS)</v-btn>
+      </v-col>
+      <v-col>
+        <v-btn color="green-darken-2" @click="sesionMostrar('proyectos')">Proyectos</v-btn>
+      </v-col>
+    </v-row>
+
+    <v-row class="mt-5" v-if="mostrarInfoPrincipal">
+      <v-col>
+        <v-card class="mx-auto" max-width="500">
+
+          <div class="contenedor-imagen">
             <span class="icono-actualizar" data-toggle="modal" data-target="#modalActualizarImagen">
               &#x1F504;
+              <v-tooltip activator="parent" location="top">Cambiar Imagen</v-tooltip>
             </span>
-          </div>
-          <h6 class="mt-3"><b>{{ centro_cableado.ubicacion }} - {{ centro_cableado.tipo }}</b></h6>
-          <div class="form-group mt-3 observacion">
-            <label for="codigo">Observación:</label>
-            <textarea disabled type="text" placeholder="Observación" v-model="centro_cableado.observacion"
-              class="form-control textarea-center" />
+            <v-img height="300px" :src="rutaImagenVer(centro_cableado.ruta_imagen)" cover></v-img>
           </div>
 
-        </div>
+          <v-card-title>
+            Centro de Cableado #{{ centro_cableado.numero }}
+          </v-card-title>
 
-        <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalactualizarCentroCableado"
-          @click="verDatosModal()">Actualizar</button>
-        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
-          data-target="#modaleliminarCentroCableado">Eliminar</button>
-      </div>
+          <v-card-subtitle>
+            <h6 class="mt-3"><b>{{ centro_cableado.ubicacion }} - {{ centro_cableado.tipo }}</b></h6>
+          </v-card-subtitle>
 
-      <div class="informacion-secundario">
+          <v-card-actions>
+            <v-btn color="red-accent-4" text="Más información" @click="show = !show"></v-btn>
+
+            <v-spacer></v-spacer>
+
+            <v-btn :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn>
+          </v-card-actions>
+
+          <v-expand-transition>
+            <div v-show="show">
+
+              <v-card-text align="left">
+
+                <p :class="centro_cableado.climatizado === 'S' ? 'text-success' : 'text-warning'">{{
+                  centro_cableado.climatizado
+                    === 'S' ? 'Climatizado &#10052;' : 'No esta climatizado' }}</p>
+                <p :class="centro_cableado.camaras === 'S' ? 'text-success' : 'text-warning'">{{ centro_cableado.camaras
+                  === 'S'
+                  ? 'Con cámaras &#128247;' : 'No tiene cámaras' }}</p>
+
+                <p :class="centro_cableado.acceso_llaves === 'S' ? 'text-dark' : 'text-warning'">{{
+                  centro_cableado.acceso_llaves === 'S' ? 'Acceso con llaves &#128273;' : 'Sin acceso con llaves' }}</p>
+                <p>{{ centro_cableado.acceso_biometrico === 'S' ? 'Acceso biométrico &#128070;' : 'Sin acceso biométrico' }}</p>
+
+                <p class="mt-5" v-if="centro_cableado.observacion && centro_cableado.observacion.length > 0"> <b>Observación:</b>
+                  <br> {{
+                    centro_cableado.observacion }}
+                </p>
+              </v-card-text>
+
+              <div class="botones mb-5">
+                <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalactualizarCentroCableado"
+                  @click="verDatosModal()">Actualizar</button>
+                <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
+                  data-target="#modaleliminarCentroCableado">Eliminar</button>
+              </div>
+            </div>
+          </v-expand-transition>
+        </v-card>
+      </v-col>
+      <v-col>
         <ArchivoTarjeta :archivos="archivos"
           :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" />
-        <ProyectoTarjeta :proyectos="proyectos"
+      </v-col>
+    </v-row>
+
+    <div v-if="mostrarProyectos">
+      <ProyectoTarjeta :proyectos="proyectos"
           :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" :info_edificio="info_edificio"
           :info_centro_cableado="info_centro_cableado" @filtrar="filtrar" />
-      </div>
     </div>
 
-    <div class="text-center mt-5">
-      <p :class="centro_cableado.climatizado === 'S' ? 'text-success' : 'text-warning'">{{ centro_cableado.climatizado
-        === 'S' ? 'Climatizado &#10052;' : 'No esta climatizado' }}</p>
-      <p :class="centro_cableado.camaras === 'S' ? 'text-success' : 'text-warning'">{{ centro_cableado.camaras === 'S'
-        ? 'Con cámaras &#128247;' : 'No tiene cámaras' }}</p>
-
-      <p :class="centro_cableado.acceso_llaves === 'S' ? 'text-dark' : 'text-warning'">{{
-        centro_cableado.acceso_llaves === 'S' ? 'Acceso con llaves &#128273;' : 'Sin acceso con llaves' }}</p>
-      <p>{{ centro_cableado.acceso_biometrico === 'S' ? 'Acceso biométrico &#128070;' : 'Sin acceso biométrico' }}</p>
-    </div>
-
-    <button class="btn btn-success mt-5" data-toggle="collapse" data-target="#collapseGabineteTarjeta"
-      aria-expanded="false" aria-controls="collapseGabineteTarjeta">
-      Gabinetes - RAWs
-    </button>
-    <div class="collapse contenedor-tarjeta" id="collapseGabineteTarjeta">
+    <div v-if="mostrarGabinetes" class="mt-5">
       <GabineteTarjeta :gabinetes="gabinetes" :info_centro_cableado="info_centro_cableado"
-        :info_edificio="info_edificio" />
+      :info_edificio="info_edificio" />
     </div>
+
     <!-- Modal Atualizar Imagen-->
     <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"
       aria-labelledby="modalActualizarImagen" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -279,7 +314,11 @@ export default {
       opcionesRespuesta: [{ descripcion: 'SI', valor: 'S' }, { descripcion: 'NO', valor: 'N' }],
       centro_cableado_actualizar: {},
       info_edificio: {},
-      info_centro_cableado: {}
+      info_centro_cableado: {},
+      show: false,
+      mostrarInfoPrincipal: true,
+      mostrarGabinetes: false,
+      mostrarProyectos: false
     };
   },
   mounted() {
@@ -437,6 +476,25 @@ export default {
         id
       }
       location.href = "/edificio?registro=" + JSON.stringify(datosRegistro)
+    },
+    sesionMostrar(sesion) {
+      switch (sesion) {
+        case 'info-principal':
+          this.mostrarInfoPrincipal = true
+          this.mostrarGabinetes = false
+          this.mostrarProyectos = false
+          break;
+        case 'gabinetes':
+          this.mostrarInfoPrincipal = false
+          this.mostrarGabinetes = true
+          this.mostrarProyectos = false
+          break;
+        case 'proyectos':
+          this.mostrarInfoPrincipal = false
+          this.mostrarGabinetes = false
+          this.mostrarProyectos = true
+          break;
+      }
     }
   }
 };
@@ -472,14 +530,34 @@ export default {
 
 .icono-actualizar {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: rgba(255, 255, 255, 0.7);
-  /* Fondo para que se vea mejor sobre la imagen */
+  top: 8px;
+  /* Ajusta según tu diseño */
+  right: 8px;
+  /* Ajusta según tu diseño */
+  background-color: rgba(255, 255, 255, 0.8);
+  /* Fondo blanco semi-transparente para mejor visibilidad */
   border-radius: 50%;
+  /* Para hacer el fondo redondeado */
   padding: 5px;
+  /* Espaciado interno */
   cursor: pointer;
+  /* Cambia el cursor para indicar que es interactivo */
+  font-size: 20px;
+  /* Tamaño del ícono */
+  z-index: 10;
+  /* Asegura que esté por encima de la imagen */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.icono-actualizar:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Cambia el fondo al pasar el mouse */
+  color: white;
+  /* Cambia el color del ícono al pasar el mouse */
+}
+
 
 .icono-actualizar {
   font-size: 23px;

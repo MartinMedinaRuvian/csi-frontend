@@ -1,9 +1,19 @@
 <template>
   <div class="text-center">
-    <h4 class="text-success mb-5"><span><button class="btn btn-success"
+    <h4 class="text-danger mb-5"><span><button class="btn btn-success"
           @click="volver()">&#8630; <v-tooltip activator="parent" location="top">Volver</v-tooltip></button></span>
-      Información Edificio</h4>
-    <v-row class="mt-5">
+      Información Edificio <b>{{ edificio.nombre }}</b></h4>
+    
+    <v-row>
+      <v-col>
+        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Información Principal</v-btn>
+      </v-col>
+      <v-col>
+        <v-btn color="green-darken-2" @click="sesionMostrar('centros-cableados')">Centros de Cableado</v-btn>
+      </v-col>
+    </v-row>
+      
+    <v-row class="mt-5" v-if="mostrarInfoPrincipal">
       <v-col>
         <v-card class="mx-auto" max-width="500">
 
@@ -48,20 +58,10 @@
       </v-col>
     </v-row>
 
-    <div class="mt-5">
-      <h4 class="text-danger"></h4>
-      <v-btn color="green-darken-1" @click="showCentroCableatoTarjeta = !showCentroCableatoTarjeta">Centros de Cableado
-        <v-icon :icon="showCentroCableatoTarjeta ? 'mdi-chevron-up' : 'mdi-chevron-down'" end></v-icon></v-btn>
+    <div class="mt-5" v-if="mostrarCentrosCableados">
+      <CentroCableadoTarjeta :centros_cableados="centros_cableados" :info_edificio="edificio" />
     </div>
 
-    <v-expand-transition class="mt-5">
-      <div v-show="showCentroCableatoTarjeta">
-        <CentroCableadoTarjeta :centros_cableados="centros_cableados" :info_edificio="edificio" />
-      </div>
-    </v-expand-transition>
-    <div class="collapse contenedor-tarjeta" id="collapseCentroCableadoTarjeta">
-
-    </div>
     <!-- Modal Atualizar Imagen-->
     <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"
       aria-labelledby="modalActualizarImagen" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -216,7 +216,9 @@ export default {
       ruta_servidor: this.axios.defaults.baseURL,
       edificio_actualizar: {},
       show: false,
-      showCentroCableatoTarjeta: false
+      showCentroCableatoTarjeta: false,
+      mostrarInfoPrincipal: true,
+      mostrarCentrosCableados: false
     };
   },
   mounted() {
@@ -335,6 +337,18 @@ export default {
     },
     volver() {
       location.href = '/'
+    },
+    sesionMostrar(sesion){
+      switch(sesion){
+        case 'info-principal':
+          this.mostrarInfoPrincipal = true
+          this.mostrarCentrosCableados = false
+        break;
+        case 'centros-cableados':
+        this.mostrarInfoPrincipal = false
+        this.mostrarCentrosCableados = true
+          break;
+      }
     }
   }
 };
