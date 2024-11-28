@@ -20,7 +20,7 @@
     <h4 class="text-danger mb-5">
       <span><button class="btn btn-success"
           @click="volver()">&#8630; <v-tooltip activator="parent" location="top">Volver</v-tooltip></button></span>
-      Información Gabinete <b>#{{ gabinete.numero }}</b>
+      Información Gabinete <b>R{{ gabinete.numero }}</b>
     </h4>
 
     <v-row>
@@ -45,7 +45,7 @@
           </div>
 
           <v-card-title>
-            Centro de Cableado #{{ gabinete.numero }}
+            Gabinete R{{ gabinete.numero }}
           </v-card-title>
 
           <v-card-subtitle>
