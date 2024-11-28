@@ -51,6 +51,14 @@
               </div>
             </li>
           </ul>
+          <div v-else class="container-no_registros">
+            <span>
+              <v-icon color="yellow-lighten-1" icon="mdi-file-remove-outline"></v-icon>
+            </span>
+            <span>
+              <h5>Sin Registros</h5>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -486,5 +494,12 @@ export default {
 #scrollable-content li {
   background-color: #FFF59D;
   color: #000 ;
+}
+
+.container-no_registros {
+  margin-top: 40px;
+}
+.container-no_registros span {
+  font-size: 60px;
 }
 </style>

@@ -9,7 +9,7 @@
 
       <div id="dialog-window">
         <div id="scrollable-content" class="containe-imagenes mb-5">
-          <ul class="list-group" v-for="archivo in archivos" :key="archivo.id">
+          <ul class="list-group" v-for="archivo in archivos" :key="archivo.id" v-if="archivos && archivos.length > 0">
             <li class="list-group-item d-flex justify-content-between">
               <div class="texto-archivos">
                 <p v-if="elArchivoEsUnaImagen(archivo.nombre)" class="pointer-hand"
@@ -29,6 +29,14 @@
               </div>
             </li>
           </ul>
+          <div v-else class="container-no_registros">
+            <span>
+              <v-icon color="light-blue-lighten-3" icon="mdi-file-remove-outline"></v-icon>
+            </span>
+            <span>
+              <h5>Sin Registros</h5>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -359,5 +367,12 @@ export default {
 
 #scrollable-content li p {
   font-size: 18px;
+}
+
+.container-no_registros {
+  margin-top: 40px;
+}
+.container-no_registros span {
+  font-size: 60px;
 }
 </style>

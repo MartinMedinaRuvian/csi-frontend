@@ -11,7 +11,7 @@
         <div id="scrollable-content" class="containe-imagenes">
 
 
-          <table class="table table-responsive-md" v-if="mantenimientos.length > 0">
+          <table class="table table-responsive-md" v-if="mantenimientos && mantenimientos.length > 0">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Código</th>
@@ -49,6 +49,14 @@
               </tr>
             </tbody>
           </table>
+          <div v-else class="container-no_registros">
+            <span>
+              <v-icon color="grey-darken-3" icon="mdi-file-remove-outline"></v-icon>
+            </span>
+            <span>
+              <h5>Sin Registros</h5>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -402,5 +410,12 @@ export default {
 
 .botones-mantenimientos {
   width: 15%;
+}
+
+.container-no_registros {
+  margin-top: 50px;
+}
+.container-no_registros span {
+  font-size: 80px;
 }
 </style>
