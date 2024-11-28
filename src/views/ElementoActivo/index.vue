@@ -21,85 +21,123 @@
         </span>
         <span>
           GABINETE R{{
-          info_gabinete.numero }}
+            info_gabinete.numero }}
         </span>
       </h6>
     </div>
-    <h4 class="text-success mb-5">
-      <span><button class="btn btn-success" data-placement="top" title="Volver" @click="volver()">&#8630;</button></span>
+    <h4 class="text-danger mb-5">
+      <span><button class="btn btn-success" data-placement="top" title="Volver"
+          @click="volver()">&#8630;</button></span>
       Información del Elemento Activo
     </h4>
-    <div class="informacion">
-      <div class="informacion-basica">
-        <div class="contenedor-imagen">
-          <div class="imagen-wrapper">
-            <img id="imagen" :src="rutaImagenVer(elemento.ruta_imagen)" alt="">
+
+    <v-row>
+      <v-col>
+        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Información Principal</v-btn>
+      </v-col>
+      <v-col>
+        <v-btn color="green-darken-2" @click="sesionMostrar('mantenimientos')">Mantenimientos</v-btn>
+      </v-col>
+      <v-col>
+        <v-btn color="green-darken-2" @click="sesionMostrar('proyectos')">Proyectos</v-btn>
+      </v-col>
+    </v-row>
+
+
+    <v-row class="mt-5" v-if="mostrarInfoPrincipal">
+      <v-col>
+        <v-card class="mx-auto" max-width="500">
+
+          <div class="contenedor-imagen">
             <span class="icono-actualizar" data-toggle="modal" data-target="#modalActualizarImagen">
               &#x1F504;
+              <v-tooltip activator="parent" location="top">Cambiar Imagen</v-tooltip>
             </span>
-          </div>
-          <h6 class="mt-3"><b>{{ elemento.tipo_dispositivo }}</b></h6>
-          <h6 class="mt-3"><b>{{ elemento.codigo }}</b></h6>
-          <div class="form-group mt-3 observacion">
-            <label for="codigo">Observación:</label>
-            <textarea
-              disabled type="text" placeholder="Observación" v-model="elemento.observacion"
-              class="form-control textarea-center" />
+            <v-img height="300px" :src="rutaImagenVer(elemento.ruta_imagen)" cover></v-img>
           </div>
 
-        </div>
+          <v-card-title>
+            Elemento {{ elemento.codigo }}
+          </v-card-title>
 
-        <button class="btn btn-warning mr-2" @click="actualizarElemento()">Actualizar</button>
-        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
-          data-target="#modaleliminarElemento">Eliminar</button>
-      </div>
+          <v-card-subtitle>
+            <h6 class="mt-3"><b>{{ elemento.tipo_dispositivo }}</b></h6>
+          </v-card-subtitle>
 
-      <div class="informacion-secundario">
+          <v-card-actions>
+            <v-btn color="red-accent-4" text="Más información" @click="show = !show"></v-btn>
+
+            <v-spacer></v-spacer>
+
+            <v-btn :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn>
+          </v-card-actions>
+
+          <v-expand-transition>
+            <div v-show="show">
+
+              <v-card-text align="left">
+
+                <p class="text-primary"><b>Módelo:</b> {{ elemento.tipo_modelo }} <br>
+                  <b>Marca:</b> {{ elemento.tipo_marca }} <br>
+                  <b>Referencia:</b> {{ elemento.tipo_referencia }}
+                </p>
+
+                <span v-if="propiedadTieneValor(elemento.codigo_inventario)"><b>Código de inventario:</b> {{
+                  elemento.codigo_inventario }}
+                  <br>
+                </span>
+                <span v-if="propiedadTieneValor(elemento.serial)"><b>Serial:</b> {{ elemento.serial }} <br> </span>
+                <span v-if="propiedadTieneValor(elemento.os)"><b>S.O:</b> {{ elemento.os }} <br></span>
+                <span v-if="propiedadTieneValor(elemento.version_os)"><b>Versión S.O:</b> {{ elemento.version_os
+                  }}<br></span>
+                <span v-if="propiedadTieneValor(elemento.gateway)"><b>Gateway:</b> {{ elemento.gateway }}<br></span>
+                <span v-if="propiedadTieneValor(elemento.ip_v4)"><b>IPV4:</b> {{ elemento.ip_v4 }}</span> <br>
+                <span v-if="propiedadTieneValor(elemento.ip_v6)"><b>IPV6:</b> {{ elemento.ip_v6 }}</span> <br>
+                <span v-if="propiedadTieneValor(elemento.cantidad_puertos_por_defecto)"><b>Cant. Puertos Default:</b> {{
+                  elemento.cantidad_puertos_por_defecto }}</span> <br>
+                <span v-if="propiedadTieneValor(elemento.puerto_logico_por_defecto)"><b></b> {{
+                  elemento.puerto_logico_por_defecto }}</span> <br>
+                <span v-if="propiedadTieneValor(elemento.puerto_fisico_por_defecto)">Puerto Fisico Default: {{
+                  elemento.puerto_fisico_por_defecto }}</span>
+
+                <p v-if="elemento.observacion && elemento.observacion.length > 0">
+                  <b>Observación:</b>
+                  <br> {{
+                    elemento.observacion }}
+                </p>
+              </v-card-text>
+
+              <div class="botones mb-5">
+                <button class="btn btn-warning mr-2" @click="actualizarElemento()">Actualizar</button>
+                <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
+                  data-target="#modaleliminarElemento">Eliminar</button>
+              </div>
+            </div>
+          </v-expand-transition>
+        </v-card>
+      </v-col>
+      <v-col>
         <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" />
-        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }"
-          :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete"
-          :info_elemento="info_elemento" @filtrar="filtrar" />
-      </div>
-    </div>
-    <div class="informacion-principal_elemento">
-      <p class="text-primary mt-5"><b>Módelo:</b> {{ elemento.tipo_modelo }} <br>
-        <b>Marca:</b> {{ elemento.tipo_marca }} <br>
-        <b>Referencia:</b> {{ elemento.tipo_referencia }}
-      </p>
-    </div>
-    <div class="propiedades-elemento">
-      <span v-if="propiedadTieneValor(elemento.codigo_inventario)"><b>Código de inventario:</b> {{
-        elemento.codigo_inventario }}
-        <br>
-      </span>
-      <span v-if="propiedadTieneValor(elemento.serial)"><b>Serial:</b> {{ elemento.serial }} <br> </span>
-      <span v-if="propiedadTieneValor(elemento.os)"><b>S.O:</b> {{ elemento.os }} <br></span>
-      <span v-if="propiedadTieneValor(elemento.version_os)"><b>Versión S.O:</b> {{ elemento.version_os }}<br></span>
-      <span v-if="propiedadTieneValor(elemento.gateway)"><b>Gateway:</b> {{ elemento.gateway }}<br></span>
-      <span v-if="propiedadTieneValor(elemento.ip_v4)"><b>IPV4:</b> {{ elemento.ip_v4 }}</span> <br>
-      <span v-if="propiedadTieneValor(elemento.ip_v6)"><b>IPV6:</b> {{ elemento.ip_v6 }}</span> <br>
-      <span v-if="propiedadTieneValor(elemento.cantidad_puertos_por_defecto)"><b>Cant. Puertos Default:</b> {{
-        elemento.cantidad_puertos_por_defecto }}</span> <br>
-      <span v-if="propiedadTieneValor(elemento.puerto_logico_por_defecto)"><b></b> {{
-        elemento.puerto_logico_por_defecto }}</span> <br>
-      <span v-if="propiedadTieneValor(elemento.puerto_fisico_por_defecto)">Puerto Fisico Default: {{
-        elemento.puerto_fisico_por_defecto }}</span>
+      </v-col>
+    </v-row>
+
+    <div v-if="mostrarProyectos">
+      <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }"
+        :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete"
+        :info_elemento="info_elemento" @filtrar="filtrar" />
     </div>
 
-    <button class="btn btn-success" data-toggle="collapse" data-target="#collapseMantenimientoTarjeta"
-      aria-expanded="false" aria-controls="collapseMantenimientoTarjeta">
-      Mantenimientos
-    </button>
 
-    <div class="collapse" id="collapseMantenimientoTarjeta">
-      
+    <div v-if="mostrarMantenimientos">
+
       <div class="container">
         <div class="row mt-5">
           <div class="form-group col-md-12">
             <label for="select">Forma de busqueda:</label>
-            <select id="select" class="form-select form-control" aria-label="Default select example" v-model="buscarPorMantenimiento"
-              @change="paginaActualMantenimiento = 1">
-              <option :value="buscar.valor" v-for="buscar in tipoBusquedaMantenimiento" :key="buscar.valor" class="text-success">
+            <select id="select" class="form-select form-control" aria-label="Default select example"
+              v-model="buscarPorMantenimiento" @change="paginaActualMantenimiento = 1">
+              <option :value="buscar.valor" v-for="buscar in tipoBusquedaMantenimiento" :key="buscar.valor"
+                class="text-success">
                 {{ buscar.descripcion }}
               </option>
             </select>
@@ -108,13 +146,13 @@
         <div class="row" v-if="buscarPorMantenimiento !== 1">
           <div class="form-group col-md-6">
             <label for="fecha">Fecha Inicial:</label>
-            <input type="date" class="form-control" id="fecha" v-model="fechaInicialMantenimiento" :max="maximaFechaMantenimiento"
-              @change="paginaActualMantenimiento = 1" />
+            <input type="date" class="form-control" id="fecha" v-model="fechaInicialMantenimiento"
+              :max="maximaFechaMantenimiento" @change="paginaActualMantenimiento = 1" />
           </div>
           <div class="form-group col-md-6">
             <label for="fecha">Fecha Final:</label>
-            <input type="date" class="form-control" id="fecha" v-model="fechaFinalMantenimiento" :max="maximaFechaMantenimiento"
-              @change="paginaActualMantenimiento = 1" />
+            <input type="date" class="form-control" id="fecha" v-model="fechaFinalMantenimiento"
+              :max="maximaFechaMantenimiento" @change="paginaActualMantenimiento = 1" />
           </div>
           <div class="form-group col-md-12" v-if="buscarPorMantenimiento === 2">
             <button class="btn btn-success" @click="verMantenimientos()">Buscar</button>
@@ -123,8 +161,8 @@
         <div class="row" v-if="buscarPorMantenimiento !== 2">
           <div class="form-group col-md-6">
             <label for="select">Condicion:</label>
-            <select id="select" class="form-select form-control" aria-label="Default select example" v-model="condicionMantenimiento"
-              @change="paginaActualMantenimiento = 1">
+            <select id="select" class="form-select form-control" aria-label="Default select example"
+              v-model="condicionMantenimiento" @change="paginaActualMantenimiento = 1">
               <option :value="condicion.valor" v-for="condicion in condicionesMantenimiento" :key="condicion.valor"
                 class="text-success">
                 {{ condicion.descripcion }}
@@ -134,10 +172,11 @@
           <div class="form-group col-md-6">
             <label for="select">Buscar:</label>
             <div class="input-buscar">
-              <input class="form-control" type="text" v-model="buscarMantenimiento" @keypress.enter="verMantenimientos()"
-                @keyup="paginaActual = 1" />
-              <button data-placement="top" title="Ver" class="btn btn-success" @click="verMantenimientos()">
+              <input class="form-control" type="text" v-model="buscarMantenimiento"
+                @keypress.enter="verMantenimientos()" @keyup="paginaActual = 1" />
+              <button class="btn btn-success" @click="verMantenimientos()">
                 &#128269;
+                <v-tooltip activator="parent" location="top">Ver</v-tooltip>
               </button>
             </div>
           </div>
@@ -149,7 +188,8 @@
         :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" :info_elemento="info_elemento" />
 
       <div class="paginacion mt-5">
-        <button :disabled="paginaActualMantenimiento === 1" @click="cambiarPaginaMantenimiento(paginaActualMantenimiento - 1)" class="btn btn-success mr-2">
+        <button :disabled="paginaActualMantenimiento === 1"
+          @click="cambiarPaginaMantenimiento(paginaActualMantenimiento - 1)" class="btn btn-success mr-2">
           &laquo;
         </button>
 
@@ -158,7 +198,8 @@
           {{ pagina }}
         </button>
 
-        <button :disabled="paginaActualMantenimiento === Math.ceil(totalRegistrosMantenimiento / registrosPorPaginaMantenimiento)"
+        <button
+          :disabled="paginaActualMantenimiento === Math.ceil(totalRegistrosMantenimiento / registrosPorPaginaMantenimiento)"
           @click="cambiarPaginaMantenimiento(paginaActualMantenimiento + 1)" class="btn btn-success">
           &raquo;
         </button>
@@ -304,7 +345,11 @@ export default {
       maximaFechaMantenimiento: null,
       totalRegistrosMantenimiento: 0,
       paginaActualMantenimiento: 1,
-      registrosPorPaginaMantenimiento: 8
+      registrosPorPaginaMantenimiento: 8,
+      show: false,
+      mostrarInfoPrincipal: true,
+      mostrarMantenimientos: false,
+      mostrarProyectos: false
     };
   },
   mounted() {
@@ -439,12 +484,12 @@ export default {
         };
       }
       console.log(buscarPor, 'djtitin')
-        this.axios.post("mantenimiento/buscarporcondicion/elemento_activo/" + idelemento, buscarPor).then((respuesta) => {
-          if (respuesta.status === 200) {
-            this.mantenimientos = respuesta.data.datos;
-            this.totalRegistrosMantenimiento = respuesta.data.total;
-          }
-        })
+      this.axios.post("mantenimiento/buscarporcondicion/elemento_activo/" + idelemento, buscarPor).then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.mantenimientos = respuesta.data.datos;
+          this.totalRegistrosMantenimiento = respuesta.data.total;
+        }
+      })
         .catch((error) => {
           console.error("Error al obtener logs:", error);
         });
@@ -536,6 +581,25 @@ export default {
         info_gabinete: this.info_gabinete
       }
       location.href = "/actualizar-elemento-activo?registro=" + JSON.stringify(datosRegistro)
+    },
+    sesionMostrar(sesion) {
+      switch (sesion) {
+        case 'info-principal':
+          this.mostrarInfoPrincipal = true
+          this.mostrarMantenimientos = false
+          this.mostrarProyectos = false
+          break;
+        case 'mantenimientos':
+          this.mostrarInfoPrincipal = false
+          this.mostrarMantenimientos = true
+          this.mostrarProyectos = false
+          break;
+        case 'proyectos':
+          this.mostrarInfoPrincipal = false
+          this.mostrarMantenimientos = false
+          this.mostrarProyectos = true
+          break;
+      }
     }
   }
 };
@@ -571,13 +635,32 @@ export default {
 
 .icono-actualizar {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: rgba(255, 255, 255, 0.7);
-  /* Fondo para que se vea mejor sobre la imagen */
+  top: 8px;
+  /* Ajusta según tu diseño */
+  right: 8px;
+  /* Ajusta según tu diseño */
+  background-color: rgba(255, 255, 255, 0.8);
+  /* Fondo blanco semi-transparente para mejor visibilidad */
   border-radius: 50%;
+  /* Para hacer el fondo redondeado */
   padding: 5px;
+  /* Espaciado interno */
   cursor: pointer;
+  /* Cambia el cursor para indicar que es interactivo */
+  font-size: 20px;
+  /* Tamaño del ícono */
+  z-index: 10;
+  /* Asegura que esté por encima de la imagen */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icono-actualizar:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Cambia el fondo al pasar el mouse */
+  color: white;
+  /* Cambia el color del ícono al pasar el mouse */
 }
 
 .icono-actualizar {
