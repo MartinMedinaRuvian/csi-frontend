@@ -1,96 +1,132 @@
 <template>
-  <div class="container mx-auto d-flex justify-content-center">
+  <div>
+    <div class="ruta text-center">
+      <h6>
+        <span>
+          <v-icon color="red-accent-4" icon="mdi-domain"></v-icon>
+        </span>
+        <span class="ml-1">
+          {{ info_edificio.nombre }}
+        </span>
+        -
+        <span>
+          <v-icon color="red-accent-4" icon="mdi-ethernet"></v-icon>
+        </span>
+        <span>
+          C. CABLEADO #{{ info_centro_cableado.numero }}
+        </span>
+        -
+        <span>
+          <v-icon color="red-accent-4" icon="mdi-desktop-tower"></v-icon>
+        </span>
+        <span>
+          GABINETE R{{
+            info_gabinete.numero }}
+        </span>
+      </h6>
+    </div>
     <div class="card">
       <div class="card-header text-center">
         <h5 class="text-success">Nuevo Elemento</h5>
       </div>
       <div class="card-body">
         <form @submit.prevent>
-          <div class="form-group mt-3">
-            <label for="tipo" class="requerido">Tipo:</label>
-            <select id="tipo" class="form-select form-control" v-model="tipo_elemento">
-              <option v-for="tipo in tiposelementos" :value="tipo" :key="tipo" class="text-success">
-                {{ tipo }}
-              </option>
-            </select>
-          </div>
 
-          <span v-if="tipo_elemento == 'ACTIVO'"
-            @click="agregarNuevoTipo('tipo_dispositivo_activo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
-            data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Dispositivo</span>
-          <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Dispositivo" class="requerido"
-            v-model="elemento.id_tipo_dispositivo_activo" :items="tiposdispositivoactivo"
-            :item-title="titulosAutocompleteTipos" item-value="id"
-            :filter="filterAutocompleteTipos">
-          </v-autocomplete>
-
-          <span v-if="tipo_elemento == 'PASIVO'"
-            @click="agregarNuevoTipo('tipo_dispositivo_pasivo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
-            data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Dispositivo</span>
-          <v-autocomplete v-if="tipo_elemento == 'PASIVO'" label="Dispositivo" class="requerido"
-            v-model="elemento.id_tipo_dispositivo_pasivo" :items="tiposdispositivopasivo"
-            :item-title="titulosAutocompleteTipos" item-value="id"
-            :filter="filterAutocompleteTipos">
-          </v-autocomplete>
-
-          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')"
-            class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nueva Referencia</span>
-          <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Referencia" class="requerido"
-            v-model="elemento.id_tipo_referencia" :items="tiposreferencias" :item-title="titulosAutocompleteTipos"
-            item-value="id" :filter="filterAutocompleteTipos">
-          </v-autocomplete>
-
-          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_modelo', 'Nuevo Modelo')"
-            class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Modelo</span>
-          <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Modelo" class="requerido"
-            v-model="elemento.id_tipo_modelo" :items="tiposmodelos" :item-title="titulosAutocompleteTipos"
-            item-value="id" :filter="filterAutocompleteTipos">
-          </v-autocomplete>
-
-          <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_marca', 'Nueva Marca')"
-            class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nueva Marca</span>
-          <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Marca" class="requerido"
-            v-model="elemento.id_tipo_marca" :items="tiposmarcas" :item-title="titulosAutocompleteTipos" item-value="id"
-            :filter="filterAutocompleteTipos">
-          </v-autocomplete>
-
-          <div class="form group mt-3">
-            <div class="form-group">
-              <label for="codigo" class="requerido">Código:</label>
-              <input required type="text" placeholder="Ingrese Código" v-model="elemento.codigo" class="form-control" />
-            </div>
-          </div>
-
-          <div class="form group mt-3" v-if="tipo_elemento == 'ACTIVO'">
-            <div class="form-group">
-              <label for="codigo" class="requerido">Serial:</label>
-              <input required type="text" placeholder="Ingrese Serial" v-model="elemento.serial" class="form-control" />
-            </div>
-          </div>
-
-          <div class="form-group" v-if="tipo_elemento == 'ACTIVO'">
-            <div class="form group mt-3">
-              <label for="codigo">Código Inventario:</label>
-              <input required type="text" placeholder="" v-model="elemento.codigo_inventario"
-                class="form-control" />
-            </div>
-          </div>
-
-
-          <div class="form-group mt-4 text-center">
-            <h5>Imagen:</h5>
-            <div class="row">
-              <div class="col-md-12 col-lg-12">
-                <input type="file" class="form-control" name="archivo_elemento" id="archivo_elemento"
-                  @change="verImagen()" accept="image/*" ref="inputArchivoelemento" required>
+          <div class="row">
+            <div class="col">
+              <div class="form-group mt-3">
+                <label for="tipo" class="requerido">Tipo:</label>
+                <select id="tipo" class="form-select form-control" v-model="tipo_elemento">
+                  <option v-for="tipo in tiposelementos" :value="tipo" :key="tipo" class="text-success">
+                    {{ tipo }}
+                  </option>
+                </select>
               </div>
-              <div class="col-md-12 col-lg-12 mt-3">
-                <img class="imagen-previsualizacion" alt="imagen" id="imagenPrevisualizacionCentroCableado"
-                  ref="imagenPrevisualizacionCentroCableado"
-                  :src="tipo_elemento == 'ACTIVO' ? urlSinImagenActivo : urlSinImagenPasivo">
-              </div>
+
+              <span v-if="tipo_elemento == 'ACTIVO'"
+                @click="agregarNuevoTipo('tipo_dispositivo_activo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
+                data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Dispositivo</span>
+              <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Dispositivo" class="requerido"
+                v-model="elemento.id_tipo_dispositivo_activo" :items="tiposdispositivoactivo"
+                :item-title="titulosAutocompleteTipos" item-value="id" :filter="filterAutocompleteTipos">
+              </v-autocomplete>
+
+              <span v-if="tipo_elemento == 'PASIVO'"
+                @click="agregarNuevoTipo('tipo_dispositivo_pasivo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
+                data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Dispositivo</span>
+              <v-autocomplete v-if="tipo_elemento == 'PASIVO'" label="Dispositivo" class="requerido"
+                v-model="elemento.id_tipo_dispositivo_pasivo" :items="tiposdispositivopasivo"
+                :item-title="titulosAutocompleteTipos" item-value="id" :filter="filterAutocompleteTipos">
+              </v-autocomplete>
+
+              <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')"
+                class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nueva Referencia</span>
+              <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Referencia" class="requerido"
+                v-model="elemento.id_tipo_referencia" :items="tiposreferencias" :item-title="titulosAutocompleteTipos"
+                item-value="id" :filter="filterAutocompleteTipos">
+              </v-autocomplete>
+
+              <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_modelo', 'Nuevo Modelo')"
+                class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Modelo</span>
+              <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Modelo" class="requerido"
+                v-model="elemento.id_tipo_modelo" :items="tiposmodelos" :item-title="titulosAutocompleteTipos"
+                item-value="id" :filter="filterAutocompleteTipos">
+              </v-autocomplete>
+
+              <span v-if="tipo_elemento == 'ACTIVO'" @click="agregarNuevoTipo('tipo_marca', 'Nueva Marca')"
+                class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nueva Marca</span>
+              <v-autocomplete v-if="tipo_elemento == 'ACTIVO'" label="Marca" class="requerido"
+                v-model="elemento.id_tipo_marca" :items="tiposmarcas" :item-title="titulosAutocompleteTipos"
+                item-value="id" :filter="filterAutocompleteTipos">
+              </v-autocomplete>
+
             </div>
+
+            <div class="col">
+
+              <div class="form group mt-3">
+                <div class="form-group">
+                  <label for="codigo" class="requerido">Código:</label>
+                  <input required type="text" placeholder="Ingrese Código" v-model="elemento.codigo"
+                    class="form-control" />
+                </div>
+              </div>
+
+              <div class="form group mt-3" v-if="tipo_elemento == 'ACTIVO'">
+                <div class="form-group">
+                  <label for="codigo" class="requerido">Serial:</label>
+                  <input required type="text" placeholder="Ingrese Serial" v-model="elemento.serial"
+                    class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group" v-if="tipo_elemento == 'ACTIVO'">
+                <div class="form group mt-3">
+                  <label for="codigo">Código Inventario:</label>
+                  <input required type="text" placeholder="" v-model="elemento.codigo_inventario"
+                    class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group mt-4 text-center">
+                <h5>Imagen:</h5>
+                <div class="row">
+                  <div class="col-md-12 col-lg-12">
+                    <input type="file" class="form-control" name="archivo_elemento" id="archivo_elemento"
+                      @change="verImagen()" accept="image/*" ref="inputArchivoelemento" required>
+                  </div>
+                  <div class="col-md-12 col-lg-12 mt-3">
+                    <img class="imagen-previsualizacion" alt="imagen" id="imagenPrevisualizacionCentroCableado"
+                      ref="imagenPrevisualizacionCentroCableado"
+                      :src="tipo_elemento == 'ACTIVO' ? urlSinImagenActivo : urlSinImagenPasivo">
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
           </div>
+
 
           <div class="row">
             <div class="col-md-6 mt-3">
@@ -342,7 +378,12 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
+.card{
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
 #imagenPrevisualizacion {
   width: 100px;
   height: 100px;

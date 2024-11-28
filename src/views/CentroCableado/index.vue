@@ -11,8 +11,8 @@
       </h6>
     </div>
     <h4 class="text-danger mb-5">
-      <span><button class="btn btn-success" data-placement="top" title="Volver"
-          @click="volver()">&#8630;</button></span>
+      <span><button class="btn btn-success"
+          @click="volver()">&#8630; <v-tooltip activator="parent" location="top">Volver</v-tooltip></button></span>
       Información Centro de Cableado <b> #{{ centro_cableado.numero }} </b>
     </h4>
     <v-row>

@@ -2,7 +2,7 @@
   <div class="mt-5">
     <div v-if="elementos && elementos.length > 0">
       <table class="table table-responsive-lg">
-        <thead class="thead-dark">
+        <thead class="thead-light">
           <tr>
             <th scope="col">Imagen</th>
             <th scope="col">Dispositivo</th>
@@ -24,9 +24,10 @@
               <p>{{ elemento.codigo }}</p>
             </td>
             <td>
-              <button data-placement="top" title="Ver" data-toggle="modal" data-target="#modalelementoEditar" class="btn btn-outline-success"
+              <button data-toggle="modal" data-target="#modalelementoEditar" class="btn btn-outline-success"
                 @click="verInfo(elemento)">
                 <span class="icon-Lupa"></span>
+                <v-tooltip activator="parent" location="top">Ver</v-tooltip>
               </button>
             </td>
           </tr>

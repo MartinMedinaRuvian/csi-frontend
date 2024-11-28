@@ -484,7 +484,7 @@ export default {
 }
 
 #scrollable-content li {
-  background-color: #FFCA28;
+  background-color: #FFF59D;
   color: #000 ;
 }
 </style>

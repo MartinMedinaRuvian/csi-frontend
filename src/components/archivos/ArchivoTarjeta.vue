@@ -12,12 +12,12 @@
           <ul class="list-group" v-for="archivo in archivos" :key="archivo.id">
             <li class="list-group-item d-flex justify-content-between">
               <div class="texto-archivos">
-                <p v-if="elArchivoEsUnaImagen(archivo.nombre)" class="texto-mediano text-white pointer-hand"
-                  data-toggle="modal" data-target="#modalVerImagen" @click="verDatosModal(archivo)"><b>{{ archivo.nombre }}</b>
+                <p v-if="elArchivoEsUnaImagen(archivo.nombre)" class="pointer-hand"
+                  data-toggle="modal" data-target="#modalVerImagen" @click="verDatosModal(archivo)">{{ archivo.nombre }}
                   <v-tooltip activator="parent" location="top">Ver</v-tooltip>
                 </p>
-                <p v-else class="texto-mediano text-white pointer-hand" @click="descargarArchivo(archivo.ruta)"> <b>{{
-                  archivo.nombre }}</b>
+                <p v-else class="pointer-hand" @click="descargarArchivo(archivo.ruta)"> {{
+                  archivo.nombre }}
                   <v-tooltip activator="parent" location="top">Descargar</v-tooltip>
                 </p>
               </div>
@@ -353,7 +353,11 @@ export default {
   width: 15%;
 }
 #scrollable-content li {
-  background-color: #42A5F5;
-  color: #fff ;
+  background-color: #81D4FA;
+  color: #000;
+}
+
+#scrollable-content li p {
+  font-size: 18px;
 }
 </style>

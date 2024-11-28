@@ -17,56 +17,86 @@
         </span>
       </h6>
     </div>
-    <h4 class="text-success mb-5">
-      <span><button data-placement="top" title="Volver" class="btn btn-success" @click="volver()">&#8630;</button></span>
-      Información Gabinete
+    <h4 class="text-danger mb-5">
+      <span><button class="btn btn-success"
+          @click="volver()">&#8630; <v-tooltip activator="parent" location="top">Volver</v-tooltip></button></span>
+      Información Gabinete <b>#{{ gabinete.numero }}</b>
     </h4>
-    <div class="informacion">
-      <div class="informacion-basica">
-        <h5 class="titulo">{{ gabinete.nombre }}</h5>
-        <div class="contenedor-imagen">
-          <div class="imagen-wrapper">
-            <img id="imagen" :src="rutaImagenVer(gabinete.ruta_imagen)" alt="">
-            <div class="numero">R{{ gabinete.numero }}</div>
+
+    <v-row>
+      <v-col>
+        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Información Principal</v-btn>
+      </v-col>
+      <v-col>
+        <v-btn color="green-darken-2" @click="sesionMostrar('elementos')">Elementos</v-btn>
+      </v-col>
+    </v-row>
+
+    <v-row class="mt-5" v-if="mostrarInfoPrincipal">
+      <v-col>
+        <v-card class="mx-auto" max-width="500">
+
+          <div class="contenedor-imagen">
             <span class="icono-actualizar" data-toggle="modal" data-target="#modalActualizarImagen">
               &#x1F504;
+              <v-tooltip activator="parent" location="top">Cambiar Imagen</v-tooltip>
             </span>
-          </div>
-          <h6 class="mt-3"><b>{{ gabinete.tipo }}</b></h6>
-          <div class="form-group mt-3 observacion">
-            <label for="codigo">Observación:</label>
-            <textarea
-              disabled type="text" placeholder="Observación" v-model="gabinete.observacion"
-              class="form-control textarea-center" />
+            <v-img height="300px" :src="rutaImagenVer(gabinete.ruta_imagen)" cover></v-img>
           </div>
 
-        </div>
+          <v-card-title>
+            Centro de Cableado #{{ gabinete.numero }}
+          </v-card-title>
 
-        <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarGabinete"
-          @click="verDatosModal()">Actualizar</button>
-        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
-          data-target="#modaleliminarGabinete">Eliminar</button>
-      </div>
+          <v-card-subtitle>
+            <h6 class="mt-3"><b>{{ gabinete.tipo }}</b></h6>
+          </v-card-subtitle>
 
-      <div class="informacion-secundario">
+          <v-card-actions>
+            <v-btn color="red-accent-4" text="Más información" @click="show = !show"></v-btn>
+
+            <v-spacer></v-spacer>
+
+            <v-btn :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn>
+          </v-card-actions>
+
+          <v-expand-transition>
+            <div v-show="show">
+
+              <v-card-text align="left">
+
+                <p :class="gabinete.aterrizado === 'S' ? 'text-success' : 'text-warning'">{{ gabinete.aterrizado
+                  === 'S' ? 'Aterrizado &#9889;' : 'No esta aterrizado' }}</p>
+                <p>Tamaño: {{ gabinete.tamanio }}</p>
+
+                <p class="mt-5" v-if="gabinete.observacion && gabinete.observacion.length > 0">
+                  <b>Observación:</b>
+                  <br> {{
+                    gabinete.observacion }}
+                </p>
+              </v-card-text>
+
+              <div class="botones mb-5">
+                <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarGabinete"
+                  @click="verDatosModal()">Actualizar</button>
+                <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
+                  data-target="#modaleliminarGabinete">Eliminar</button>
+              </div>
+            </div>
+          </v-expand-transition>
+        </v-card>
+      </v-col>
+      <v-col>
         <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'gabinete', id: gabinete.id }" />
-      </div>
-    </div>
+      </v-col>
+    </v-row>
 
-    <div class="text-center mt-5">
-      <p :class="gabinete.aterrizado === 'S' ? 'text-success' : 'text-warning'">{{ gabinete.aterrizado
-        === 'S' ? 'Aterrizado &#9889;' : 'No esta aterrizado' }}</p>
-      <p>Tamaño: {{ gabinete.tamanio }}</p>
-    </div>
-
-    <button class="btn btn-success mt-5" data-toggle="collapse" data-target="#collapseElementoTarjeta"
-      aria-expanded="false" aria-controls="collapseElementoTarjeta">
-      Elementos
-    </button>
-    <div class="collapse contenedor-tarjeta" id="collapseElementoTarjeta">
+    <div v-if="mostrarElementos">
       <ElementoTarjeta :elementosActivos="elementosActivos" :elementosPasivos="elementosPasivos"
-        :info_gabinete="info_gabinete" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :condicion="condicion" :buscar="buscar" @filtrar="filtrar" />
+        :info_gabinete="info_gabinete" :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado"
+        :condicion="condicion" :buscar="buscar" @filtrar="filtrar" />
     </div>
+
     <!-- Modal Atualizar Imagen-->
     <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"
       aria-labelledby="modalActualizarImagen" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -245,7 +275,10 @@ export default {
       gabinete_actualizar: {},
       info_edificio: {},
       info_centro_cableado: {},
-      info_gabinete: {}
+      info_gabinete: {},
+      show: false,
+      mostrarInfoPrincipal: true,
+      mostrarElementos: false
     };
   },
   mounted() {
@@ -265,11 +298,11 @@ export default {
     ...mapGetters(["usuario"]),
   },
   methods: {
-    filtrar(datos){
-      console.log(datos,'dt')
+    filtrar(datos) {
+      console.log(datos, 'dt')
       const condicion = datos.condicion
       const buscar = datos.buscar
-      if (datos.tipo === 'ACTIVO'){
+      if (datos.tipo === 'ACTIVO') {
         this.verElemenosActivos(condicion, buscar)
       } else {
         this.verElemenosPasivos(condicion, buscar)
@@ -435,6 +468,18 @@ export default {
           this.tiposGabinetes = respuesta.data
         })
         .catch(error => console.log(error))
+    },
+    sesionMostrar(sesion) {
+      switch (sesion) {
+        case 'info-principal':
+          this.mostrarInfoPrincipal = true
+          this.mostrarElementos = false
+          break;
+        case 'elementos':
+          this.mostrarInfoPrincipal = false
+          this.mostrarElementos = true
+          break;
+      }
     }
   }
 };
@@ -480,10 +525,33 @@ export default {
 }
 
 .icono-actualizar {
-  font-size: 23px;
+  position: absolute;
+  top: 8px;
+  /* Ajusta según tu diseño */
+  right: 8px;
+  /* Ajusta según tu diseño */
+  background-color: rgba(255, 255, 255, 0.8);
+  /* Fondo blanco semi-transparente para mejor visibilidad */
+  border-radius: 50%;
+  /* Para hacer el fondo redondeado */
+  padding: 5px;
+  /* Espaciado interno */
+  cursor: pointer;
+  /* Cambia el cursor para indicar que es interactivo */
+  font-size: 20px;
   /* Tamaño del ícono */
-  color: #212121;
-  /* Color del ícono */
+  z-index: 10;
+  /* Asegura que esté por encima de la imagen */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icono-actualizar:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Cambia el fondo al pasar el mouse */
+  color: white;
+  /* Cambia el color del ícono al pasar el mouse */
 }
 
 .imagen-previsualizacion {
