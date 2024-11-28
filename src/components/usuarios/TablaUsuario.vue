@@ -21,18 +21,17 @@
           </td>
           <td>
             <button
-              data-placement="top" title="Modificar"
               data-toggle="modal"
               data-target="#modalUsuarioEditar"
               class="btn btn-outline-warning"
               @click="verDatosModal(usuario)"
             >
               <span class="icon-Lapiz"></span>
+              <v-tooltip activator="parent" location="top">Modificar</v-tooltip>
             </button>
           </td>
           <td>
             <button
-              data-placement="top" title="Desactivar"
               class="btn"
               :class="
                 usuario.estado === '1'
@@ -44,28 +43,29 @@
               <span>{{
                 usuario.estado === "1" ? "&#10003;" : "&#x2716;"
               }}</span>
+              <v-tooltip activator="parent" location="top">Desactivar</v-tooltip>
             </button>
           </td>
           <td>
             <button
-              data-placement="top" title="Cambiar Clave"
               data-toggle="modal"
               data-target="#modalUsuarioCambiarPassword"
               class="btn btn-outline-danger"
               @click="verDatosModal(usuario)"
             >
               <span>&#128273;</span>
+              <v-tooltip activator="parent" location="top">Cambiar Clave</v-tooltip>
             </button>
           </td>
           <td>
             <button
-              data-placement="top" title="Eliminar"
               data-toggle="modal"
               data-target="#modalUsuarioEliminar"
               class="btn btn-outline-danger"
               @click="verDatosModal(usuario)"
             >
               <span class="icon-Papelera"></span>
+              <v-tooltip activator="parent" location="top">Eliminar</v-tooltip>
             </button>
           </td>
         </tr>

@@ -46,6 +46,7 @@
               @keyup="paginaActual = 1" />
             <button class="btn btn-success" @click="verLogs()">
               &#128269;
+              <v-tooltip activator="parent" location="top">Ver</v-tooltip>
             </button>
           </div>
         </div>

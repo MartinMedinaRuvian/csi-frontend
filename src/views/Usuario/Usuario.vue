@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <h3 class="text-success mb-4 titulo-principal">Usuarios</h3>
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalUsuario">
+    <button type="button" class="btn btn-success text-white" data-toggle="modal" data-target="#modalUsuario">
       Guardar un nuevo Usuario
     </button>
 
@@ -88,6 +88,7 @@
             @keypress.enter="verUsuarios()" />
           <button class="btn btn-success" @click="verUsuarios()">
             &#128269;
+            <v-tooltip activator="parent" location="top">Ver</v-tooltip>
           </button>
         </div>
       </div>

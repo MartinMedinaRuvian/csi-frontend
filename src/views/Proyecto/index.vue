@@ -47,9 +47,9 @@
         </span>
       </h6>
     </div>
-    <h4 class="text-success mb-5">
-      <span><button data-placement="top" title="Volver" class="btn btn-success" @click="volver()">&#8630;</button></span>
-      Información Del Proyecto
+    <h4 class="text-danger mb-5">
+      <span><button class="btn btn-success" @click="volver()">&#8630; <v-tooltip activator="parent" location="top">Volver</v-tooltip></button></span>
+      Información Del Proyecto <b>{{ proyecto.codigo }}</b>
     </h4>
     <div class="informacion">
       <div class="informacion-basica">

@@ -26,9 +26,9 @@
       </h6>
     </div>
     <h4 class="text-danger mb-5">
-      <span><button class="btn btn-success" data-placement="top" title="Volver"
-          @click="volver()">&#8630;</button></span>
-      Información del Elemento Activo
+      <span><button class="btn btn-success" @click="volver()">&#8630;</button> <v-tooltip activator="parent"
+          location="top">Volver</v-tooltip></span>
+      Información del Elemento Activo <b>{{ elemento.codigo }}</b>
     </h4>
 
     <v-row>
@@ -82,23 +82,26 @@
                   <b>Referencia:</b> {{ elemento.tipo_referencia }}
                 </p>
 
-                <span v-if="propiedadTieneValor(elemento.codigo_inventario)"><b>Código de inventario:</b> {{
-                  elemento.codigo_inventario }}
-                  <br>
-                </span>
-                <span v-if="propiedadTieneValor(elemento.serial)"><b>Serial:</b> {{ elemento.serial }} <br> </span>
-                <span v-if="propiedadTieneValor(elemento.os)"><b>S.O:</b> {{ elemento.os }} <br></span>
-                <span v-if="propiedadTieneValor(elemento.version_os)"><b>Versión S.O:</b> {{ elemento.version_os
-                  }}<br></span>
-                <span v-if="propiedadTieneValor(elemento.gateway)"><b>Gateway:</b> {{ elemento.gateway }}<br></span>
-                <span v-if="propiedadTieneValor(elemento.ip_v4)"><b>IPV4:</b> {{ elemento.ip_v4 }}</span> <br>
-                <span v-if="propiedadTieneValor(elemento.ip_v6)"><b>IPV6:</b> {{ elemento.ip_v6 }}</span> <br>
-                <span v-if="propiedadTieneValor(elemento.cantidad_puertos_por_defecto)"><b>Cant. Puertos Default:</b> {{
-                  elemento.cantidad_puertos_por_defecto }}</span> <br>
-                <span v-if="propiedadTieneValor(elemento.puerto_logico_por_defecto)"><b></b> {{
-                  elemento.puerto_logico_por_defecto }}</span> <br>
-                <span v-if="propiedadTieneValor(elemento.puerto_fisico_por_defecto)">Puerto Fisico Default: {{
-                  elemento.puerto_fisico_por_defecto }}</span>
+                <div class="info-secundaria">
+                  <span v-if="propiedadTieneValor(elemento.codigo_inventario)"><b>Código de inventario:</b> {{
+                    elemento.codigo_inventario }}
+                    <br>
+                  </span>
+                  <span v-if="propiedadTieneValor(elemento.serial)"><b>Serial:</b> {{ elemento.serial }} <br> </span>
+                  <span v-if="propiedadTieneValor(elemento.os)"><b>S.O:</b> {{ elemento.os }} <br></span>
+                  <span v-if="propiedadTieneValor(elemento.version_os)"><b>Versión S.O:</b> {{ elemento.version_os
+                    }}<br></span>
+                  <span v-if="propiedadTieneValor(elemento.gateway)"><b>Gateway:</b> {{ elemento.gateway }}<br></span>
+                  <span v-if="propiedadTieneValor(elemento.ip_v4)"><b>IPV4:</b> {{ elemento.ip_v4 }}</span> <br>
+                  <span v-if="propiedadTieneValor(elemento.ip_v6)"><b>IPV6:</b> {{ elemento.ip_v6 }}</span> <br>
+                  <span v-if="propiedadTieneValor(elemento.cantidad_puertos_por_defecto)"><b>Cant. Puertos Default:</b>
+                    {{
+                      elemento.cantidad_puertos_por_defecto }}</span> <br>
+                  <span v-if="propiedadTieneValor(elemento.puerto_logico_por_defecto)"><b></b> {{
+                    elemento.puerto_logico_por_defecto }}</span> <br>
+                  <span v-if="propiedadTieneValor(elemento.puerto_fisico_por_defecto)">Puerto Fisico Default: {{
+                    elemento.puerto_fisico_por_defecto }}</span>
+                </div>
 
                 <p v-if="elemento.observacion && elemento.observacion.length > 0">
                   <b>Observación:</b>
@@ -187,7 +190,7 @@
         :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" :info_edificio="info_edificio"
         :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" :info_elemento="info_elemento" />
 
-      <div class="paginacion mt-5">
+      <div class="paginacion">
         <button :disabled="paginaActualMantenimiento === 1"
           @click="cambiarPaginaMantenimiento(paginaActualMantenimiento - 1)" class="btn btn-success mr-2">
           &laquo;
@@ -345,7 +348,7 @@ export default {
       maximaFechaMantenimiento: null,
       totalRegistrosMantenimiento: 0,
       paginaActualMantenimiento: 1,
-      registrosPorPaginaMantenimiento: 8,
+      registrosPorPaginaMantenimiento: 4,
       show: false,
       mostrarInfoPrincipal: true,
       mostrarMantenimientos: false,
@@ -735,6 +738,14 @@ export default {
   color: #fff;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.info-secundaria span {
+  font-size: 18px;
+}
+
+.paginacion {
+  margin-top: -20px !important;
 }
 
 @media (min-width: 768px) {

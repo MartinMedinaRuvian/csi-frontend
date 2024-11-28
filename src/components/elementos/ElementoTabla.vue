@@ -2,7 +2,7 @@
   <div class="mt-5">
     <div v-if="elementos && elementos.length > 0">
       <table class="table table-responsive-lg">
-        <thead class="thead-light">
+        <thead class="thead-dark">
           <tr>
             <th scope="col">Imagen</th>
             <th scope="col">Dispositivo</th>

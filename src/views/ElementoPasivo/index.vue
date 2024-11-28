@@ -26,8 +26,8 @@
       </h6>
     </div>
     <h4 class="text-danger mb-5">
-      <span><button class="btn btn-success"
-          @click="volver()">&#8630; <v-tooltip activator="parent" location="top">Volver</v-tooltip></button></span>
+      <span><button class="btn btn-success" @click="volver()">&#8630; <v-tooltip activator="parent"
+            location="top">Volver</v-tooltip></button></span>
       Información del Elemento Pasivo
     </h4>
 
@@ -76,17 +76,20 @@
 
               <v-card-text align="left">
 
-                <span v-if="propiedadTieneValor(elemento.codigo_inventario)"><b>Código de inventario:</b> {{
-                  elemento.codigo_inventario }}
-                  <br>
-                </span>
-                <span v-if="propiedadTieneValor(elemento.categoria)"><b>Categoría:</b> {{ elemento.categoria }} <br>
-                </span>
-                <span v-if="propiedadTieneValor(elemento.numero_puertos)"><b># de Puertos:</b> {{
-                  elemento.numero_puertos }}
-                  <br></span>
-                <span v-if="propiedadTieneValor(elemento.tipo_conector)"><b>Tipo Conector:</b> {{ elemento.tipo_conector
-                  }}<br></span>
+                <div class="info-secundaria">
+                  <span v-if="propiedadTieneValor(elemento.codigo_inventario)"><b>Código de inventario:</b> {{
+                    elemento.codigo_inventario }}
+                    <br>
+                  </span>
+                  <span v-if="propiedadTieneValor(elemento.categoria)"><b>Categoría:</b> {{ elemento.categoria }} <br>
+                  </span>
+                  <span v-if="propiedadTieneValor(elemento.numero_puertos)"><b># de Puertos:</b> {{
+                    elemento.numero_puertos }}
+                    <br></span>
+                  <span v-if="propiedadTieneValor(elemento.tipo_conector)"><b>Tipo Conector:</b> {{
+                    elemento.tipo_conector
+                    }}<br></span>
+                </div>
 
                 <p class="mt-5" v-if="elemento.observacion && elemento.observacion.length > 0">
                   <b>Observación:</b>
@@ -111,8 +114,8 @@
 
     <div v-if="mostrarProyectos">
       <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_pasivo', id: elemento.id }"
-          :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete"
-          :info_elemento="info_elemento" @filtrar="filtrar" />
+        :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete"
+        :info_elemento="info_elemento" @filtrar="filtrar" />
     </div>
 
     <div v-if="mostrarMantenimientos">
@@ -698,6 +701,14 @@ export default {
   border-radius: 50%;
   font-size: 20px;
   font-weight: 700;
+}
+
+.info-secundaria span {
+  font-size: 18px;
+}
+
+.paginacion {
+  margin-top: -20px !important;
 }
 
 @media (min-width: 768px) {

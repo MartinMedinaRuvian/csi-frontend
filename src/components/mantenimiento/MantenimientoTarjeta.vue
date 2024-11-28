@@ -8,7 +8,7 @@
       </h4>
 
       <div id="dialog-window">
-        <div id="scrollable-content" class="containe-imagenes mb-5">
+        <div id="scrollable-content" class="containe-imagenes">
 
 
           <table class="table table-responsive-md" v-if="mantenimientos.length > 0">
@@ -375,14 +375,14 @@ export default {
 
 #dialog-window {
   width: 90%;
-  height: 625px;
+  height: 350px;
   margin-bottom: 40px;
 }
 
 #scrollable-content {
-  height: 625px;
+  height: 350px;
   overflow: auto;
-  border: solid 0.3px #BDBDBD;
+  border: solid 0.3px #212121;
   border-radius: 10px
 }
 
