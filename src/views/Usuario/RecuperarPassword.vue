@@ -1,4 +1,7 @@
 <template>
+  <div class="background-image">
+    
+  </div>
   <div class="text-center container-inicio-sesion">
     <h5 class="text-white">Recuperar Contraseña</h5>
     <div class="d-flex justify-content-center align-items-center container">
@@ -54,3 +57,17 @@ export default {
   }
 };
 </script>
+<style scoped>
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('../../assets/fondo_ufps.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+</style>

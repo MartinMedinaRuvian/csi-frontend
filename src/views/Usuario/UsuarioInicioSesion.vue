@@ -1,29 +1,31 @@
 <template>
+    <div class="background-image">  
+  </div>
   <div class="text-center container-inicio-sesion">
     <Mensaje :mensaje="mensaje" />
     <div class="d-flex justify-content-center align-items-center container">
       <div class="row">
         <form @submit.prevent="iniciarSesion()" class="formulario">
           <h6>
-            <span class="text-danger">Iniciar Sesión</span>
+            <span class="text-white">Iniciar Sesión</span>
           </h6>
-          <div class="form group mt-3">
+          <div class="form group mt-3 text-white">
             <div class="form-group">
-              <label for="email">Email:</label>
+              <label for="email"><b>Email:</b></label>
               <input type="email" placeholder="Ingrese Email" v-model="usuarioLogin.email" class="form-control" />
             </div>
           </div>
-          <div class="form group mt-3">
+          <div class="form group mt-3 text-white">
             <div class="form-group">
-              <label for="password">Contraseña:</label>
+              <label for="password"><b>Contraseña:</b></label>
               <input type="password" placeholder="Contraseña" class="form-control" v-model="usuarioLogin.password" />
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group text-white">
             <button type="submit" class="btn btn-success mb-3">Ingresar</button>
           </div>
           <div class="container-recuperar_password mt-5">
-            <a class="text-danger" href="/recuperar-password">Olvide mi contraseña</a>
+            <a class="text-white" href="/recuperar-password"><b>Olvide mi contraseña</b></a>
           </div>
         </form>
       </div>
@@ -81,3 +83,20 @@ export default {
   },
 };
 </script>
+<style scoped>
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('../../assets/fondo_ufps.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+.container-recuperar_password a {
+  font-size: 18px;
+}
+</style>
