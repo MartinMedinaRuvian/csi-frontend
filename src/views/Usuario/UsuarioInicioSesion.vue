@@ -6,6 +6,7 @@
     <div class="d-flex justify-content-center align-items-center container">
       <div class="row">
         <form @submit.prevent="iniciarSesion()" class="formulario">
+ 
           <h6>
             <span class="text-white">Iniciar Sesión</span>
           </h6>

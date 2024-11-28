@@ -53,7 +53,7 @@
           </ul>
           <div v-else class="container-no_registros">
             <span>
-              <v-icon color="yellow-lighten-1" icon="mdi-file-remove-outline"></v-icon>
+              <v-icon color="grey-darken-1" icon="mdi-file-remove-outline"></v-icon>
             </span>
             <span>
               <h5>Sin Registros</h5>
@@ -454,7 +454,7 @@ export default {
 
 #dialog-window {
   width: 90%;
-  height: 200px;
+  height: 250px;
   margin-bottom: 40px;
 }
 

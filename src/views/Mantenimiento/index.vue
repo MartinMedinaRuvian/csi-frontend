@@ -32,7 +32,7 @@
         </span>
       </h6>
     </div>
-    <h4 class="text-danger mb-5">
+    <h4 class="text-success mb-5">
       <span><button class="btn btn-success" @click="volver()">&#8630; <v-tooltip activator="parent" location="top">Volver</v-tooltip></button></span>
       Información Del Mantenimiento {{ mantenimiento.codigo }}
     </h4>

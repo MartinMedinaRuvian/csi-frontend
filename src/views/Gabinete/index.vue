@@ -17,7 +17,7 @@
         </span>
       </h6>
     </div>
-    <h4 class="text-danger mb-5">
+    <h4 class="text-success mb-5">
       <span><button class="btn btn-success"
           @click="volver()">&#8630; <v-tooltip activator="parent" location="top">Volver</v-tooltip></button></span>
       Información Gabinete <b>R{{ gabinete.numero }}</b>
@@ -25,10 +25,10 @@
 
     <v-row>
       <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Ver Información Principal</v-btn>
+        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Información Principal</v-btn>
       </v-col>
       <v-col>
-        <v-btn color="grey-darken-3" @click="sesionMostrar('elementos')">Ver Elementos</v-btn>
+        <v-btn color="green-darken-2" @click="sesionMostrar('elementos')">Elementos</v-btn>
       </v-col>
     </v-row>
 
@@ -615,7 +615,7 @@ export default {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background-color: #A5D6A7;
+  background-color: #dd4b39;
   padding: 4px;
 }
 

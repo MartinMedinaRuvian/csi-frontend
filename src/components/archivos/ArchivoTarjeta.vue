@@ -13,11 +13,11 @@
             <li class="list-group-item d-flex justify-content-between">
               <div class="texto-archivos">
                 <p v-if="elArchivoEsUnaImagen(archivo.nombre)" class="pointer-hand"
-                  data-toggle="modal" data-target="#modalVerImagen" @click="verDatosModal(archivo)">{{ archivo.nombre }}
+                  data-toggle="modal" data-target="#modalVerImagen" @click="verDatosModal(archivo)"><b>{{ archivo.nombre }}</b>
                   <v-tooltip activator="parent" location="top">Ver</v-tooltip>
                 </p>
-                <p v-else class="pointer-hand" @click="descargarArchivo(archivo.ruta)"> {{
-                  archivo.nombre }}
+                <p v-else class="pointer-hand" @click="descargarArchivo(archivo.ruta)"> <b>{{
+                  archivo.nombre }}</b>
                   <v-tooltip activator="parent" location="top">Descargar</v-tooltip>
                 </p>
               </div>
@@ -31,7 +31,7 @@
           </ul>
           <div v-else class="container-no_registros">
             <span>
-              <v-icon color="light-blue-lighten-3" icon="mdi-file-remove-outline"></v-icon>
+              <v-icon color="grey-darken-1" icon="mdi-file-remove-outline"></v-icon>
             </span>
             <span>
               <h5>Sin Registros</h5>
@@ -318,7 +318,10 @@ export default {
 }
 
 .btn-eliminar_item {
-  font-size: 10px;
+  font-size: 15px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid #fff;
 }
 
 .texto-mediano {
@@ -361,7 +364,7 @@ export default {
   width: 15%;
 }
 #scrollable-content li {
-  background-color: #81D4FA;
+  background-color: #BDBDBD;
   color: #000;
 }
 

@@ -10,20 +10,20 @@
         </span>
       </h6>
     </div>
-    <h4 class="text-danger mb-5">
+    <h4 class="text-success mb-5">
       <span><button class="btn btn-success" @click="volver()">&#8630; <v-tooltip activator="parent"
             location="top">Volver</v-tooltip></button></span>
       Información Centro de Cableado <b> #{{ centro_cableado.numero }} </b>
     </h4>
     <v-row>
       <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Ver Información Principal</v-btn>
+        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Información Principal</v-btn>
       </v-col>
       <v-col>
-        <v-btn color="grey-darken-3" @click="sesionMostrar('gabinetes')">Ver Gabinetes (RACKS)</v-btn>
+        <v-btn color="green-darken-2" @click="sesionMostrar('gabinetes')">Gabinetes (RACKS)</v-btn>
       </v-col>
       <v-col>
-        <v-btn color="yellow-lighten-3" @click="sesionMostrar('proyectos')">Ver Proyectos</v-btn>
+        <v-btn color="green-darken-2" @click="sesionMostrar('proyectos')">Proyectos</v-btn>
       </v-col>
     </v-row>
 
@@ -632,7 +632,7 @@ export default {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background-color: #A5D6A7;
+  background-color: #dd4b39;
   padding: 4px;
 }
 

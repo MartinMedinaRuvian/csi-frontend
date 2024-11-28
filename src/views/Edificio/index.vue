@@ -1,15 +1,15 @@
 <template>
   <div class="text-center">
-    <h4 class="text-danger mb-5"><span><button class="btn btn-success"
+    <h4 class="text-success mb-5"><span><button class="btn btn-success"
           @click="volver()">&#8630; <v-tooltip activator="parent" location="top">Volver</v-tooltip></button></span>
-      Información Edificio <b>{{ edificio.nombre }}</b></h4>
+      Edificio {{ edificio.nombre }} ({{ edificio.codigo }})</h4>
     
     <v-row>
       <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Ver Información Principal</v-btn>
+        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Información Principal</v-btn>
       </v-col>
       <v-col>
-        <v-btn color="grey-darken-3" @click="sesionMostrar('centros-cableados')">Ver Centros de Cableado</v-btn>
+        <v-btn color="green-darken-2" @click="sesionMostrar('centros-cableados')">Centros de Cableado</v-btn>
       </v-col>
     </v-row>
       
@@ -24,10 +24,6 @@
             </span>
             <v-img height="300px" :src="ruta_servidor + '/' + edificio.ruta_imagen" alt="Imagen Edificio" contain></v-img>
           </div>
-
-          <v-card-title>
-            {{ edificio.nombre }} - {{ edificio.codigo }}
-          </v-card-title>
 
           <v-card-actions>
             <v-btn color="red-accent-4" text="Más información" @click="show = !show"></v-btn>
@@ -465,7 +461,7 @@ export default {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background-color: #A5D6A7;
+  background-color: #dd4b39;
   padding: 4px;
 }
 

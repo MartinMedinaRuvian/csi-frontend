@@ -1,7 +1,8 @@
 <template>
   <nav class="navbar fixed-top navbar-expand-md" id="navegacion">
     <router-link data-toggle="collapse" data-target=".navbar-collapse.show" class="navbar-brand titulo" to="/"><span
-        class="text-white">CSI</span><span class="text-dark">Control</span></router-link>
+        class="text-white">CSI</span><span class="text-dark">Control</span>
+      </router-link>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
