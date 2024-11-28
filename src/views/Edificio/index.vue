@@ -13,16 +13,16 @@
       </v-col>
     </v-row>
       
-    <v-row class="mt-5" v-if="mostrarInfoPrincipal">
+    <v-row class="mt-5 ml-2" v-if="mostrarInfoPrincipal">
       <v-col>
-        <v-card class="mx-auto" max-width="500">
+        <v-card class="mx-auto" max-width="100%">
 
           <div class="contenedor-imagen">
             <span class="icono-actualizar" data-toggle="modal" data-target="#modalActualizarImagen">
               &#x1F504;
               <v-tooltip activator="parent" location="top">Cambiar Imagen</v-tooltip>
             </span>
-            <v-img height="300px" :src="ruta_servidor + '/' + edificio.ruta_imagen" alt="Imagen Edificio" cover></v-img>
+            <v-img height="300px" :src="ruta_servidor + '/' + edificio.ruta_imagen" alt="Imagen Edificio" contain></v-img>
           </div>
 
           <v-card-title>
@@ -458,6 +458,15 @@ export default {
 .informacion-secundario {
   flex-basis: 100%;
   max-width: 100%;
+}
+
+.contenedor-imagen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #A5D6A7;
+  padding: 5px;
 }
 
 @media (min-width: 768px) {
