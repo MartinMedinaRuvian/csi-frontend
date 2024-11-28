@@ -21,64 +21,101 @@
         </span>
         <span>
           GABINETE R{{
-          info_gabinete.numero }}
+            info_gabinete.numero }}
         </span>
       </h6>
     </div>
-    <h4 class="text-success mb-5">
-      <span><button class="btn btn-success"  data-placement="top" title="Volver" @click="volver()">&#8630;</button></span>
+    <h4 class="text-danger mb-5">
+      <span><button class="btn btn-success"
+          @click="volver()">&#8630; <v-tooltip activator="parent" location="top">Volver</v-tooltip></button></span>
       Información del Elemento Pasivo
     </h4>
-    <div class="informacion">
-      <div class="informacion-basica">
-        <div class="contenedor-imagen">
-          <div class="imagen-wrapper">
-            <img id="imagen" :src="rutaImagenVer(elemento.ruta_imagen)" alt="">
+
+    <v-row>
+      <v-col>
+        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Información Principal</v-btn>
+      </v-col>
+      <v-col>
+        <v-btn color="green-darken-2" @click="sesionMostrar('mantenimientos')">Mantenimientos</v-btn>
+      </v-col>
+      <v-col>
+        <v-btn color="green-darken-2" @click="sesionMostrar('proyectos')">Proyectos</v-btn>
+      </v-col>
+    </v-row>
+
+    <v-row class="mt-5" v-if="mostrarInfoPrincipal">
+      <v-col>
+        <v-card class="mx-auto" max-width="500">
+
+          <div class="contenedor-imagen">
             <span class="icono-actualizar" data-toggle="modal" data-target="#modalActualizarImagen">
               &#x1F504;
+              <v-tooltip activator="parent" location="top">Cambiar Imagen</v-tooltip>
             </span>
-          </div>
-          <h6 class="mt-3"><b>{{ elemento.tipo_dispositivo }}</b></h6>
-          <h6 class="mt-3"><b>{{ elemento.codigo }}</b></h6>
-          <div class="form-group mt-3 observacion">
-            <label for="codigo">Observación:</label>
-            <textarea
-              disabled type="text" placeholder="Observación" v-model="elemento.observacion"
-              class="form-control textarea-center" />
+            <v-img height="300px" :src="rutaImagenVer(elemento.ruta_imagen)" cover></v-img>
           </div>
 
-        </div>
+          <v-card-title>
+            Elemento {{ elemento.codigo }}
+          </v-card-title>
 
-        <button class="btn btn-warning mr-2" @click="actualizarElemento()">Actualizar</button>
-        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
-          data-target="#modaleliminarElemento">Eliminar</button>
-      </div>
+          <v-card-subtitle>
+            <h6 class="mt-3"><b>{{ elemento.tipo_dispositivo }}</b></h6>
+          </v-card-subtitle>
 
-      <div class="informacion-secundario">
+          <v-card-actions>
+            <v-btn color="red-accent-4" text="Más información" @click="show = !show"></v-btn>
+
+            <v-spacer></v-spacer>
+
+            <v-btn :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn>
+          </v-card-actions>
+
+          <v-expand-transition>
+            <div v-show="show">
+
+              <v-card-text align="left">
+
+                <span v-if="propiedadTieneValor(elemento.codigo_inventario)"><b>Código de inventario:</b> {{
+                  elemento.codigo_inventario }}
+                  <br>
+                </span>
+                <span v-if="propiedadTieneValor(elemento.categoria)"><b>Categoría:</b> {{ elemento.categoria }} <br>
+                </span>
+                <span v-if="propiedadTieneValor(elemento.numero_puertos)"><b># de Puertos:</b> {{
+                  elemento.numero_puertos }}
+                  <br></span>
+                <span v-if="propiedadTieneValor(elemento.tipo_conector)"><b>Tipo Conector:</b> {{ elemento.tipo_conector
+                  }}<br></span>
+
+                <p class="mt-5" v-if="elemento.observacion && elemento.observacion.length > 0">
+                  <b>Observación:</b>
+                  <br> {{
+                    elemento.observacion }}
+                </p>
+              </v-card-text>
+
+              <div class="botones mb-5">
+                <button class="btn btn-warning mr-2" @click="actualizarElemento()">Actualizar</button>
+                <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
+                  data-target="#modaleliminarElemento">Eliminar</button>
+              </div>
+            </div>
+          </v-expand-transition>
+        </v-card>
+      </v-col>
+      <v-col>
         <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'elemento_pasivo', id: elemento.id }" />
-        <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_pasivo', id: elemento.id }"
+      </v-col>
+    </v-row>
+
+    <div v-if="mostrarProyectos">
+      <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_pasivo', id: elemento.id }"
           :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete"
           :info_elemento="info_elemento" @filtrar="filtrar" />
-      </div>
-    </div>
-    <div class="propiedades-elemento mb-5">
-      <span v-if="propiedadTieneValor(elemento.codigo_inventario)"><b>Código de inventario:</b> {{
-        elemento.codigo_inventario }}
-        <br>
-      </span>
-      <span v-if="propiedadTieneValor(elemento.categoria)"><b>Categoría:</b> {{ elemento.categoria }} <br> </span>
-      <span v-if="propiedadTieneValor(elemento.numero_puertos)"><b># de Puertos:</b> {{ elemento.numero_puertos }}
-        <br></span>
-      <span v-if="propiedadTieneValor(elemento.tipo_conector)"><b>Tipo Conector:</b> {{ elemento.tipo_conector
-        }}<br></span>
     </div>
 
-    <button class="btn btn-success" data-toggle="collapse" data-target="#collapseMantenimientoTarjeta"
-      aria-expanded="false" aria-controls="collapseMantenimientoTarjeta">
-      Mantenimientos
-    </button>
-
-    <div class="collapse" id="collapseMantenimientoTarjeta">
+    <div v-if="mostrarMantenimientos">
 
       <div class="container">
         <div class="row mt-5">
@@ -124,8 +161,9 @@
             <div class="input-buscar">
               <input class="form-control" type="text" v-model="buscarMantenimiento"
                 @keypress.enter="verMantenimientos()" @keyup="paginaActual = 1" />
-              <button data-placement="top" title="Ver" class="btn btn-success" @click="verMantenimientos()">
+              <button class="btn btn-success" @click="verMantenimientos()">
                 &#128269;
+                <v-tooltip activator="parent" location="top">Ver</v-tooltip>
               </button>
             </div>
           </div>
@@ -287,7 +325,11 @@ export default {
       maximaFechaMantenimiento: null,
       totalRegistrosMantenimiento: 0,
       paginaActualMantenimiento: 1,
-      registrosPorPaginaMantenimiento: 10
+      registrosPorPaginaMantenimiento: 10,
+      show: false,
+      mostrarInfoPrincipal: true,
+      mostrarMantenimientos: false,
+      mostrarProyectos: false
     };
   },
   mounted() {
@@ -412,12 +454,12 @@ export default {
           buscarPor: this.buscarPorMantenimiento
         };
       }
-        this.axios.post("mantenimiento/buscarporcondicion/elemento_pasivo/" + idelemento, buscarPor).then((respuesta) => {
-          if (respuesta.status === 200) {
-            this.mantenimientos = respuesta.data.datos;
-            this.totalRegistrosMantenimiento = respuesta.data.total;
-          }
-        })
+      this.axios.post("mantenimiento/buscarporcondicion/elemento_pasivo/" + idelemento, buscarPor).then((respuesta) => {
+        if (respuesta.status === 200) {
+          this.mantenimientos = respuesta.data.datos;
+          this.totalRegistrosMantenimiento = respuesta.data.total;
+        }
+      })
         .catch((error) => {
           console.error("Error al obtener logs:", error);
         });
@@ -509,6 +551,25 @@ export default {
     },
     propiedadTieneValor(propiedad) {
       return propiedad !== null && propiedad !== undefined && propiedad != ''
+    },
+    sesionMostrar(sesion) {
+      switch (sesion) {
+        case 'info-principal':
+          this.mostrarInfoPrincipal = true
+          this.mostrarMantenimientos = false
+          this.mostrarProyectos = false
+          break;
+        case 'mantenimientos':
+          this.mostrarInfoPrincipal = false
+          this.mostrarMantenimientos = true
+          this.mostrarProyectos = false
+          break;
+        case 'proyectos':
+          this.mostrarInfoPrincipal = false
+          this.mostrarMantenimientos = false
+          this.mostrarProyectos = true
+          break;
+      }
     }
   }
 };
@@ -544,13 +605,32 @@ export default {
 
 .icono-actualizar {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: rgba(255, 255, 255, 0.7);
-  /* Fondo para que se vea mejor sobre la imagen */
+  top: 8px;
+  /* Ajusta según tu diseño */
+  right: 8px;
+  /* Ajusta según tu diseño */
+  background-color: rgba(255, 255, 255, 0.8);
+  /* Fondo blanco semi-transparente para mejor visibilidad */
   border-radius: 50%;
+  /* Para hacer el fondo redondeado */
   padding: 5px;
+  /* Espaciado interno */
   cursor: pointer;
+  /* Cambia el cursor para indicar que es interactivo */
+  font-size: 20px;
+  /* Tamaño del ícono */
+  z-index: 10;
+  /* Asegura que esté por encima de la imagen */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icono-actualizar:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Cambia el fondo al pasar el mouse */
+  color: white;
+  /* Cambia el color del ícono al pasar el mouse */
 }
 
 .icono-actualizar {
