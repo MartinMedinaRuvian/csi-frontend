@@ -11,8 +11,8 @@
       </h6>
     </div>
     <h4 class="text-danger mb-5">
-      <span><button class="btn btn-success"
-          @click="volver()">&#8630; <v-tooltip activator="parent" location="top">Volver</v-tooltip></button></span>
+      <span><button class="btn btn-success" @click="volver()">&#8630; <v-tooltip activator="parent"
+            location="top">Volver</v-tooltip></button></span>
       Información Centro de Cableado <b> #{{ centro_cableado.numero }} </b>
     </h4>
     <v-row>
@@ -52,14 +52,13 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn>
+            <v-btn color="green-darken-2" :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn>
           </v-card-actions>
 
           <v-expand-transition>
             <div v-show="show">
 
-              <v-card-text align="left">
-
+              <v-card-text align="center">
                 <p :class="centro_cableado.climatizado === 'S' ? 'text-success' : 'text-warning'">{{
                   centro_cableado.climatizado
                     === 'S' ? 'Climatizado &#10052;' : 'No esta climatizado' }}</p>
@@ -69,9 +68,13 @@
 
                 <p :class="centro_cableado.acceso_llaves === 'S' ? 'text-dark' : 'text-warning'">{{
                   centro_cableado.acceso_llaves === 'S' ? 'Acceso con llaves &#128273;' : 'Sin acceso con llaves' }}</p>
-                <p>{{ centro_cableado.acceso_biometrico === 'S' ? 'Acceso biométrico &#128070;' : 'Sin acceso biométrico' }}</p>
+                <p>
+                  {{ centro_cableado.acceso_biometrico === 'S' ? 'Acceso biométrico &#128070;' : 'Sin acceso biométrico' }}</p>
+              </v-card-text>
 
-                <p class="mt-5" v-if="centro_cableado.observacion && centro_cableado.observacion.length > 0"> <b>Observación:</b>
+              <v-card-text align="left">
+                <p v-if="centro_cableado.observacion && centro_cableado.observacion.length > 0">
+                  <b>Observación:</b>
                   <br> {{
                     centro_cableado.observacion }}
                 </p>
@@ -94,14 +97,13 @@
     </v-row>
 
     <div v-if="mostrarProyectos">
-      <ProyectoTarjeta :proyectos="proyectos"
-          :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" :info_edificio="info_edificio"
-          :info_centro_cableado="info_centro_cableado" @filtrar="filtrar" />
+      <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }"
+        :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" @filtrar="filtrar" />
     </div>
 
     <div v-if="mostrarGabinetes" class="mt-5">
       <GabineteTarjeta :gabinetes="gabinetes" :info_centro_cableado="info_centro_cableado"
-      :info_edificio="info_edificio" />
+        :info_edificio="info_edificio" />
     </div>
 
     <!-- Modal Atualizar Imagen-->
@@ -631,7 +633,7 @@ export default {
   align-items: center;
   overflow: hidden;
   background-color: #A5D6A7;
-  padding: 5px;
+  padding: 4px;
 }
 
 @media (min-width: 768px) {

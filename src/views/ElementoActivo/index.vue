@@ -75,13 +75,11 @@
           <v-expand-transition>
             <div v-show="show">
 
-              <v-card-text align="left">
-
+              <v-card-text align="center">
                 <p class="text-primary"><b>Módelo:</b> {{ elemento.tipo_modelo }} <br>
                   <b>Marca:</b> {{ elemento.tipo_marca }} <br>
                   <b>Referencia:</b> {{ elemento.tipo_referencia }}
                 </p>
-
                 <div class="info-secundaria">
                   <span v-if="propiedadTieneValor(elemento.codigo_inventario)"><b>Código de inventario:</b> {{
                     elemento.codigo_inventario }}
@@ -102,7 +100,9 @@
                   <span v-if="propiedadTieneValor(elemento.puerto_fisico_por_defecto)">Puerto Fisico Default: {{
                     elemento.puerto_fisico_por_defecto }}</span>
                 </div>
+              </v-card-text>
 
+              <v-card-text align="left">
                 <p v-if="elemento.observacion && elemento.observacion.length > 0">
                   <b>Observación:</b>
                   <br> {{
@@ -754,7 +754,7 @@ export default {
   align-items: center;
   overflow: hidden;
   background-color: #A5D6A7;
-  padding: 5px;
+  padding: 4px;
 }
 
 @media (min-width: 768px) {

@@ -466,7 +466,7 @@ export default {
   align-items: center;
   overflow: hidden;
   background-color: #A5D6A7;
-  padding: 5px;
+  padding: 4px;
 }
 
 @media (min-width: 768px) {

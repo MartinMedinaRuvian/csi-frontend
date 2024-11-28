@@ -63,13 +63,14 @@
           <v-expand-transition>
             <div v-show="show">
 
-              <v-card-text align="left">
-
+              <v-card-text align="center">
                 <p :class="gabinete.aterrizado === 'S' ? 'text-success' : 'text-warning'">{{ gabinete.aterrizado
                   === 'S' ? 'Aterrizado &#9889;' : 'No esta aterrizado' }}</p>
                 <p>Tamaño: {{ gabinete.tamanio }}</p>
+              </v-card-text>
 
-                <p class="mt-5" v-if="gabinete.observacion && gabinete.observacion.length > 0">
+              <v-card-text align="left">
+                <p v-if="gabinete.observacion && gabinete.observacion.length > 0">
                   <b>Observación:</b>
                   <br> {{
                     gabinete.observacion }}
@@ -615,7 +616,7 @@ export default {
   align-items: center;
   overflow: hidden;
   background-color: #A5D6A7;
-  padding: 5px;
+  padding: 4px;
 }
 
 @media (min-width: 768px) {
