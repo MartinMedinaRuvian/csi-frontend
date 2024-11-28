@@ -10,7 +10,7 @@
         </span>
         -
         <span>
-          <v-icon color="red-accent-4" icon="mdi-database"></v-icon>
+          <v-icon color="red-accent-4" icon="mdi-ethernet"></v-icon>
         </span>
         <span>
           C. CABLEADO #{{ info_centro_cableado.numero }}
