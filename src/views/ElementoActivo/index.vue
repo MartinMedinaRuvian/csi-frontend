@@ -36,10 +36,10 @@
         <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Información Principal</v-btn>
       </v-col>
       <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('mantenimientos')">Mantenimientos</v-btn>
+        <v-btn color="grey-darken-3" @click="sesionMostrar('mantenimientos')">Ver Mantenimientos</v-btn>
       </v-col>
       <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('proyectos')">Proyectos</v-btn>
+        <v-btn color="yellow-lighten-3" @click="sesionMostrar('proyectos')">Ver Proyectos</v-btn>
       </v-col>
     </v-row>
 

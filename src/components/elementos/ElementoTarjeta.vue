@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="container-principal">
-      <h4 class="mb-5">Elemento <span> <button class="btn btn-success" @click="guardarElemento()">+ <v-tooltip activator="parent" location="top">Agregar</v-tooltip></button></span>
-      </h4>
+      <h5 class="mb-5">Elemento <span> <button class="btn btn-success" @click="guardarElemento()">+ <v-tooltip activator="parent" location="top">Agregar</v-tooltip></button></span>
+      </h5>
       <div class="row">
         <div class="col columna-elementos_activos mr-2">
           <div class="contenedor-elementos">
@@ -364,7 +364,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.container-principal{
+  margin-top: 25px;
+}
+
 .card {
   margin-bottom: 20px;
   border-radius: 10px;

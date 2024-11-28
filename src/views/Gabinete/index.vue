@@ -25,10 +25,10 @@
 
     <v-row>
       <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Información Principal</v-btn>
+        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Ver Información Principal</v-btn>
       </v-col>
       <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('elementos')">Elementos</v-btn>
+        <v-btn color="grey-darken-3" @click="sesionMostrar('elementos')">Ver Elementos</v-btn>
       </v-col>
     </v-row>
 

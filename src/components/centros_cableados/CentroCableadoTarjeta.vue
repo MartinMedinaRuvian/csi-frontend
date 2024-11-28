@@ -2,8 +2,8 @@
   <div>
     <div class="container-principal" v-if="(centros_cableados != null || centros_cableados != undefined)
       && centros_cableados.length > 0">
-      <h4 class="mb-5">Centros de Cableados <span> <button class="btn btn-success" data-toggle="modal"
-            data-target="#modalGuardarCentroCableado">+ <v-tooltip activator="parent" location="top">Agregar</v-tooltip></button></span></h4>
+      <h5 class="mb-5">Centros de Cableados <span> <button class="btn btn-success" data-toggle="modal"
+            data-target="#modalGuardarCentroCableado">+ <v-tooltip activator="parent" location="top">Agregar</v-tooltip></button></span></h5>
       <div class="row mt-5">
         <div class="col-sm-12 col-md-6 col-lg-3 mb-4" v-for="centro_cableado in centros_cableados"
           :key="centro_cableado.id">
@@ -233,7 +233,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.container-principal{
+  margin-top: 30px;
+}
+
 .card {
   margin-bottom: 20px;
   border-radius: 10px;

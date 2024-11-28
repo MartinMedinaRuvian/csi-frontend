@@ -17,13 +17,13 @@
     </h4>
     <v-row>
       <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Información Principal</v-btn>
+        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Ver Información Principal</v-btn>
       </v-col>
       <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('gabinetes')">Gabinetes (RAWS)</v-btn>
+        <v-btn color="grey-darken-3" @click="sesionMostrar('gabinetes')">Ver Gabinetes (RACKS)</v-btn>
       </v-col>
       <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('proyectos')">Proyectos</v-btn>
+        <v-btn color="yellow-lighten-3" @click="sesionMostrar('proyectos')">Ver Proyectos</v-btn>
       </v-col>
     </v-row>
 
