@@ -41,7 +41,7 @@
             <h6 class="text-primary"><b>ELEMENTOS PASIVOS</b></h6>
             <div class="row">
               <div class="form-group col-md-6">
-                <label for="select">Condicion:</label>
+                <label for="select"><v-icon icon="mdi-filter"></v-icon> Filtro:</label>
                 <select id="select" class="form-select form-control" aria-label="Default select example"
                   v-model="condicionElementoPasivo">
                   <option :value="condicion.valor" v-for="condicion in condiciones" :key="condicion.valor"

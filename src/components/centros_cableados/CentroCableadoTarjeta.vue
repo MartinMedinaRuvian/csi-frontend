@@ -202,7 +202,8 @@ export default {
           const idGuardado = respuesta.data.id
           await this.actualizarImagen(nombreTabla, idGuardado)
           $("#modalGuardarCentroCableado").modal("hide");
-          this.$emit('refrescar')
+          location.reload()
+          //this.$emit('refrescar')
           //location.href = '/'
         }
       }).catch(error => console.log(error))

@@ -2,8 +2,11 @@
   <div>
     <div class="container-principal" v-if="(gabinetes != null || gabinetes != undefined)
       && gabinetes.length > 0">
-      <h5 class="mb-5">Gabinetes <span> <button class="btn btn-success" data-toggle="modal"
-        data-target="#modalGuardarCentroCableado">+ <v-tooltip activator="parent" location="top">Agregar</v-tooltip></button></span></h5>
+      <h5 class="mb-5 text-danger">Gabinetes <span> <v-btn class="ml-2 botones-icon" data-toggle="modal"
+            data-target="#modalGuardarGabinete">
+            <v-icon icon="mdi-note-plus"></v-icon>
+            <v-tooltip activator="parent" location="top">Agregar</v-tooltip>
+          </v-btn></span></h5>
       <div class="row mt-5">
         <div class="col-sm-12 col-md-6 col-lg-3 mb-4" v-for="gabinete in gabinetes"
           :key="gabinete.id">
@@ -17,7 +20,10 @@
               <p class="propiedades">
                 <span class="text-primary">{{ gabinete.aterrizado == 'S' ? '&#9889;' : '&#128683;&#9889;'}}</span> <br>
               </p>
-              <button class="btn btn-success" @click="verInfo(gabinete)">Ver Info</button>
+              <v-btn class="ml-2 botones-icon" @click="verInfo(gabinete)">
+                <v-icon icon="mdi-eye"></v-icon>
+                <v-tooltip activator="parent" location="top">Ver Información</v-tooltip>
+                </v-btn>
             </div>
           </div>
         </div>
@@ -25,11 +31,11 @@
     </div>
     <div v-else>
       <h5>No hay Gabinetes</h5>
-      <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarCentroCableado">Agregar Gabinete</button>
+      <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarGabinete">Agregar Gabinete</button>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="modalGuardarCentroCableado" tabindex="-1" role="dialog"
-      aria-labelledby="modalGuardarCentroCableado" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal fade" id="modalGuardarGabinete" tabindex="-1" role="dialog"
+      aria-labelledby="modalGuardarGabinete" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header bg-danger">
@@ -81,7 +87,6 @@
                     class="form-control" />
                 </div>
               </div>
-
 
               <div class="form-group mt-4">
                 <h5>Imagen:</h5>
@@ -166,7 +171,7 @@ export default {
           const idGuardado = respuesta.data.id
           this.actualizarImagen(nombreTabla, idGuardado)
           location.reload()
-          //location.href = '/'
+         // this.$emit('refrescar', 'gabinetes')
         }
       }).catch(error => console.log(error))
     },
@@ -218,9 +223,8 @@ export default {
 </script>
 
 <style scoped>
-
-.container-principal{
-  margin-top: 40px;
+.container-principal {
+  margin-top: 15px;
 }
 
 .card {
@@ -288,7 +292,15 @@ export default {
   width: 120px;
   height: 120px;
 }
+
 .propiedades span {
   font-size: 30px;
+}
+
+.botones-icon {
+    font-size: 25px;
+    color: #00B0FF;
+    background-color: #fff;
+    border: solid #fff;
 }
 </style>

@@ -9,7 +9,7 @@
               <v-list-item prepend-icon="mdi-information" @click="sesionMostrar('info-principal')"
                 title="Información Edificio" />
               <v-list-item prepend-icon="mdi-server-network" @click="sesionMostrar('centros-cableados')"
-                title="Centros de Cableado" />
+                title="Centros de Cableados" />
               <v-list-item prepend-icon="mdi-arrow-left" @click="volver()" title="Volver al Mapa" />
 
               <div class="logos" v-if="!ocultarExpandido">
@@ -246,6 +246,7 @@ export default {
     this.verArchivos()
     this.verificarAnchoPantalla(); // Verifica al cargar el componente
     window.addEventListener('resize', this.verificarAnchoPantalla);
+    this.sesionMostrar('centros-cableados')
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.verificarAnchoPantalla);
@@ -463,7 +464,7 @@ export default {
   /* Asegura que ocupe todo el ancho del contenedor padre */
   margin: 0 auto;
   /* Centra el contenedor horizontalmente */
-  border: solid #424242;
+  border: solid 0.25px #212121;
   border-radius: 15px;
 }
 

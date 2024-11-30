@@ -1,116 +1,134 @@
 <template>
-  <div class="text-center">
-    <div class="ruta">
+  <v-app>
+    <v-row>
+      <v-col cols="2">
+        <v-navigation-drawer permanent expand-on-hover :rail="ocultarExpandido" app class="drawer-style">
+          <v-list>
+            <p v-if="!ocultarExpandido" class="text-center text-danger"><b>Centro de Cableado #{{ centro_cableado.numero
+                }}</b></p>
+            <v-list-item-group v-model="menuSeleccionado">
+              <v-list-item prepend-icon="mdi-information" @click="sesionMostrar('info-principal')"
+                title="Info C. Cableado" />
+              <v-list-item prepend-icon="mdi-server-network" @click="sesionMostrar('gabinetes')"
+                title="Gabinetes (Racks)" />
+              <v-list-item prepend-icon="mdi-file-document-multiple" @click="sesionMostrar('proyectos')" title="Proyectos" />
+              <v-list-item prepend-icon="mdi-arrow-left" @click="volver()" title="Volver al Edificio" />
+              <div class="logos" v-if="!ocultarExpandido">
+                <img src="../../assets/CSI_Logo.jpg" alt="Logo UFPS" style="width:60px; height: 60px;"> <br>
+                <img class="ml-2" src="../../assets/UFPS_logo.jpg" alt="Logo UFPS" style="width:60px; height: 60px;">
+              </div>
+            </v-list-item-group>
+          </v-list>
+        </v-navigation-drawer>
+      </v-col>
+      <v-col cols="10">
+        <div class="ruta text-center" v-if="!mostrarInfoPrincipal">
       <h6>
         <span>
-          <v-icon color="red-accent-4" icon="mdi-domain"></v-icon>
+          <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
         </span>
         <span class="ml-1">
           {{ info_edificio.nombre }}
         </span>
+        -
+        <span>
+          <v-icon color="grey-darken-4" icon="mdi-server-network"></v-icon>
+        </span>
+        <span>
+          C. CABLEADO #{{ info_centro_cableado.numero }}
+        </span>
       </h6>
     </div>
-    <h4 class="text-success mb-5">
-      <span><button class="btn btn-success" @click="volver()">&#8630; <v-tooltip activator="parent"
-            location="top">Volver</v-tooltip></button></span>
-      Información Centro de Cableado <b> #{{ centro_cableado.numero }} </b>
-    </h4>
-    <v-row>
-      <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Información Principal</v-btn>
-      </v-col>
-      <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('gabinetes')">Gabinetes (RACKS)</v-btn>
-      </v-col>
-      <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('proyectos')">Proyectos</v-btn>
-      </v-col>
-    </v-row>
+        <div class="informacion-principal mt-5 text-center" v-if="mostrarInfoPrincipal">
 
-    <v-row class="mt-5 ml-2" v-if="mostrarInfoPrincipal">
-      <v-col>
-        <v-card class="mx-auto" max-width="100%">
-
-          <div class="contenedor-imagen">
-            <span class="icono-actualizar" data-toggle="modal" data-target="#modalActualizarImagen">
-              &#x1F504;
-              <v-tooltip activator="parent" location="top">Cambiar Imagen</v-tooltip>
-            </span>
-            <v-img height="300px" :src="rutaImagenVer(centro_cableado.ruta_imagen)" contain></v-img>
-          </div>
-
-          <v-card-title>
-            Centro de Cableado #{{ centro_cableado.numero }}
-          </v-card-title>
-
-          <v-card-subtitle>
-            <h6 class="mt-3"><b>{{ centro_cableado.ubicacion }} - {{ centro_cableado.tipo }}</b></h6>
-          </v-card-subtitle>
-
-          <v-card-actions>
-            <v-btn color="red-accent-4" text="Más información" @click="show = !show"></v-btn>
-
-            <v-spacer></v-spacer>
-
-            <v-btn color="green-darken-2" :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn>
-          </v-card-actions>
-
-          <v-expand-transition>
-            <div v-show="show">
-
-              <v-card-text align="center">
-                <p :class="centro_cableado.climatizado === 'S' ? 'text-success' : 'text-warning'">{{
-                  centro_cableado.climatizado
-                    === 'S' ? 'Climatizado &#10052;' : 'No esta climatizado' }}</p>
-                <p :class="centro_cableado.camaras === 'S' ? 'text-success' : 'text-warning'">{{ centro_cableado.camaras
-                  === 'S'
-                  ? 'Con cámaras &#128247;' : 'No tiene cámaras' }}</p>
-
-                <p :class="centro_cableado.acceso_llaves === 'S' ? 'text-dark' : 'text-warning'">{{
-                  centro_cableado.acceso_llaves === 'S' ? 'Acceso con llaves &#128273;' : 'Sin acceso con llaves' }}</p>
-                <p>
-                  {{ centro_cableado.acceso_biometrico === 'S' ? 'Acceso biométrico &#128070;' : 'Sin acceso biométrico' }}</p>
-              </v-card-text>
-
-              <v-card-text align="left">
-                <p v-if="centro_cableado.observacion && centro_cableado.observacion.length > 0">
-                  <b>Observación:</b>
-                  <br> {{
-                    centro_cableado.observacion }}
-                </p>
-              </v-card-text>
-
-              <div class="botones mb-5">
-                <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalactualizarCentroCableado"
-                  @click="verDatosModal()">Actualizar</button>
-                <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
-                  data-target="#modaleliminarCentroCableado">Eliminar</button>
+          <v-row class="container-principal_informacion">
+            <v-col cols="7">
+              <div class="contenedor-imagen position-relative">
+                <v-img height="300px" :src="ruta_servidor + '/' + centro_cableado.ruta_imagen" alt="Imagen Edificio"
+                  contain></v-img>
               </div>
-            </div>
-          </v-expand-transition>
-        </v-card>
-      </v-col>
-      <v-col>
-        <ArchivoTarjeta :archivos="archivos"
-          :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" />
+              <p class="text-danger  mb-5">
+                <b>Centro de Cableado #{{ centro_cableado.numero }}</b>
+              </p>
+            </v-col>
+
+            <v-col class="informacion-detallada text-left" cols="5">
+              <p><b>Ubicación:</b> {{ centro_cableado.ubicacion }}</p>
+              <p><b>Tipo:</b> {{ centro_cableado.tipo }}</p>
+
+              <p :class="centro_cableado.climatizado === 'S' ? 'text-success' : 'text-warning'">{{
+                centro_cableado.climatizado
+                  === 'S' ? 'Climatizado &#10052;' : 'No esta climatizado' }}</p>
+              <p :class="centro_cableado.camaras === 'S' ? 'text-success' : 'text-warning'">{{ centro_cableado.camaras
+                === 'S'
+                ? 'Con cámaras &#128247;' : 'No tiene cámaras' }}</p>
+
+              <p :class="centro_cableado.acceso_llaves === 'S' ? 'text-dark' : 'text-warning'">{{
+                centro_cableado.acceso_llaves === 'S' ? 'Acceso con llaves &#128273;' : 'Sin acceso con llaves' }}</p>
+              <p>
+                {{ centro_cableado.acceso_biometrico === 'S' ? 'Acceso biométrico &#128070;' : 'Sin acceso biométrico'
+                }}</p>
+
+              <p><b>Observación:</b> {{ centro_cableado.observacion && centro_cableado.observacion.length > 0 ?
+                centro_cableado.observacion :
+                'Ninguna' }}</p>
+
+
+              <v-btn class="mr-5 botones-icon" data-toggle="modal" data-target="#modalActualizarImagen">
+                <v-icon icon="mdi-image-edit"></v-icon>
+                <v-tooltip activator="parent" location="top">Cambiar Imagen</v-tooltip>
+              </v-btn>
+              <v-btn class="mr-5 botones-icon" data-toggle="modal" data-target="#modalactualizarCentroCableado"
+                @click="verDatosModal()">
+                <v-icon icon="mdi-pencil"></v-icon>
+                <v-tooltip activator="parent" location="top">Modificar</v-tooltip>
+              </v-btn>
+              <v-btn v-if="usuario.rol_id === 1" data-toggle="modal"
+                  data-target="#modaleliminarCentroCableado"
+                class="botones-icon" @click="verDatosModal()">
+                <v-icon icon="mdi-delete"></v-icon>
+                <v-tooltip activator="parent" location="top">Eliminar</v-tooltip>
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <ArchivoTarjeta :archivos="archivos"
+              :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" />
+            </v-col>
+          </v-row>
+        </div>
+
+        <div class="centro-cableados text-center" v-if="mostrarCentrosCableados">
+          <p class="text-dark">
+            <span>
+              <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
+            </span>
+            <span class="ml-1">
+              {{ edificio.numero }}
+            </span>
+          </p>
+          <CentroCableadoTarjeta :centros_cableados="centros_cableados" :info_edificio="edificio"
+            @refrescar="refrescar" />
+        </div>
+
+        <div v-if="mostrarProyectos">
+          <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }"
+          :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" @filtrar="filtrar" />
+        </div>
+
+        <div v-if="mostrarGabinetes" class="mt-5 text-center">
+          <GabineteTarjeta :gabinetes="gabinetes" :info_centro_cableado="info_centro_cableado"
+            :info_edificio="info_edificio" @refrescar="refrescar" />
+        </div>
       </v-col>
     </v-row>
-
-    <div v-if="mostrarProyectos">
-      <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }"
-        :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" @filtrar="filtrar" />
-    </div>
-
-    <div v-if="mostrarGabinetes" class="mt-5">
-      <GabineteTarjeta :gabinetes="gabinetes" :info_centro_cableado="info_centro_cableado"
-        :info_edificio="info_edificio" />
-    </div>
 
     <!-- Modal Atualizar Imagen-->
     <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"
       aria-labelledby="modalActualizarImagen" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Actualizar Imagen
@@ -159,7 +177,7 @@
     <div class="modal fade" id="modaleliminarCentroCableado" tabindex="-1" role="dialog"
       aria-labelledby="modaleliminarCentroCableado" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Eliminar Centro de Cableado
@@ -195,7 +213,7 @@
     <div class="modal fade" id="modalactualizarCentroCableado" tabindex="-1" role="dialog"
       aria-labelledby="modalactualizarCentroCableado" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Actualizar Centro de Cableado
@@ -207,7 +225,7 @@
           <div class="modal-body">
             <form @submit.prevent>
               <div class="form group">
-                <label for="nombre" class="requerido">Número:</label>
+                <label for="numero" class="requerido">Número:</label>
                 <input required type="number" placeholder="Ingrese el Número"
                   v-model="centro_cableado_actualizar.numero" class="form-control" />
               </div>
@@ -294,7 +312,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </v-app>
 </template>
 <script>
 import GabineteTarjeta from "@/components/gabinetes/GabineteTarjeta";
@@ -320,7 +338,8 @@ export default {
       show: false,
       mostrarInfoPrincipal: true,
       mostrarGabinetes: false,
-      mostrarProyectos: false
+      mostrarProyectos: false,
+      ocultarExpandido: false
     };
   },
   mounted() {
@@ -335,11 +354,20 @@ export default {
     this.verGabinetes()
     this.verArchivos()
     this.verProyectos('p.codigo', '')
+    this.verificarAnchoPantalla(); // Verifica al cargar el componente
+    window.addEventListener('resize', this.verificarAnchoPantalla);
+    this.sesionMostrar('gabinetes')
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.verificarAnchoPantalla);
   },
   computed: {
     ...mapGetters(["usuario"]),
   },
   methods: {
+    verificarAnchoPantalla() {
+      this.ocultarExpandido = window.innerWidth < 1500;
+    },
     filtrar(datos) {
       console.log(datos, 'titin')
       const condicion = datos.condicion
@@ -396,13 +424,13 @@ export default {
       });
     },
     actualizarImagen() {
-      const nombreTabla = 'centro_cableado'
+      const numeroTabla = 'centro_cableado'
       const id = this.centro_cableado.id
       var formData = new FormData();
       var imagefile = document.querySelector("#archivo_centro_cableado");
       formData.append("archivo", imagefile.files[0]);
       this.axios
-        .put("imagen/" + nombreTabla + "/" + id, formData, {
+        .put("imagen/" + numeroTabla + "/" + id, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -502,11 +530,20 @@ export default {
 };
 </script>
 <style scoped>
-.input-buscar {
-  display: flex;
-  align-content: center;
-  align-items: center;
+.drawer-style {
+  padding-top: 70px;
+  height: 100vh;
+  /* Hace que el drawer ocupe todo el alto de la vista */
+  border-right: 3px solid #dd4b39;
+  /* Opcional: agrega un borde */
+  background-color: #E0E0E0;
 }
+
+.drawer-style .v-list-item {
+  color: #000;
+  /* Color del texto */
+}
+
 
 #imagen {
   width: 250px;
@@ -514,58 +551,9 @@ export default {
   border-radius: 182px;
 }
 
-.contenedor-principal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: space-between;
-}
-
-.contenedor-tarjeta {
-  margin-top: 70px;
-}
-
 .imagen-wrapper {
   position: relative;
   display: inline-block;
-}
-
-.icono-actualizar {
-  position: absolute;
-  top: 8px;
-  /* Ajusta según tu diseño */
-  right: 8px;
-  /* Ajusta según tu diseño */
-  background-color: rgba(255, 255, 255, 0.8);
-  /* Fondo blanco semi-transparente para mejor visibilidad */
-  border-radius: 50%;
-  /* Para hacer el fondo redondeado */
-  padding: 5px;
-  /* Espaciado interno */
-  cursor: pointer;
-  /* Cambia el cursor para indicar que es interactivo */
-  font-size: 20px;
-  /* Tamaño del ícono */
-  z-index: 10;
-  /* Asegura que esté por encima de la imagen */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.icono-actualizar:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-  /* Cambia el fondo al pasar el mouse */
-  color: white;
-  /* Cambia el color del ícono al pasar el mouse */
-}
-
-
-.icono-actualizar {
-  font-size: 23px;
-  /* Tamaño del ícono */
-  color: #212121;
-  /* Color del ícono */
 }
 
 .imagen-previsualizacion {
@@ -595,36 +583,10 @@ export default {
   /* Limita el ancho máximo */
 }
 
-.informacion {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
-  flex-wrap: wrap;
-}
-
 .informacion-basica,
 .informacion-secundario {
   flex-basis: 100%;
   max-width: 100%;
-}
-
-.informacion-secundario {
-  margin-bottom: 180px;
-}
-
-.numero {
-  position: absolute;
-  top: 5px;
-  /* Mueve el número hacia la parte superior */
-  left: 0px;
-  /* Mueve el número hacia la izquierda */
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 10px;
-  border-radius: 50%;
-  font-size: 20px;
-  font-weight: 700;
 }
 
 .contenedor-imagen {
@@ -632,16 +594,37 @@ export default {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background-color: #dd4b39;
   padding: 4px;
+  border-radius: 5px;
 }
 
-@media (min-width: 768px) {
+.v-icon {
+  font-size: 28px;
+}
 
-  .informacion-basica,
-  .informacion-secundario {
-    flex-basis: 50%;
-    max-width: 50%;
-  }
+.container-principal_informacion {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  width: 80%;
+  /* Asegura que ocupe todo el ancho del contenedor padre */
+  margin: 0 auto;
+  /* Centra el contenedor horizontalmente */
+  border: solid 0.5px #212121;
+  border-radius: 15px;
+}
+
+.logos {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.botones-icon {
+  font-size: 25px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid #fff;
 }
 </style>

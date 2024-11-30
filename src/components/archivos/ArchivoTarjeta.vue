@@ -19,7 +19,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="archivo in archivos" :key="archivo.id" v-if="archivos && archivos.length > 0">
+              <tr v-for="archivo in archivos" :key="archivo.id">
                 <td>
                   <p>{{ archivo.nombre }}</p>
                 </td>
@@ -48,7 +48,7 @@
           </table>
           <div v-else class="container-no_registros">
             <span>
-              <v-icon color="grey-darken-1" icon="mdi-file-remove-outline"></v-icon>
+              <v-icon color="grey-darken-3" icon="mdi-file-remove-outline"></v-icon>
             </span>
             <span>
               <h5>Sin Registros</h5>
@@ -377,7 +377,7 @@ export default {
 
 #scrollable-content li {
   background-color: #BDBDBD;
-  color: #000;
+  color: #212121;
 }
 
 #scrollable-content li p {
@@ -385,7 +385,7 @@ export default {
 }
 
 .container-no_registros {
-  margin-top: 40px;
+  margin-top: 45px;
 }
 
 .container-no_registros span {

@@ -293,7 +293,7 @@ export default {
     this.verElemenosPasivos('e.codigo', '')
     this.verArchivos()
     this.verTiposGabinetes()
-
+    this.sesionMostrar('elementos')
   },
   computed: {
     ...mapGetters(["usuario"]),

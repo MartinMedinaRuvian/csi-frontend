@@ -1,16 +1,17 @@
 <template>
   <div>
-    <div class="container-principal_proyectos mt-5">
-      <h5 class="mb-1 mt-5">Proyectos
-        <span>
-          <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarProyecto">+ <v-tooltip activator="parent" location="top">Agregar</v-tooltip></button>
-        </span>
+    <div class="container-principal_proyectos">
+      <h5 class="mb-1 mt-3 text-danger mb-5">Proyectos
+        <v-btn class="ml-2 botones-icon" data-toggle="modal" data-target="#modalGuardarProyecto">
+                <v-icon icon="mdi-note-plus"></v-icon>
+                <v-tooltip activator="parent" location="top">Agregar</v-tooltip>
+                </v-btn>
       </h5>
 
       <div id="dialog-window">
-        <div class="row">
+        <div class="row mt-5">
           <div class="form-group col-md-6">
-            <label for="select">Condicion:</label>
+            <label for="select"><v-icon icon="mdi-filter"></v-icon> Filtro:</label>
             <select id="select" class="form-select form-control" aria-label="Default select example"
               v-model="condicion">
               <option :value="condicion.valor" v-for="condicion in condiciones" :key="condicion.valor"
@@ -23,37 +24,53 @@
             <label for="select">Buscar:</label>
             <div class="input-buscar">
               <input class="form-control" type="text" v-model="buscar" @keypress.enter="filtrar()" />
-              <button class="btn btn-success" @click="filtrar()">
-                &#128269;
-                <v-tooltip activator="parent" location="top">Ver</v-tooltip>
-              </button>
+              <v-btn class="ml-2 botones-icon" @click="filtrar()">
+                <v-icon icon="mdi-card-search"></v-icon>
+                <v-tooltip activator="parent" location="top">Buscar</v-tooltip>
+                </v-btn>
             </div>
           </div>
         </div>
         <div id="scrollable-content" class="containe-imagenes mb-5">
-          <ul class="list-group" v-for="proyecto in proyectos" :key="proyecto.id" v-if="(proyectos != null || proyectos != undefined)
+
+          <table class="table table-responsive-md" v-if="(proyectos != null || proyectos != undefined)
             && proyectos.length > 0">
-            <li class="list-group-item d-flex justify-content-between">
-              <div class="texto-proyectos">
-                <p> <b>Código: </b> {{ proyecto.codigo }} - <b>{{ proyecto.descripcion }}</b>
-                </p>
-              </div>
-              <div class="botones-proyectos">
-                <span>
-                  <button class="btn-eliminar_item btn btn-success ml-2" @click="verProyecto(proyecto)">
-                    <span class="icon-Lupa"></span> <v-tooltip activator="parent" location="top">Ver</v-tooltip></button>
-                </span>
-                <span>
-                  <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2" data-toggle="modal"
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Objeto</th>
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="proyecto in proyectos" :key="proyecto.id">
+                <td>
+                  <p>{{ proyecto.codigo }}</p>
+                </td>
+                <td>
+                  <p>{{ proyecto.descripcion }}</p>
+                </td>
+                <td>
+                  <span>
+                    <v-btn class="botones-icon mr-5" @click="verProyecto(proyecto)">
+                      <v-icon icon="mdi-eye-outline"></v-icon>
+                      <v-tooltip activator="parent" location="top">Ver</v-tooltip>
+                    </v-btn>
+                  </span>
+                  <span>
+                    <v-btn v-if="usuario.rol_id === 1" class="botones-icon" data-toggle="modal"
                     data-target="#modalEliminarProyectoTabla" @click="verDatosModal(proyecto)">
-                    X <v-tooltip activator="parent" location="top">Quitar</v-tooltip></button>
-                </span>
-              </div>
-            </li>
-          </ul>
-          <div v-else class="container-no_registros">
+                      <v-icon icon="mdi-delete"></v-icon>
+                      <v-tooltip activator="parent" location="top">Eliminar</v-tooltip>
+                    </v-btn>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div v-else class="container-no_registros text-center">
             <span>
-              <v-icon color="grey-darken-1" icon="mdi-file-remove-outline"></v-icon>
+              <v-icon color="grey-darken-3" icon="mdi-file-remove-outline"></v-icon>
             </span>
             <span>
               <h5>Sin Registros</h5>
@@ -66,7 +83,7 @@
     <div class="modal fade" id="modalGuardarProyecto" tabindex="-1" role="dialog" aria-labelledby="modalGuardarProyecto"
       aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Guardar Proyecto
@@ -91,37 +108,37 @@
                 v-if="proyecto.id !== null && proyecto.id !== undefined">Agregar Nuevo</button>
 
               <div class="form group mt-3">
-                <label for="nombrecompleto" class="requerido">Código:</label>
+                <label for="nombrecompleto" class="requerido">Número Contrato:</label>
                 <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese Código"
                   v-model="proyecto.codigo" class="form-control" />
               </div>
 
               <div class="form group mt-3">
-                <label for="nombrecompleto" class="requerido">Descripción:</label>
+                <label for="nombrecompleto" class="requerido">Objeto:</label>
                 <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese la Descripción"
                   v-model="proyecto.descripcion" class="form-control" />
               </div>
 
               <div class="form group mt-3">
-                <label for="nombrecompleto" class="requerido">Nombre de la Empresa:</label>
+                <label for="nombrecompleto" class="requerido">Nombre del Contratista:</label>
                 <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese el Nombre de la Empresa"
                   v-model="proyecto.nombre_empresa" class="form-control" />
               </div>
 
               <div class="form group mt-3">
-                <label for="nombrecompleto" class="requerido">NIT de la Empresa:</label>
+                <label for="nombrecompleto" class="requerido">NIT del Contratista:</label>
                 <input :disabled="esProyectoExistente" type="text" placeholder="Ingrese el NIT de la Empresa"
                   v-model="proyecto.nit_empresa" class="form-control" />
               </div>
 
               <div class="form group mt-3">
-                <label for="nombrecompleto" class="requerido">Fecha:</label>
+                <label for="nombrecompleto" class="requerido">Fecha Ejecución:</label>
                 <input :disabled="esProyectoExistente" type="date" placeholder="Fecha" v-model="proyecto.fecha"
                   class="form-control" />
               </div>
 
               <div class="form group mt-3">
-                <label for="nombrecompleto">Certificación:</label>
+                <label for="nombrecompleto">Código Certificación:</label>
                 <input :disabled="esProyectoExistente" type="text" placeholder="Certificación"
                   v-model="proyecto.certificacion" class="form-control" />
               </div>
@@ -147,7 +164,7 @@
     <div class="modal fade" id="modalEliminarProyecto" tabindex="-1" role="dialog"
       aria-labelledby="modalEliminarProyecto" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Eliminar Proyecto
@@ -185,7 +202,7 @@
     <div class="modal fade" id="modalEliminarProyectoTabla" tabindex="-1" role="dialog"
       aria-labelledby="modalEliminarProyectoTabla" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Quitar Proyecto
@@ -501,5 +518,12 @@ export default {
 }
 .container-no_registros span {
   font-size: 60px;
+}
+
+.botones-icon {
+  font-size: 25px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid #fff;
 }
 </style>

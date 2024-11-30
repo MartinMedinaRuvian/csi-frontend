@@ -151,7 +151,7 @@
         </div>
         <div class="row" v-if="buscarPorMantenimiento !== 2">
           <div class="form-group col-md-6">
-            <label for="select">Condicion:</label>
+            <label for="select"><v-icon icon="mdi-filter"></v-icon> Filtro:</label>
             <select id="select" class="form-select form-control" aria-label="Default select example"
               v-model="condicionMantenimiento" @change="paginaActualMantenimiento = 1">
               <option :value="condicion.valor" v-for="condicion in condicionesMantenimiento" :key="condicion.valor"
