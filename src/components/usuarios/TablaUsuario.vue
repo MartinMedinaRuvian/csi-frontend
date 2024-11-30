@@ -87,7 +87,7 @@
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Editar Usuario
             </h5>
@@ -180,7 +180,7 @@
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               ¿Estás seguro de que deseas eliminar este registro?
             </h5>
@@ -233,7 +233,7 @@
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               ¿Estás seguro de que deseas cambiar la contraseña?
             </h5>

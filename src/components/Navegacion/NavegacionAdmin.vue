@@ -12,24 +12,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
 
-        <li class="nav-item ml-4">
-          <router-link data-toggle="collapse" data-target=".navbar-collapse.show" to="/"
-            class="text-dark">Edificios</router-link>
-        </li>
+       
 
         <li class="nav-item ml-4">
-          <router-link data-toggle="collapse" data-target=".navbar-collapse.show" to="/usuarios"
-            class="text-dark">Usuarios</router-link>
-        </li>
-
-        <li class="nav-item ml-4">
-          <router-link data-toggle="collapse" data-target=".navbar-collapse.show" to="/parametros"
-            class="text-dark">Parámetros</router-link>
-        </li>
-
-        <li class="nav-item ml-4">
-          <router-link data-toggle="collapse" data-target=".navbar-collapse.show" to="/logs"
-            class="text-dark">Histórico</router-link>
+         <h6 class="text-white mt-2">{{  usuario && usuario.rol_id === 1 ? 'Administrador' : 'Usuario' }} {{ usuario.nombre_completo }}</h6>
         </li>
 
 
@@ -43,10 +29,13 @@
   </nav>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   methods: {
     ...mapActions(['cerrarSesion'])
+  },
+  computed:{
+    ...mapGetters(['usuario'])
   }
 }
 </script>

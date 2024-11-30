@@ -65,7 +65,7 @@
       aria-labelledby="modalGuardarMantenimiento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Guardar Mantenimiento
             </h5>
@@ -138,7 +138,7 @@
       aria-labelledby="modalEliminarMantenimiento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Quitar Mantenimiento
             </h5>

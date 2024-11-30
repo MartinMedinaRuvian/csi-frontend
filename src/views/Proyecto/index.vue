@@ -79,7 +79,7 @@
       aria-labelledby="modaleliminarProyecto" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Eliminar Proyecto
             </h5>
@@ -115,7 +115,7 @@
       aria-labelledby="modalActualizarProyecto" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Actualizar Proyecto
             </h5>

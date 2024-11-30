@@ -1,11 +1,15 @@
 <template>
   <div>
-    <div class="container-principal" v-if="(centros_cableados != null || centros_cableados != undefined)
+    <div class="container-principal mt-5" v-if="(centros_cableados != null || centros_cableados != undefined)
       && centros_cableados.length > 0">
-      <h5 class="mb-5">Centros de Cableados <span> <button class="btn btn-success" data-toggle="modal"
-            data-target="#modalGuardarCentroCableado">+ <v-tooltip activator="parent" location="top">Agregar</v-tooltip></button></span></h5>
+
+      <p class="mb-5 text-danger"><b>Centros de Cableados</b> <span> <v-btn class="ml-2 botones-icon" data-toggle="modal"
+            data-target="#modalGuardarCentroCableado">
+            <v-icon icon="mdi-note-plus"></v-icon>
+            <v-tooltip activator="parent" location="top">Agregar</v-tooltip>
+          </v-btn></span></p>
       <div class="row mt-5">
-        <div class="col-sm-12 col-md-6 col-lg-3 mb-4" v-for="centro_cableado in centros_cableados"
+        <div class="mt-5 col-sm-12 col-md-6 col-lg-3 mb-4" v-for="centro_cableado in centros_cableados"
           :key="centro_cableado.id">
           <div class="card" style="width: 100%;">
             <div class="card-header">
@@ -15,10 +19,14 @@
             <div class="card-body">
               <p>{{ centro_cableado.ubicacion }} - {{ centro_cableado.tipo }}</p>
               <p class="propiedades">
-                <span class="text-primary">{{ centro_cableado.climatizado == 'S' ? '&#10052;' : '&#128683;&#10052;'}}</span> <br>
-                <span>{{ centro_cableado.camaras == 'S' ? '&#128247;' : '&#128683;&#128247;'}}</span>
+                <span class="text-primary">{{ centro_cableado.climatizado == 'S' ? '&#10052;' :
+                  '&#128683;&#10052;'}}</span> <br>
+                <span>{{ centro_cableado.camaras == 'S' ? '&#128247;' : '&#128683;&#128247;' }}</span>
               </p>
-              <button class="btn btn-success" @click="verInfoCentroCableado(centro_cableado)">Ver Info</button>
+              <v-btn class="ml-2 botones-icon" @click="verInfoCentroCableado(centro_cableado)">
+                <v-icon icon="mdi-eye"></v-icon>
+                <v-tooltip activator="parent" location="top">Ver Información</v-tooltip>
+                </v-btn>
             </div>
           </div>
         </div>
@@ -34,11 +42,12 @@
       aria-labelledby="modalGuardarCentroCableado" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Guardar Centro de Cableado
             </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="centro_cableado = { tipo: 'EN OFICINA', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' }">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+              @click="centro_cableado = { tipo: 'EN OFICINA', climatizado: 'S', camaras: 'S', acceso_llaves: 'S', acceso_biometrico: 'N' }">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -192,7 +201,8 @@ export default {
         if (respuesta.status === 200) {
           const idGuardado = respuesta.data.id
           await this.actualizarImagen(nombreTabla, idGuardado)
-          location.reload()
+          $("#modalGuardarCentroCableado").modal("hide");
+          this.$emit('refrescar')
           //location.href = '/'
         }
       }).catch(error => console.log(error))
@@ -216,10 +226,10 @@ export default {
       const ruta = ruta_imagen != null && ruta_imagen != undefined ? ruta_imagen : 'archivos/centro_cableado_default.svg'
       return this.ruta_servidor + '/' + ruta
     },
-    verInfoCentroCableado(registro){
+    verInfoCentroCableado(registro) {
       const datosRegistro = {
         id: registro.id,
-        info_edificio:{
+        info_edificio: {
           id: this.info_edificio.id,
           nombre: this.info_edificio.nombre
         }
@@ -234,8 +244,8 @@ export default {
 </script>
 
 <style scoped>
-.container-principal{
-  margin-top: 30px;
+.container-principal {
+  margin-top: 15px;
 }
 
 .card {
@@ -303,7 +313,15 @@ export default {
   width: 120px;
   height: 120px;
 }
+
 .propiedades span {
   font-size: 30px;
+}
+
+.botones-icon {
+    font-size: 25px;
+    color: #00B0FF;
+    background-color: #fff;
+    border: solid #fff;
 }
 </style>

@@ -67,7 +67,7 @@
       aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Guardar Proyecto
             </h5>
@@ -148,7 +148,7 @@
       aria-labelledby="modalEliminarProyecto" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Eliminar Proyecto
             </h5>
@@ -186,7 +186,7 @@
       aria-labelledby="modalEliminarProyectoTabla" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Quitar Proyecto
             </h5>

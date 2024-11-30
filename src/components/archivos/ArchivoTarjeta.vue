@@ -2,33 +2,50 @@
   <div>
     <div class="container-principal_archivos mt-5">
       <h5 class="mb-5">Archivos
-        <span>
-          <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarArchivo">+ <v-tooltip activator="parent" location="top">Agregar</v-tooltip></button>
-        </span>
+        <v-btn class="ml-2 botones-icon" data-toggle="modal" data-target="#modalGuardarArchivo">
+                <v-icon icon="mdi-note-plus"></v-icon>
+                <v-tooltip activator="parent" location="top">Agregar</v-tooltip>
+                </v-btn>
       </h5>
 
       <div id="dialog-window">
         <div id="scrollable-content" class="containe-imagenes mb-5">
-          <ul class="list-group" v-for="archivo in archivos" :key="archivo.id" v-if="archivos && archivos.length > 0">
-            <li class="list-group-item d-flex justify-content-between">
-              <div class="texto-archivos">
-                <p v-if="elArchivoEsUnaImagen(archivo.nombre)" class="pointer-hand"
-                  data-toggle="modal" data-target="#modalVerImagen" @click="verDatosModal(archivo)"><b>{{ archivo.nombre }}</b>
-                  <v-tooltip activator="parent" location="top">Ver</v-tooltip>
-                </p>
-                <p v-else class="pointer-hand" @click="descargarArchivo(archivo.ruta)"> <b>{{
-                  archivo.nombre }}</b>
-                  <v-tooltip activator="parent" location="top">Descargar</v-tooltip>
-                </p>
-              </div>
-              <div class="botones-archivos">
-                <span>
-                  <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2" @click="verDatosModal(archivo)"
-                  data-toggle="modal" data-target="#modalEliminarArchivo"><span class="icon-Papelera"></span> <v-tooltip activator="parent" location="top">Eliminar</v-tooltip></button>
-                </span>
-              </div>
-            </li>
-          </ul>
+
+          <table class="table table-responsive-md" v-if="archivos && archivos.length > 0">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="archivo in archivos" :key="archivo.id" v-if="archivos && archivos.length > 0">
+                <td>
+                  <p>{{ archivo.nombre }}</p>
+                </td>
+                <td>
+                  <span v-if="elArchivoEsUnaImagen(archivo.nombre)">
+                    <v-btn class="botones-icon mr-5" data-toggle="modal" data-target="#modalVerImagen" @click="verDatosModal(archivo)">
+                      <v-icon icon="mdi-file-search-outline"></v-icon>
+                      <v-tooltip activator="parent" location="top">Ver</v-tooltip>
+                    </v-btn>
+                  </span>
+                  <span v-else>
+                    <v-btn class="botones-icon mr-5" @click="descargarArchivo(archivo.ruta)">
+                      <v-icon icon="mdi-file-download-outline"></v-icon>
+                      <v-tooltip activator="parent" location="top">Descargar</v-tooltip>
+                    </v-btn>
+                  </span>
+                  <span>
+                    <v-btn v-if="usuario.rol_id === 1" class="botones-icon" data-toggle="modal" data-target="#modalEliminarArchivo" @click="verDatosModal(archivo)">
+                      <v-icon icon="mdi-delete"></v-icon>
+                      <v-tooltip activator="parent" location="top">Eliminar</v-tooltip>
+                    </v-btn>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
           <div v-else class="container-no_registros">
             <span>
               <v-icon color="grey-darken-1" icon="mdi-file-remove-outline"></v-icon>
@@ -45,7 +62,7 @@
       aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Guardar Archivo
             </h5>
@@ -61,8 +78,8 @@
                 <div class="row">
                   <div class="col-md-12 col-lg-12">
                     <label for="file">Tamaño Máximo: {{ tamanioMaximoArchivo }} Mb</label>
-                    <input type="file" class="form-control" name="archivo" id="archivo" :accept="fileAccept" ref="inputArchivo"
-                      required>
+                    <input type="file" class="form-control" name="archivo" id="archivo" :accept="fileAccept"
+                      ref="inputArchivo" required>
                   </div>
                 </div>
               </div>
@@ -88,7 +105,7 @@
       aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-          <div class="modal-header bg-success">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Eliminar Archivo
             </h5>
@@ -134,7 +151,7 @@ export default {
     archivos: [],
     info_tabla: {}
   },
-  components:{ ImagenPrevia },
+  components: { ImagenPrevia },
   data() {
     return {
       archivo: {},
@@ -144,9 +161,9 @@ export default {
       fileAccept: [
         // Extensiones de documentos de Office y PDF
         ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".pdf",
-        
+
         // Extensiones de imágenes
-        ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".svg", 
+        ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".svg",
         ".tiff", ".ico", ".avif",
 
         // Extensiones de configuración de switches y routers
@@ -317,12 +334,6 @@ export default {
   font-size: 80px;
 }
 
-.btn-eliminar_item {
-  font-size: 15px;
-  color: #00B0FF;
-  background-color: #fff;
-  border: solid #fff;
-}
 
 .texto-mediano {
   font-size: 15px;
@@ -333,7 +344,7 @@ export default {
 }
 
 #dialog-window {
-  width: 90%;
+  width: 80%;
   height: 200px;
   margin-bottom: 40px;
 }
@@ -351,7 +362,7 @@ export default {
   height: 300px;
 }
 
-.texto-archivos{
+.texto-archivos {
   width: 85%;
   word-wrap: break-word !important;
 }
@@ -360,9 +371,10 @@ export default {
   font-size: 15px;
 }
 
-.botones-archivos{
+.botones-archivos {
   width: 15%;
 }
+
 #scrollable-content li {
   background-color: #BDBDBD;
   color: #000;
@@ -375,7 +387,15 @@ export default {
 .container-no_registros {
   margin-top: 40px;
 }
+
 .container-no_registros span {
   font-size: 60px;
+}
+
+.botones-icon {
+  font-size: 25px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid #fff;
 }
 </style>

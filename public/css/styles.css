@@ -166,8 +166,8 @@ p {
 
     #navegacion {
         background-color: #F5F5F5;
-        border-end-start-radius: 20px;
-        border-end-end-radius: 20px;
+        border-end-start-radius: 10px;
+        border-end-end-radius: 10px;
     }
 
     #navbarNav li {
@@ -193,11 +193,7 @@ p {
 }
 
 @media (min-width:775px) {
-    #navegacion {
-        border-bottom-left-radius: 25px;
-        border-bottom-right-radius: 25px;
-    }
-
+    
     #fila-principal-texto {
         margin-top: 20px;
     }
