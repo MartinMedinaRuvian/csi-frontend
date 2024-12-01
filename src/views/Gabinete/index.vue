@@ -4,7 +4,7 @@
       <v-col cols="2">
         <v-navigation-drawer permanent expand-on-hover :rail="ocultarExpandido" app class="drawer-style">
           <v-list>
-            <p v-if="!ocultarExpandido" class="text-center text-danger"><b>Gabinete #{{ gabinete.numero }}</b></p>
+            <p v-if="!ocultarExpandido" class="text-center text-danger"><b>Gabinete R{{ gabinete.numero }}</b></p>
             <v-list-item-group v-model="menuSeleccionado">
               <v-list-item prepend-icon="mdi-information" @click="sesionMostrar('info-principal')"
                 title="Información Gabinete" />
