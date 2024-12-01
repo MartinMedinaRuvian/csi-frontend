@@ -54,12 +54,12 @@
 
             <v-col class="informacion-detallada text-left" cols="5">
               <p><b>Ubicación:</b> {{ centro_cableado.ubicacion }}</p>
-              <p><b>Tipo:</b> {{ centro_cableado.tipo }}</p>
+              <p>{{ centro_cableado.tipo }}</p>
 
-              <p :class="centro_cableado.climatizado === 'S' ? 'text-success' : 'text-warning'">{{
+              <p>{{
                 centro_cableado.climatizado
                   === 'S' ? 'Climatizado &#10052;' : 'No esta climatizado' }}</p>
-              <p :class="centro_cableado.camaras === 'S' ? 'text-success' : 'text-warning'">{{ centro_cableado.camaras
+              <p>{{ centro_cableado.camaras
                 === 'S'
                 ? 'Con cámaras &#128247;' : 'No tiene cámaras' }}</p>
 
