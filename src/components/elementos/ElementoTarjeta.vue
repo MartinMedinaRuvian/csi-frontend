@@ -1,15 +1,19 @@
 <template>
   <div>
     <div class="container-principal">
-      <h5 class="mb-5">Elemento <span> <button class="btn btn-success" @click="guardarElemento()">+ <v-tooltip activator="parent" location="top">Agregar</v-tooltip></button></span>
+
+      <h5 class="mb-5 mt-5">Elementos <span> <v-btn class="ml-2 botones-icon" @click="guardarElemento()">
+            <v-icon icon="mdi-note-plus"></v-icon>
+            <v-tooltip activator="parent" location="top">Agregar</v-tooltip>
+          </v-btn></span>
       </h5>
       <div class="row">
         <div class="col columna-elementos_activos mr-2">
           <div class="contenedor-elementos">
-            <h6 class="text-success"><b>ELEMENTOS ACTIVOS</b></h6>
+            <h6 class="text-danger"><b>ELEMENTOS ACTIVOS</b></h6>
             <div class="row">
               <div class="form-group col-md-6">
-                <label for="select">Condición:</label>
+                <label for="select"><v-icon icon="mdi-filter"></v-icon> Filtro:</label>
                 <select id="select" class="form-select form-control" aria-label="Default select example"
                   v-model="condicion">
                   <option :value="condicion.valor" v-for="condicion in condiciones" :key="condicion.valor"
@@ -23,10 +27,10 @@
                 <div class="input-buscar">
                   <input class="form-control" type="text" v-model="buscar"
                     @keypress.enter="filtrarElementosActivos()" />
-                  <button class="btn btn-success" @click="filtrarElementosActivos()">
-                    &#128269;
-                    <v-tooltip activator="parent" location="top">Ver</v-tooltip>
-                  </button>
+                  <v-btn class="ml-2 botones-icon" @click="filtrarElementosActivos()">
+                    <v-icon icon="mdi-card-search"></v-icon>
+                    <v-tooltip activator="parent" location="top">Buscar</v-tooltip>
+                  </v-btn>
                 </div>
               </div>
             </div>
@@ -38,7 +42,7 @@
         </div>
         <div class="col columna-elementos_pasivos">
           <div class="contenedor-elementos">
-            <h6 class="text-primary"><b>ELEMENTOS PASIVOS</b></h6>
+            <h6 class="text-danger"><b>ELEMENTOS PASIVOS</b></h6>
             <div class="row">
               <div class="form-group col-md-6">
                 <label for="select"><v-icon icon="mdi-filter"></v-icon> Filtro:</label>
@@ -55,10 +59,10 @@
                 <div class="input-buscar">
                   <input class="form-control" type="text" v-model="buscarElementoPasivo"
                     @keypress.enter="filtrarElementosPasivos()" />
-                  <button class="btn btn-success" @click="filtrarElementosPasivos()">
-                    &#128269;
-                    <v-tooltip activator="parent" location="top">Ver</v-tooltip>
-                  </button>
+                  <v-btn class="ml-2 botones-icon" @click="filtrarElementosPasivos()">
+                    <v-icon icon="mdi-card-search"></v-icon>
+                    <v-tooltip activator="parent" location="top">Buscar</v-tooltip>
+                  </v-btn>
                 </div>
               </div>
             </div>
@@ -365,8 +369,14 @@ export default {
 </script>
 
 <style scoped>
-.container-principal{
-  margin-top: 25px;
+
+
+.container-principal_archivos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  /* Para que el contenido dentro de .container-principal esté en una columna */
 }
 
 .card {
@@ -380,9 +390,9 @@ export default {
 }
 
 .card-header img {
-  width: 150px;
+  width: 120px;
   /* Ancho fijo */
-  height: 150px;
+  height: 120px;
   /* Alto fijo */
   border-top-left-radius: .25rem;
   border-top-right-radius: .25rem;
@@ -408,13 +418,13 @@ export default {
 }
 
 #imagenPrevisualizacion {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
 }
 
 #imagenInfo {
-  width: 150px;
-  height: 150px;
+  width: 80px;
+  height: 80px;
 }
 
 .requerido::before {
@@ -426,32 +436,79 @@ export default {
   /* Opcional, para darle más énfasis */
 }
 
-.texto-pequenio {
-  font-size: 13px;
+.card-body p {
+  font-size: 15px;
 }
 
-.imagen-previsualizacion {
-  width: 120px;
-  height: 120px;
+.icono {
+  font-size: 80px;
 }
 
-.propiedades span {
-  font-size: 20px;
+
+.texto-mediano {
+  font-size: 15px;
 }
 
-.columna-elementos_activos {
-  padding: 20px;
-  border: solid #28a745 1.5px;
+.pointer-hand {
+  cursor: pointer;
+}
+
+#dialog-window {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 40px;
+}
+
+#scrollable-content {
+  height: 250px;
+  overflow: auto;
+  border: solid 0.5px #212121;
   border-radius: 15px;
+  background-color: #fff;
 }
 
-.columna-elementos_pasivos {
-  padding: 20px;
-  border: solid #039BE5 1px;
-  border-radius: 15px;
+#imagenArchivoVer {
+  width: 100%;
+  height: 300px;
 }
 
-.input-password,
+.texto-archivos {
+  width: 85%;
+  word-wrap: break-word !important;
+}
+
+.texto-archivos p {
+  font-size: 15px;
+}
+
+.botones-archivos {
+  width: 15%;
+}
+
+#scrollable-content li {
+  background-color: #BDBDBD;
+  color: #212121;
+}
+
+#scrollable-content li p {
+  font-size: 18px;
+}
+
+.container-no_registros {
+  margin-top: 45px;
+}
+
+.container-no_registros span {
+  font-size: 60px;
+}
+
+.botones-icon {
+  font-size: 25px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid #fff;
+}
+
 .input-buscar {
   display: flex;
   align-content: center;

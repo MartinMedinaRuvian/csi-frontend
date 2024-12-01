@@ -120,7 +120,16 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    // Si hay una posición guardada (por ejemplo, al usar "atrás"), restaura esa posición.
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      // Si no, vuelve al inicio de la página.
+      return { top: 0 };
+    }
+  },
 })
 
 router.beforeEach((to, from, next)=>{
