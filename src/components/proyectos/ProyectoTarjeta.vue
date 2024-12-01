@@ -9,7 +9,7 @@
       </h5>
 
       <div id="dialog-window">
-        <div class="row mt-5">
+        <div class="row mt-2">
           <div class="form-group col-md-6">
             <label for="select"><v-icon icon="mdi-filter"></v-icon> Filtro:</label>
             <select id="select" class="form-select form-control" aria-label="Default select example"
