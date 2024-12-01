@@ -34,7 +34,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="elementosActivos && elementosActivos.length > 0">
+            <div>
               <ElementoTabla :elementos="elementosActivos" :es_activo="true" :info_edificio="info_edificio"
                 :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" />
             </div>
@@ -66,7 +66,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="elementosPasivos && elementosPasivos.length > 0">
+            <div>
               <ElementoTabla :elementos="elementosPasivos" :es_activo="false" :info_edificio="info_edificio"
                 :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" />
             </div>

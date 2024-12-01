@@ -2,49 +2,49 @@
   <div class="mt-5">
 
     <div id="dialog-window">
-        <div id="scrollable-content" class="containe-imagenes mb-5">
-          <table class="table table-responsive-lg" v-if="elementos && elementos.length > 0">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Imagen</th>
-            <th scope="col">Dispositivo</th>
-            <th scope="col">Código</th>
-            <th scope="col">Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="elemento in elementos" :key="elemento.id">
-            <td>
-              <div class="contenedor-imagen">
-                <img id="imagen" :src="rutaImagenVer(elemento.ruta_imagen)" alt="">
-              </div>
-            </td>
-            <td>
-              <p>{{ elemento.tipo_dispositivo }}</p>
-            </td>
-            <td>
-              <p>{{ elemento.codigo }}</p>
-            </td>
-            <td>
-              <v-btn class="botones-icon mr-5" data-toggle="modal" data-target="#modalelementoEditar"
-                @click="verInfo(elemento)">
-                <v-icon icon="mdi-file-search-outline"></v-icon>
-                <v-tooltip activator="parent" location="top">Ver</v-tooltip>
-              </v-btn>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-          <div v-else class="container-no_registros">
-            <span>
-              <v-icon color="grey-darken-3" icon="mdi-file-remove-outline"></v-icon>
-            </span>
-            <span>
-              <h5>Sin Registros</h5>
-            </span>
-          </div>
+      <div id="scrollable-content" class="containe-imagenes mb-5">
+        <table class="table table-responsive-lg" v-if="elementos && elementos.length > 0">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Imagen</th>
+              <th scope="col">Dispositivo</th>
+              <th scope="col">Código</th>
+              <th scope="col">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="elemento in elementos" :key="elemento.id">
+              <td>
+                <div class="contenedor-imagen">
+                  <img id="imagen" :src="rutaImagenVer(elemento.ruta_imagen)" alt="">
+                </div>
+              </td>
+              <td>
+                <p>{{ elemento.tipo_dispositivo }}</p>
+              </td>
+              <td>
+                <p>{{ elemento.codigo }}</p>
+              </td>
+              <td>
+                <v-btn class="botones-icon mr-5" data-toggle="modal" data-target="#modalelementoEditar"
+                  @click="verInfo(elemento)">
+                  <v-icon icon="mdi-file-search-outline"></v-icon>
+                  <v-tooltip activator="parent" location="top">Ver</v-tooltip>
+                </v-btn>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-else class="container-no_registros">
+          <span>
+            <v-icon color="grey-darken-3" icon="mdi-file-remove-outline"></v-icon>
+          </span>
+          <span>
+            <h5>Sin Registros</h5>
+          </span>
         </div>
       </div>
+    </div>
   </div>
 </template>
 <script>
