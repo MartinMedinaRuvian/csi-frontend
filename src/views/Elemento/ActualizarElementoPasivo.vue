@@ -1,100 +1,139 @@
 <template>
-  <div class="mx-auto d-flex justify-content-center">
-    <div class="card">
-      <div class="card-header">
-        <h5 class="text-center text-success" id="exampleModalLongTitle">
-          Actualizar elemento Pasivo
-        </h5>
-      </div>
-      <div class="card-body">
-        <form @submit.prevent>
+  <v-app>
+    <v-row>
+      <v-col cols="2">
+        <v-navigation-drawer permanent expand-on-hover :rail="ocultarExpandido" app class="drawer-style">
+          <v-list>
+            <p v-if="!ocultarExpandido" class="text-center text-danger"><b>Actualizar Elemento</b>
+            </p>
+            <v-list-item-group v-model="menuSeleccionado">
+              <v-list-item prepend-icon="mdi-arrow-left" @click="volver()" title="Volver" />
 
-          <span @click="agregarNuevoTipo('tipo_dispositivo_pasivo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
-            data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Dispositivo</span>
-          <v-autocomplete label="Dispositivo" class="requerido" v-model="elemento_actualizar.id_tipo_dispositivo_pasivo"
-            :items="tiposdispositivopasivo" :item-title="titulosAutocompleteTipos" item-value="id"
-            :filter="filterAutocompleteTipos">
-          </v-autocomplete>
+              <div class="logos" v-if="!ocultarExpandido">
+                <img src="../../assets/CSI_Logo.jpg" alt="Logo UFPS" style="width:60px; height: 60px;"> <br>
+                <img class="ml-2" src="../../assets/UFPS_logo.jpg" alt="Logo UFPS" style="width:60px; height: 60px;">
+              </div>
+            </v-list-item-group>
+          </v-list>
+        </v-navigation-drawer>
+      </v-col>
+      <v-col cols="10">
+        <div class="informacion-principal mt-5 text-center">
 
-          <div class="form group mt-3">
-            <div class="form-group">
-              <label for="codigo" class="requerido">Código:</label>
-              <input required type="text" placeholder="Ingrese Código" v-model="elemento_actualizar.codigo"
-                class="form-control" />
-            </div>
-          </div>
 
-          <div class="form group mt-3">
-            <div class="form-group">
-              <label for="codigo">Categoría:</label>
-              <input required type="text" placeholder="Ingrese Categoría" v-model="elemento_actualizar.categoria"
-                class="form-control" />
-            </div>
-          </div>
-
-          <div class="form group mt-3">
-            <div class="form-group">
-              <label for="codigo"># de Puertos:</label>
-              <input required type="number" placeholder="Ingrese # de Puertos"
-                v-model="elemento_actualizar.numero_puertos" class="form-control" />
-            </div>
-          </div>
-
-          <div class="form group mt-3">
-            <div class="form-group">
-              <label for="codigo">Tipo de Conector:</label>
-              <input required type="text" placeholder="Ingrese Tipo Conector"
-                v-model="elemento_actualizar.tipo_conector" class="form-control" />
-            </div>
-          </div>
-
-          <div class="form group mt-3 text-center">
-            <div class="form-group">
-              <label for="codigo">Observación:</label>
-              <textarea type="text" placeholder="Ingrese una observación" v-model="elemento_actualizar.observacion"
-                class="form-control" />
-            </div>
+          <div class="ruta mb-5">
+            <h6>
+              <span>
+                <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
+              </span>
+              <span class="ml-1">
+                {{ info_edificio.nombre }}
+              </span>
+              -
+              <span>
+                <v-icon color="grey-darken-4" icon="mdi-ethernet"></v-icon>
+              </span>
+              <span>
+                C. CABLEADO #{{ info_centro_cableado.numero }}
+              </span>
+              -
+              <span>
+                <v-icon color="grey-darken-4" icon="mdi-desktop-tower"></v-icon>
+              </span>
+              <span>
+                GABINETE R{{
+                  info_gabinete.numero }}
+              </span>
+            </h6>
           </div>
 
-          <div class="row">
-            <div class="col-md-6 mt-3">
-              <button type="button" class="btn btn-secondary form-control" @click="volver()">
-                Cancelar
-              </button>
+          <v-row class="container-principal_informacion">
+            <div class="mx-auto d-flex justify-content-center">
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="text-center text-success" id="exampleModalLongTitle">
+                    Actualizar elemento Pasivo
+                  </h5>
+                </div>
+                <div class="card-body">
+                  <form @submit.prevent>
+
+                    <span @click="agregarNuevoTipo('tipo_dispositivo_pasivo', 'Nuevo Dispositivo')"
+                      class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nuevo
+                      Dispositivo</span>
+                    <v-autocomplete label="Dispositivo" class="requerido"
+                      v-model="elemento_actualizar.id_tipo_dispositivo_pasivo" :items="tiposdispositivopasivo"
+                      :item-title="titulosAutocompleteTipos" item-value="id" :filter="filterAutocompleteTipos">
+                    </v-autocomplete>
+
+                    <div class="form group mt-3">
+                      <div class="form-group">
+                        <label for="codigo" class="requerido">Código:</label>
+                        <input required type="text" placeholder="Ingrese Código" v-model="elemento_actualizar.codigo"
+                          class="form-control" />
+                      </div>
+                    </div>
+
+                    <div class="form group mt-3">
+                      <div class="form-group">
+                        <label for="codigo">Categoría:</label>
+                        <input required type="text" placeholder="Ingrese Categoría"
+                          v-model="elemento_actualizar.categoria" class="form-control" />
+                      </div>
+                    </div>
+
+                    <div class="form group mt-3">
+                      <div class="form-group">
+                        <label for="codigo"># de Puertos:</label>
+                        <input required type="number" placeholder="Ingrese # de Puertos"
+                          v-model="elemento_actualizar.numero_puertos" class="form-control" />
+                      </div>
+                    </div>
+
+                    <div class="form group mt-3">
+                      <div class="form-group">
+                        <label for="codigo">Tipo de Conector:</label>
+                        <input required type="text" placeholder="Ingrese Tipo Conector"
+                          v-model="elemento_actualizar.tipo_conector" class="form-control" />
+                      </div>
+                    </div>
+
+                    <div class="form group mt-3 text-center">
+                      <div class="form-group">
+                        <label for="codigo">Observación:</label>
+                        <textarea type="text" placeholder="Ingrese una observación"
+                          v-model="elemento_actualizar.observacion" class="form-control" />
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6 mt-3">
+                        <button type="button" class="btn btn-secondary form-control" @click="volver()">
+                          Cancelar
+                        </button>
+                      </div>
+                      <div class="col-md-6 mt-3">
+                        <input type="button" class="btn btn-success form-control" value="Guardar"
+                          @click="actualizarelemento()" />
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
             </div>
-            <div class="col-md-6 mt-3">
-              <input type="button" class="btn btn-success form-control" value="Guardar" @click="actualizarelemento()" />
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <!-- Modal Nuevo Tipo -->
-    <div class="modal fade" id="modalNuevoTipo" tabindex="-1" role="dialog" aria-labelledby="modalNuevoTipo"
-      aria-hidden="true" data-backdrop="static" data-keyboard="false">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-danger">
-            <h5 class="modal-title" id="exampleModalLongTitle">
-              Nuevo Tipo
-            </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <TipoGuardar @refrescar="refrescarTipos()" :titulo="tituloTipo" :tabla="tablaTipo" />
-          </div>
+          </v-row>
+
         </div>
-      </div>
-    </div>
-  </div>
+      </v-col>
+    </v-row>
+  </v-app>
 </template>
 <script>
 import TipoGuardar from "@/components/tipo/TipoGuardar.vue";
 import { mapGetters } from "vuex";
 export default {
-  components: { TipoGuardar },  
+  components: { TipoGuardar },
   data() {
     return {
       elemento_actualizar: {},
@@ -201,20 +240,124 @@ export default {
   }
 }
 </script>
-<style>
-.requerido::before {
-  content: "* ";
-  /* Agrega el asterisco */
-  color: red;
-  /* Asterisco de color rojo */
-  font-weight: bold;
-  /* Opcional, para darle más énfasis */
+<style scoped>
+.drawer-style {
+  padding-top: 70px;
+  height: 100vh;
+  /* Hace que el drawer ocupe todo el alto de la vista */
+  border-right: 3px solid #dd4b39;
+  /* Opcional: agrega un borde */
+  background-color: #E0E0E0;
 }
-.boton-nuevo_elemento {
-  padding: 5px;
-  background-color: #28a745;
+
+.drawer-style .v-list-item {
+  color: #000;
+  /* Color del texto */
+}
+
+
+#imagen {
+  width: 250px;
+  height: 250px;
+  border-radius: 182px;
+}
+
+.imagen-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.imagen-previsualizacion {
+  width: 120px;
+  height: 120px;
+}
+
+.titulo {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.observacion {
+  width: 100%;
+  /* Asegura que ocupe todo el ancho disponible */
+  display: flex;
+  flex-direction: column;
+  /* Alinea verticalmente */
+  align-items: center;
+  /* Centra el contenido dentro del div */
+}
+
+.textarea-center {
+  width: 100%;
+  /* Asegura que el textarea use el ancho total de su contenedor */
+  max-width: 500px;
+  /* Limita el ancho máximo */
+}
+
+.informacion-basica,
+.informacion-secundario {
+  flex-basis: 100%;
+  max-width: 100%;
+}
+
+.contenedor-imagen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 4px;
   border-radius: 5px;
+}
+
+.v-icon {
+  font-size: 28px;
+}
+
+.container-principal_informacion {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  width: 80%;
+  /* Asegura que ocupe todo el ancho del contenedor padre */
+  margin: 0 auto;
+  /* Centra el contenedor horizontalmente */
+  border: solid 0.5px #212121;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.logos {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.botones-icon {
+  font-size: 25px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid #fff;
+}
+
+.botones-paginacion {
+  font-size: 15px;
   color: #fff;
-  font-size: 12px;
+  background-color: #00B0FF;
+  border: solid #00B0FF;
+}
+
+.botones-paginacion-outline {
+  font-size: 15px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid 1px #00B0FF;
+}
+
+.input-password,
+.input-buscar {
+  display: flex;
+  align-content: center;
+  align-items: center;
 }
 </style>
