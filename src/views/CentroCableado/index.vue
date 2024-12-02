@@ -23,8 +23,16 @@
         </v-navigation-drawer>
       </v-col>
       <v-col cols="10">
-        <div class="ruta text-center" v-if="!mostrarInfoPrincipal">
-          <h6>
+        <div class="ruta text-center">
+          <h6 v-if="mostrarInfoPrincipal">
+            <span>
+              <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
+            </span>
+            <span class="ml-1">
+              {{ info_edificio.nombre }}
+            </span>
+          </h6>
+          <h6 v-else>
             <span>
               <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
             </span>
