@@ -1,66 +1,99 @@
 <template>
-  <div class="text-center">
-    <div class="ruta">
-      <h6>
-        <span>
-          <v-icon color="red-accent-4" icon="mdi-domain"></v-icon>
-        </span>
-        <span class="ml-1">
-          {{ info_edificio.nombre }}
-        </span>
-        -
-        <span>
-          <v-icon color="red-accent-4" icon="mdi-ethernet"></v-icon>
-        </span>
-        <span>
-          C. CABLEADO #{{ info_centro_cableado.numero }}
-        </span>
-        -
-        <span>
-          <v-icon color="red-accent-4" icon="mdi-desktop-tower"></v-icon>
-        </span>
-        <span>
-          GABINETE R{{
-          info_gabinete.numero }}
-        </span>
-        -
-        <span>
-          <v-icon color="red-accent-4" icon="mdi-devices"></v-icon>
-        </span>
-        <span>
-          ELEMENTO {{ info_elemento.codigo }}
-        </span>
-      </h6>
-    </div>
-    <h4 class="text-success mb-5">
-      <span><button class="btn btn-success" @click="volver()">&#8630; <v-tooltip activator="parent" location="top">Volver</v-tooltip></button></span>
-      Información Del Mantenimiento {{ mantenimiento.codigo }}
-    </h4>
-    <div class="informacion">
-      <div class="informacion-basica">
+  <v-app>
+    <v-row>
+      <v-col cols="2">
+        <v-navigation-drawer permanent expand-on-hover :rail="ocultarExpandido" app class="drawer-style">
+          <v-list>
+            <p v-if="!ocultarExpandido" class="text-center text-danger"><b>Mantenimiento #{{ mantenimiento.codigo }}</b></p>
+            <v-list-item-group v-model="menuSeleccionado">
+              <v-list-item prepend-icon="mdi-arrow-left" @click="volver()" title="Volver" />
 
-        <p><b>Realizado Por:</b> {{ mantenimiento.realizado_por }}</p>
+              <div class="logos" v-if="!ocultarExpandido">
+                <img src="../../assets/CSI_Logo.jpg" alt="Logo UFPS" style="width:60px; height: 60px;"> <br>
+                <img class="ml-2" src="../../assets/UFPS_logo.jpg" alt="Logo UFPS" style="width:60px; height: 60px;">
+              </div>
+            </v-list-item-group>
+          </v-list>
+        </v-navigation-drawer>
+      </v-col>
+      <v-col cols="10">
 
-        <p><b>Fecha:</b> {{ formatearFecha(mantenimiento.fecha) }}</p>
+        <div class="informacion-principal mt-5 text-center">
 
-        <p>Observación: <br> {{ mantenimiento.observacion }}</p>
 
-        <button class="btn btn-warning mr-2" data-toggle="modal" data-target="#modalActualizarMantenimiento"
-          @click="verDatosModal()">Actualizar</button>
-        <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
-          data-target="#modaleliminarMantenimiento">Eliminar</button>
-      </div>
+          <div class="ruta mb-5">
+            <h6>
+              <span>
+                <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
+              </span>
+              <span class="ml-1">
+                {{ info_edificio.nombre }}
+              </span>
+              -
+              <span>
+                <v-icon color="grey-darken-4" icon="mdi-server-network"></v-icon>
+              </span>
+              <span>
+                C. CABLEADO #{{ info_centro_cableado.numero }}
+              </span>
+              -
+              <span>
+                <v-icon color="grey-darken-4" icon="mdi-file-cabinet"></v-icon>
+              </span>
+              <span>
+                GABINETE R{{
+                  info_gabinete.numero }}
+              </span>
+              -
+              <span>
+                <v-icon color="grey-darken-4" icon="mdi-devices"></v-icon>
+              </span>
+              <span>
+                ELEMENTO {{ info_elemento.codigo }}
+              </span>
+            </h6>
+          </div>
 
-      <div class="informacion-secundario">
-        <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'mantenimiento', id: mantenimiento.id }" />
-      </div>
-    </div>
+          <v-row class="container-principal_informacion">
+            <v-col cols="4" class="informacion-detallada text-left">
+              <p class="text-danger  mb-5">
+                <b>Mantenimiento #{{ mantenimiento.codigo }}</b>
+              </p>
+              <p>
+                <b>Observación: </b> {{ mantenimiento.observacion }}
+              </p>
+              <p>
+                <b>Realizado Por: </b> {{ mantenimiento.realizado_por }}
+              </p>
+              <p><b>Fecha Ejecución:</b> {{ formatearFecha(mantenimiento.fecha) }}</p>
+
+
+              <v-btn class="mr-5 botones-icon" data-toggle="modal" data-target="#modalActualizarMantenimiento"
+                @click="verDatosModal()">
+                <v-icon icon="mdi-pencil"></v-icon>
+                <v-tooltip activator="parent" location="top">Modificar</v-tooltip>
+              </v-btn>
+              <v-btn v-if="usuario.rol_id === 1" data-toggle="modal" data-target="#modaleliminarMantenimiento"
+                class="botones-icon" @click="verDatosModal()">
+                <v-icon icon="mdi-delete"></v-icon>
+                <v-tooltip activator="parent" location="top">Eliminar</v-tooltip>
+              </v-btn>
+            </v-col>
+
+            <v-col cols="8">
+              <ArchivoTarjeta :archivos="archivos"
+                :info_tabla="{ nombre_tabla: 'mantenimiento', id: mantenimiento.id }" />
+            </v-col>
+          </v-row>
+        </div>
+      </v-col>
+    </v-row>
 
     <!-- Modal Eliminar -->
     <div class="modal fade" id="modaleliminarMantenimiento" tabindex="-1" role="dialog"
       aria-labelledby="modaleliminarMantenimiento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Eliminar Mantenimiento
@@ -96,7 +129,7 @@
     <div class="modal fade" id="modalActualizarMantenimiento" tabindex="-1" role="dialog"
       aria-labelledby="modalActualizarMantenimiento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Actualizar Mantenimiento
@@ -149,7 +182,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </v-app>
 </template>
 <script>
 import ArchivoTarjeta from "@/components/archivos/ArchivoTarjeta";
@@ -178,7 +211,7 @@ export default {
     this.rutaVolver = registroObjeto.ruta_volver
     this.idVolver = registroObjeto.id_volver
     this.mantenimiento = registroObjeto,
-    this.info_edificio = registroObjeto.info_edificio
+      this.info_edificio = registroObjeto.info_edificio
     this.info_centro_cableado = registroObjeto.info_centro_cableado
     this.info_gabinete = registroObjeto.info_gabinete
     this.info_elemento = registroObjeto.info_elemento
@@ -286,11 +319,20 @@ export default {
 };
 </script>
 <style scoped>
-.input-buscar {
-  display: flex;
-  align-content: center;
-  align-items: center;
+.drawer-style {
+  padding-top: 70px;
+  height: 100vh;
+  /* Hace que el drawer ocupe todo el alto de la vista */
+  border-right: 3px solid #dd4b39;
+  /* Opcional: agrega un borde */
+  background-color: #E0E0E0;
 }
+
+.drawer-style .v-list-item {
+  color: #000;
+  /* Color del texto */
+}
+
 
 #imagen {
   width: 250px;
@@ -298,38 +340,9 @@ export default {
   border-radius: 182px;
 }
 
-.contenedor-principal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: space-between;
-}
-
-.contenedor-tarjeta {
-  margin-top: 70px;
-}
-
 .imagen-wrapper {
   position: relative;
   display: inline-block;
-}
-
-.icono-actualizar {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: rgba(255, 255, 255, 0.7);
-  /* Fondo para que se vea mejor sobre la imagen */
-  border-radius: 50%;
-  padding: 5px;
-  cursor: pointer;
-}
-
-.icono-actualizar {
-  font-size: 23px;
-  /* Tamaño del ícono */
-  color: #212121;
-  /* Color del ícono */
 }
 
 .imagen-previsualizacion {
@@ -359,40 +372,49 @@ export default {
   /* Limita el ancho máximo */
 }
 
-.informacion {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
-  flex-wrap: wrap;
-}
-
 .informacion-basica,
 .informacion-secundario {
   flex-basis: 100%;
   max-width: 100%;
 }
 
-.numero {
-  position: absolute;
-  top: 5px;
-  /* Mueve el número hacia la parte superior */
-  left: 0px;
-  /* Mueve el número hacia la izquierda */
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 10px;
-  border-radius: 50%;
-  font-size: 20px;
-  font-weight: 700;
+.contenedor-imagen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 4px;
+  border-radius: 5px;
 }
 
-@media (min-width: 768px) {
+.v-icon {
+  font-size: 28px;
+}
 
-  .informacion-basica,
-  .informacion-secundario {
-    flex-basis: 50%;
-    max-width: 50%;
-  }
+.container-principal_informacion {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  width: 95%;
+  /* Asegura que ocupe todo el ancho del contenedor padre */
+  margin: 0 auto;
+  /* Centra el contenedor horizontalmente */
+  border: solid 0.25px #212121;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.logos {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.botones-icon {
+  font-size: 25px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid #fff;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+  <v-app>
     <v-row>
       <v-col cols="2">
         <v-navigation-drawer permanent expand-on-hover :rail="ocultarExpandido" app class="drawer-style">
@@ -17,60 +17,60 @@
         </v-navigation-drawer>
       </v-col>
       <v-col cols="10">
-        
+
         <div class="informacion-principal mt-5 text-center">
 
-          
-    <div class="ruta mb-5">
-      <h6 v-if="rutaVolver !== 'centro-cableado'">
-        <span>
-          <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
-        </span>
-        <span class="ml-1">
-          {{ info_edificio.nombre }}
-        </span>
-        -
-        <span>
-          <v-icon color="grey-darken-4" icon="mdi-server-network"></v-icon>
-        </span>
-        <span>
-          C. CABLEADO #{{ info_centro_cableado.numero }}
-        </span>
-        -
-        <span>
-          <v-icon color="grey-darken-4" icon="mdi-file-cabinet"></v-icon>
-        </span>
-        <span>
-          GABINETE R{{
-          info_gabinete.numero }}
-        </span>
-        -
-        <span>
-          <v-icon color="grey-darken-4" icon="mdi-devices"></v-icon>
-        </span>
-        <span>
-          ELEMENTO {{ info_elemento.codigo }}
-        </span>
-      </h6>
-      <h6 v-else>
-        <span>
-          <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
-        </span>
-        <span class="ml-1">
-          {{ info_edificio.nombre }}
-        </span>
-        -
-        <span>
-          <v-icon color="grey-darken-4" icon="mdi-ethernet"></v-icon>
-        </span>
-        <span>
-          C. CABLEADO #{{ info_centro_cableado.numero }}
-        </span>
-      </h6>
-    </div>
+
+          <div class="ruta mb-5">
+            <h6 v-if="rutaVolver !== 'centro-cableado'">
+              <span>
+                <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
+              </span>
+              <span class="ml-1">
+                {{ info_edificio.nombre }}
+              </span>
+              -
+              <span>
+                <v-icon color="grey-darken-4" icon="mdi-server-network"></v-icon>
+              </span>
+              <span>
+                C. CABLEADO #{{ info_centro_cableado.numero }}
+              </span>
+              -
+              <span>
+                <v-icon color="grey-darken-4" icon="mdi-file-cabinet"></v-icon>
+              </span>
+              <span>
+                GABINETE R{{
+                  info_gabinete.numero }}
+              </span>
+              -
+              <span>
+                <v-icon color="grey-darken-4" icon="mdi-devices"></v-icon>
+              </span>
+              <span>
+                ELEMENTO {{ info_elemento.codigo }}
+              </span>
+            </h6>
+            <h6 v-else>
+              <span>
+                <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
+              </span>
+              <span class="ml-1">
+                {{ info_edificio.nombre }}
+              </span>
+              -
+              <span>
+                <v-icon color="grey-darken-4" icon="mdi-ethernet"></v-icon>
+              </span>
+              <span>
+                C. CABLEADO #{{ info_centro_cableado.numero }}
+              </span>
+            </h6>
+          </div>
 
           <v-row class="container-principal_informacion">
-            <v-col cols="4" class="informacion-detallada text-left" >
+            <v-col cols="4" class="informacion-detallada text-left">
               <p class="text-danger  mb-5">
                 <b> Contrato #{{ proyecto.codigo }}</b>
               </p>
@@ -87,8 +87,7 @@
                 <v-icon icon="mdi-pencil"></v-icon>
                 <v-tooltip activator="parent" location="top">Modificar</v-tooltip>
               </v-btn>
-              <v-btn v-if="usuario.rol_id === 1" data-toggle="modal"
-          data-target="#modaleliminarProyecto"
+              <v-btn v-if="usuario.rol_id === 1" data-toggle="modal" data-target="#modaleliminarProyecto"
                 class="botones-icon" @click="verDatosModal()">
                 <v-icon icon="mdi-delete"></v-icon>
                 <v-tooltip activator="parent" location="top">Eliminar</v-tooltip>

@@ -741,4 +741,11 @@ export default {
   background-color: #fff;
   border: solid 1px #00B0FF;
 }
+
+.input-password,
+.input-buscar {
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
 </style>
