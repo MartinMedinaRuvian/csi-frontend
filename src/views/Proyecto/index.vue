@@ -31,14 +31,14 @@
         </span>
         -
         <span>
-          <v-icon color="grey-darken-4" icon="mdi-ethernet"></v-icon>
+          <v-icon color="grey-darken-4" icon="mdi-server-network"></v-icon>
         </span>
         <span>
           C. CABLEADO #{{ info_centro_cableado.numero }}
         </span>
         -
         <span>
-          <v-icon color="grey-darken-4" icon="mdi-desktop-tower"></v-icon>
+          <v-icon color="grey-darken-4" icon="mdi-file-cabinet"></v-icon>
         </span>
         <span>
           GABINETE R{{

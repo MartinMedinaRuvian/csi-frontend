@@ -8,7 +8,7 @@
             <v-list-item-group v-model="menuSeleccionado">
               <v-list-item prepend-icon="mdi-information" @click="sesionMostrar('info-principal')"
                 title="Información Gabinete" />
-              <v-list-item prepend-icon="mdi-server-network" @click="sesionMostrar('elementos')" title="Elementos" />
+              <v-list-item prepend-icon="mdi-devices" @click="sesionMostrar('elementos')" title="Elementos" />
               <v-list-item prepend-icon="mdi-arrow-left" @click="volver()" title="Volver al C. Cableado" />
 
               <div class="logos" v-if="!ocultarExpandido">
@@ -30,14 +30,14 @@
             </span>
             -
             <span>
-              <v-icon color="grey-darken-4" icon="mdi-ethernet"></v-icon>
+              <v-icon color="grey-darken-4" icon="mdi-server-network"></v-icon>
             </span>
             <span>
               C. CABLEADO #{{ info_centro_cableado.numero }}
             </span>
             <span v-if="!mostrarInfoPrincipal">
               -
-              <v-icon color="grey-darken-4" icon="mdi-desktop-tower"></v-icon>
+              <v-icon color="grey-darken-4" icon="mdi-file-cabinet"></v-icon>
             </span>
             <span v-if="!mostrarInfoPrincipal">
               GABINETE R{{

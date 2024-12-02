@@ -9,7 +9,7 @@
             <v-list-item-group v-model="menuSeleccionado">
               <v-list-item prepend-icon="mdi-information" @click="sesionMostrar('info-principal')"
                 title="Info C. Cableado" />
-              <v-list-item prepend-icon="mdi-server-network" @click="sesionMostrar('gabinetes')"
+              <v-list-item prepend-icon="mdi-file-cabinet" @click="sesionMostrar('gabinetes')"
                 title="Gabinetes (Racks)" />
               <v-list-item prepend-icon="mdi-file-document-multiple" @click="sesionMostrar('proyectos')"
                 title="Proyectos" />
