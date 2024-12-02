@@ -266,9 +266,7 @@ export default {
   justify-content: center;
   flex-direction: column;
   width: 90%;
-  /* Asegura que ocupe todo el ancho del contenedor padre */
   margin: 0 auto;
-  /* Para que el contenido dentro de .container-principal esté en una columna */
 }
 
 .card {
