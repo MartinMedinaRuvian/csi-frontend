@@ -20,53 +20,49 @@
             <p>{{ usuario.rol_id === 1 ? "ADMIN" : "USUARIO" }}</p>
           </td>
           <td>
-            <button
+            <v-btn
               data-toggle="modal"
               data-target="#modalUsuarioEditar"
-              class="btn btn-outline-warning"
+              class="botones-icon"
               @click="verDatosModal(usuario)"
             >
-              <span class="icon-Lapiz"></span>
-              <v-tooltip activator="parent" location="top">Modificar</v-tooltip>
-            </button>
+            <v-icon icon="mdi-pencil"></v-icon>
+            <v-tooltip activator="parent" location="top">Modificar</v-tooltip>
+          </v-btn>
+
           </td>
           <td>
-            <button
-              class="btn"
-              :class="
-                usuario.estado === '1'
-                  ? 'btn-outline-success'
-                  : 'btn-outline-danger'
-              "
+            <v-btn
+              class="botones-icon"
               @click="desactivar(usuario)"
             >
               <span>{{
-                usuario.estado === "1" ? "&#10003;" : "&#x2716;"
+                usuario.estado !== "A" ? "&#10003;" : "&#x2716;"
               }}</span>
               <v-tooltip activator="parent" location="top">Desactivar</v-tooltip>
-            </button>
+            </v-btn>
           </td>
           <td>
-            <button
+            <v-btn
               data-toggle="modal"
               data-target="#modalUsuarioCambiarPassword"
-              class="btn btn-outline-danger"
+              class="botones-icon"
               @click="verDatosModal(usuario)"
             >
-              <span>&#128273;</span>
+            <v-icon icon="mdi-lock-reset"></v-icon>
               <v-tooltip activator="parent" location="top">Cambiar Clave</v-tooltip>
-            </button>
+            </v-btn>
           </td>
           <td>
-            <button
+            <v-btn
               data-toggle="modal"
               data-target="#modalUsuarioEliminar"
-              class="btn btn-outline-danger"
+              class="botones-icon"
               @click="verDatosModal(usuario)"
             >
               <span class="icon-Papelera"></span>
               <v-tooltip activator="parent" location="top">Eliminar</v-tooltip>
-            </button>
+            </v-btn>
           </td>
         </tr>
       </tbody>
@@ -411,10 +407,16 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .input-password {
   display: flex;
   align-content: center;
   align-items: center;
+}
+.botones-icon {
+  font-size: 25px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid #fff;
 }
 </style>

@@ -22,14 +22,16 @@
               <p>{{ parametro.fecha_actualizacion != null &&  parametro.fecha_actualizacion ? formatearFecha(parametro.fecha_actualizacion) : ''}}</p>
             </td>
             <td>
-              <button data-toggle="modal" data-target="#modalActualizarTipo" class="btn btn-outline-warning mr-4"
+              <v-btn data-toggle="modal" data-target="#modalActualizarTipo" class="botones-icon mr-4"
                 @click="verDatosModal(parametro)">
-                <span class="icon-Lapiz"></span>
-              </button>
-              <button data-toggle="modal" data-target="#modalEliminarTipo" class="btn btn-outline-danger"
+                <v-icon icon="mdi-pencil"></v-icon>
+                <v-tooltip activator="parent" location="top">Modificar</v-tooltip>
+              </v-btn>
+              <v-btn data-toggle="modal" data-target="#modalEliminarTipo" class="botones-icon"
                 @click="verDatosModal(parametro)">
-                <span class="icon-Papelera"></span>
-              </button>
+                <v-icon icon="mdi-delete"></v-icon>
+                <v-tooltip activator="parent" location="top">Eliminar</v-tooltip>
+              </v-btn>
             </td>
           </tr>
         </tbody>
@@ -164,3 +166,11 @@ export default {
   },
 };
 </script>
+<style scoped>
+.botones-icon {
+  font-size: 25px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid #fff;
+}
+</style>

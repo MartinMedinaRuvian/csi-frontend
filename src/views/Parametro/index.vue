@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
     <div v-if="usuario !== null && usuario.rol_id === 1">
-      <h3 class="text-success mb-4 titulo-principal">Parámetros</h3>
+      <h3 class="text-danger mb-4 titulo-principal">Parámetros</h3>
       <div class="row mt-5">
         <div class="form-group col-md-6">
           <label for="select">Seleccione Tabla:</label>

@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <h3 class="text-success mb-4 titulo-principal">Usuarios</h3>
+    <h3 class="text-danger mb-4 titulo-principal">Usuarios</h3>
     <button type="button" class="btn btn-success text-white" data-toggle="modal" data-target="#modalUsuario">
       Guardar un nuevo Usuario
     </button>
@@ -86,10 +86,10 @@
         <div class="input-buscar">
           <input placeholder="Ingrese el dato a buscar" class="form-control" type="text" v-model="buscar"
             @keypress.enter="verUsuarios()" />
-          <button class="btn btn-success" @click="verUsuarios()">
-            &#128269;
-            <v-tooltip activator="parent" location="top">Ver</v-tooltip>
-          </button>
+          <v-btn class="botones-icon" @click="verUsuarios()">
+            <v-icon icon="mdi-eye"></v-icon>
+            <v-tooltip activator="parent" location="top">Buscar</v-tooltip>
+          </v-btn>
         </div>
       </div>
     </div>
@@ -185,5 +185,12 @@ export default {
   /* Asterisco de color rojo */
   font-weight: bold;
   /* Opcional, para darle más énfasis */
+}
+
+.botones-icon {
+  font-size: 25px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid #fff;
 }
 </style>
