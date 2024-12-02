@@ -1,220 +1,234 @@
 <template>
-  <div class="text-center">
-    <div class="ruta">
-      <h6>
-        <span>
-          <v-icon color="red-accent-4" icon="mdi-domain"></v-icon>
-        </span>
-        <span class="ml-1">
-          {{ info_edificio.nombre }}
-        </span>
-        -
-        <span>
-          <v-icon color="red-accent-4" icon="mdi-ethernet"></v-icon>
-        </span>
-        <span>
-          C. CABLEADO #{{ info_centro_cableado.numero }}
-        </span>
-        -
-        <span>
-          <v-icon color="red-accent-4" icon="mdi-desktop-tower"></v-icon>
-        </span>
-        <span>
-          GABINETE R{{
-            info_gabinete.numero }}
-        </span>
-      </h6>
-    </div>
-    <h4 class="text-success mb-5">
-      <span><button class="btn btn-success" @click="volver()">&#8630;</button> <v-tooltip activator="parent"
-          location="top">Volver</v-tooltip></span>
-      Información del Elemento Activo <b>{{ elemento.codigo }}</b>
-    </h4>
-
+  <v-app>
     <v-row>
-      <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('info-principal')">Información Principal</v-btn>
+      <v-col cols="2">
+        <v-navigation-drawer permanent expand-on-hover :rail="ocultarExpandido" app class="drawer-style">
+          <v-list>
+            <p v-if="!ocultarExpandido" class="text-center text-danger"><b>Elemento {{ elemento.codigo
+                }}</b></p>
+            <v-list-item-group v-model="menuSeleccionado">
+              <v-list-item prepend-icon="mdi-information" @click="sesionMostrar('info-principal')"
+                title="Información Elemento" />
+              <v-list-item prepend-icon="mdi-server-network" @click="sesionMostrar('mantenimientos')"
+                title="Mantenimientos" />
+              <v-list-item prepend-icon="mdi-file-document-multiple" @click="sesionMostrar('proyectos')"
+                title="Proyectos" />
+              <v-list-item prepend-icon="mdi-arrow-left" @click="volver()" title="Volver al Gabinete" />
+              <div class="logos" v-if="!ocultarExpandido">
+                <img src="../../assets/CSI_Logo.jpg" alt="Logo UFPS" style="width:60px; height: 60px;"> <br>
+                <img class="ml-2" src="../../assets/UFPS_logo.jpg" alt="Logo UFPS" style="width:60px; height: 60px;">
+              </div>
+            </v-list-item-group>
+          </v-list>
+        </v-navigation-drawer>
       </v-col>
-      <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('mantenimientos')">Mantenimientos</v-btn>
-      </v-col>
-      <v-col>
-        <v-btn color="green-darken-2" @click="sesionMostrar('proyectos')">Proyectos</v-btn>
-      </v-col>
-    </v-row>
-
-
-    <v-row class="mt-5 ml-2" v-if="mostrarInfoPrincipal">
-      <v-col>
-        <v-card class="mx-auto" max-width="100%">
-
-          <div class="contenedor-imagen">
-            <span class="icono-actualizar" data-toggle="modal" data-target="#modalActualizarImagen">
-              &#x1F504;
-              <v-tooltip activator="parent" location="top">Cambiar Imagen</v-tooltip>
+      <v-col cols="10">
+        <div class="ruta text-center">
+          <h6>
+            <span>
+              <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
             </span>
-            <v-img height="300px" :src="rutaImagenVer(elemento.ruta_imagen)" contain></v-img>
-          </div>
+            <span class="ml-1">
+              {{ info_edificio.nombre }}
+            </span>
+            -
+            <span>
+              <v-icon color="grey-darken-4" icon="mdi-ethernet"></v-icon>
+            </span>
+            <span>
+              C. CABLEADO #{{ info_centro_cableado.numero }}
+            </span>
+            <span>
+              -
+              <v-icon color="grey-darken-4" icon="mdi-desktop-tower"></v-icon>
+            </span>
+            <span>
+              GABINETE R{{
+                info_gabinete.numero }}
+            </span>
+            <span v-if="!mostrarInfoPrincipal">
+              -
+              <v-icon color="grey-darken-4" icon="mdi-devices"></v-icon>
+            </span>
+            <span v-if="!mostrarInfoPrincipal">
+              ELEMENTO {{ info_elemento.codigo }}
+            </span>
+          </h6>
+        </div>
+        <div class="informacion-principal mt-5 text-center" v-if="mostrarInfoPrincipal">
 
-          <v-card-title>
-            Elemento {{ elemento.codigo }}
-          </v-card-title>
+          <v-row class="container-principal_informacion">
+            <v-col cols="7">
+              <div class="contenedor-imagen position-relative">
+                <v-img height="300px" :src="rutaImagenVer(elemento.ruta_imagen)" contain></v-img>
+              </div>
+              <p class="text-danger  mb-5">
+                <b>Elemento {{ elemento.codigo }}</b>
+              </p>
+            </v-col>
 
-          <v-card-subtitle>
-            <h6 class="mt-3"><b>{{ elemento.tipo_dispositivo }}</b></h6>
-          </v-card-subtitle>
+            <v-col class="informacion-detallada text-left" cols="5">
 
-          <v-card-actions>
-            <v-btn color="red-accent-4" text="Más información" @click="show = !show"></v-btn>
+              <p><b>Módelo:</b> {{ elemento.tipo_modelo }} <br>
+                <b>Marca:</b> {{ elemento.tipo_marca }} <br>
+                <b>Referencia:</b> {{ elemento.tipo_referencia }}
+              </p>
 
-            <v-spacer></v-spacer>
+              <span v-if="propiedadTieneValor(elemento.codigo_inventario)"><b>Código de inventario:</b> {{
+                elemento.codigo_inventario }}
+                <br>
+              </span>
+              <span v-if="propiedadTieneValor(elemento.serial)"><b>Serial:</b> {{ elemento.serial }} <br> </span>
+              <span v-if="propiedadTieneValor(elemento.os)"><b>S.O:</b> {{ elemento.os }} <br></span>
+              <span v-if="propiedadTieneValor(elemento.version_os)"><b>Versión S.O:</b> {{ elemento.version_os
+                }}<br></span>
+              <span v-if="propiedadTieneValor(elemento.gateway)"><b>Gateway:</b> {{ elemento.gateway }}<br></span>
+              <span v-if="propiedadTieneValor(elemento.ip_v4)"><b>IPV4:</b> {{ elemento.ip_v4 }}</span> <br>
+              <span v-if="propiedadTieneValor(elemento.ip_v6)"><b>IPV6:</b> {{ elemento.ip_v6 }}</span> <br>
+              <span v-if="propiedadTieneValor(elemento.cantidad_puertos_por_defecto)"><b>Cant. Puertos Default:</b>
+                {{
+                  elemento.cantidad_puertos_por_defecto }}</span> <br>
+              <span v-if="propiedadTieneValor(elemento.puerto_logico_por_defecto)"><b>Puerto Lógico Default:</b> {{
+                elemento.puerto_logico_por_defecto }}</span> <br>
+              <span v-if="propiedadTieneValor(elemento.puerto_fisico_por_defecto)"><b>Puerto Fisico Default:</b> {{
+                elemento.puerto_fisico_por_defecto }}</span>
 
-            <v-btn :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn>
-          </v-card-actions>
 
-          <v-expand-transition>
-            <div v-show="show">
+              <p><b>Observación:</b> {{ elemento.observacion && elemento.observacion.length > 0 ?
+                elemento.observacion :
+                'Ninguna' }}</p>
 
-              <v-card-text align="center">
-                <p class="text-primary"><b>Módelo:</b> {{ elemento.tipo_modelo }} <br>
-                  <b>Marca:</b> {{ elemento.tipo_marca }} <br>
-                  <b>Referencia:</b> {{ elemento.tipo_referencia }}
-                </p>
-                <div class="info-secundaria">
-                  <span v-if="propiedadTieneValor(elemento.codigo_inventario)"><b>Código de inventario:</b> {{
-                    elemento.codigo_inventario }}
-                    <br>
-                  </span>
-                  <span v-if="propiedadTieneValor(elemento.serial)"><b>Serial:</b> {{ elemento.serial }} <br> </span>
-                  <span v-if="propiedadTieneValor(elemento.os)"><b>S.O:</b> {{ elemento.os }} <br></span>
-                  <span v-if="propiedadTieneValor(elemento.version_os)"><b>Versión S.O:</b> {{ elemento.version_os
-                    }}<br></span>
-                  <span v-if="propiedadTieneValor(elemento.gateway)"><b>Gateway:</b> {{ elemento.gateway }}<br></span>
-                  <span v-if="propiedadTieneValor(elemento.ip_v4)"><b>IPV4:</b> {{ elemento.ip_v4 }}</span> <br>
-                  <span v-if="propiedadTieneValor(elemento.ip_v6)"><b>IPV6:</b> {{ elemento.ip_v6 }}</span> <br>
-                  <span v-if="propiedadTieneValor(elemento.cantidad_puertos_por_defecto)"><b>Cant. Puertos Default:</b>
-                    {{
-                      elemento.cantidad_puertos_por_defecto }}</span> <br>
-                  <span v-if="propiedadTieneValor(elemento.puerto_logico_por_defecto)"><b></b> {{
-                    elemento.puerto_logico_por_defecto }}</span> <br>
-                  <span v-if="propiedadTieneValor(elemento.puerto_fisico_por_defecto)">Puerto Fisico Default: {{
-                    elemento.puerto_fisico_por_defecto }}</span>
-                </div>
-              </v-card-text>
 
-              <v-card-text align="left">
-                <p v-if="elemento.observacion && elemento.observacion.length > 0">
-                  <b>Observación:</b>
-                  <br> {{
-                    elemento.observacion }}
-                </p>
-              </v-card-text>
+              <v-btn class="mr-5 botones-icon" data-toggle="modal" data-target="#modalActualizarImagen">
+                <v-icon icon="mdi-image-edit"></v-icon>
+                <v-tooltip activator="parent" location="top">Cambiar Imagen</v-tooltip>
+              </v-btn>
+              <v-btn class="mr-5 botones-icon" @click="actualizarElemento()">
+                <v-icon icon="mdi-pencil"></v-icon>
+                <v-tooltip activator="parent" location="top">Modificar</v-tooltip>
+              </v-btn>
+              <v-btn v-if="usuario.rol_id === 1" data-toggle="modal" data-target="#modaleliminarElemento"
+                class="botones-icon" @click="verDatosModal()">
+                <v-icon icon="mdi-delete"></v-icon>
+                <v-tooltip activator="parent" location="top">Eliminar</v-tooltip>
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12">
+              <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" />
+            </v-col>
+          </v-row>
+        </div>
 
-              <div class="botones mb-5">
-                <button class="btn btn-warning mr-2" @click="actualizarElemento()">Actualizar</button>
-                <button v-if="usuario.rol_id === 1" class="btn btn-danger" data-toggle="modal"
-                  data-target="#modaleliminarElemento">Eliminar</button>
+        <div class="centro-cableados text-center" v-if="mostrarCentrosCableados">
+          <p class="text-dark">
+            <span>
+              <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
+            </span>
+            <span class="ml-1">
+              {{ edificio.numero }}
+            </span>
+          </p>
+          <CentroCableadoTarjeta :centros_cableados="centros_cableados" :info_edificio="edificio"
+            @refrescar="refrescar" />
+        </div>
+
+        <div v-if="mostrarProyectos">
+          <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }"
+            :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete"
+            :info_elemento="info_elemento" @filtrar="filtrar" />
+        </div>
+
+        <div v-if="mostrarMantenimientos" class="text-center">
+
+          <div class="container">
+            <div class="row mt-5">
+              <div class="form-group col-md-12">
+                <label for="select">Forma de busqueda:</label>
+                <select id="select" class="form-select form-control" aria-label="Default select example"
+                  v-model="buscarPorMantenimiento" @change="paginaActualMantenimiento = 1">
+                  <option :value="buscar.valor" v-for="buscar in tipoBusquedaMantenimiento" :key="buscar.valor"
+                    class="text-success">
+                    {{ buscar.descripcion }}
+                  </option>
+                </select>
               </div>
             </div>
-          </v-expand-transition>
-        </v-card>
-      </v-col>
-      <v-col>
-        <ArchivoTarjeta :archivos="archivos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" />
+            <div class="row" v-if="buscarPorMantenimiento !== 1">
+              <div class="form-group col-md-6">
+                <label for="fecha">Fecha Inicial:</label>
+                <input type="date" class="form-control" id="fecha" v-model="fechaInicialMantenimiento"
+                  :max="maximaFechaMantenimiento" @change="paginaActualMantenimiento = 1" />
+              </div>
+              <div class="form-group col-md-6">
+                <label for="fecha">Fecha Final:</label>
+                <input type="date" class="form-control" id="fecha" v-model="fechaFinalMantenimiento"
+                  :max="maximaFechaMantenimiento" @change="paginaActualMantenimiento = 1" />
+              </div>
+              <div class="form-group col-md-12" v-if="buscarPorMantenimiento === 2">
+                <button class="btn btn-success" @click="verMantenimientos()">Buscar</button>
+              </div>
+            </div>
+            <div class="row" v-if="buscarPorMantenimiento !== 2">
+              <div class="form-group col-md-6">
+                <label for="select"><v-icon icon="mdi-filter"></v-icon> Filtro:</label>
+                <select id="select" class="form-select form-control" aria-label="Default select example"
+                  v-model="condicionMantenimiento" @change="paginaActualMantenimiento = 1">
+                  <option :value="condicion.valor" v-for="condicion in condicionesMantenimiento" :key="condicion.valor"
+                    class="text-success">
+                    {{ condicion.descripcion }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="select">Buscar:</label>
+                <div class="input-buscar">
+                  <input class="form-control" type="text" v-model="buscarMantenimiento"
+                    @keypress.enter="verMantenimientos()" @keyup="paginaActual = 1" />
+                  <v-btn class="ml-2 botones-icon" @click="verMantenimientos()">
+                    <v-icon icon="mdi-card-search"></v-icon>
+                    <v-tooltip activator="parent" location="top">Buscar</v-tooltip>
+                  </v-btn>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <MantenimientoTarjeta :mantenimientos="mantenimientos"
+            :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" :info_edificio="info_edificio"
+            :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete"
+            :info_elemento="info_elemento" />
+
+          <div class="paginacion">
+            <button :disabled="paginaActualMantenimiento === 1"
+              @click="cambiarPaginaMantenimiento(paginaActualMantenimiento - 1)" class="btn botones-paginacion mr-2">
+              &laquo;
+            </button>
+
+            <button v-for="pagina in paginasVisiblesMantenimiento" :key="pagina"
+              @click="cambiarPaginaMantenimiento(pagina)"
+              :class="['mr-2 btn', pagina === paginaActualMantenimiento ? 'botones-paginacion' : 'botones-paginacion-outline']">
+              {{ pagina }}
+            </button>
+
+            <button
+              :disabled="paginaActualMantenimiento === Math.ceil(totalRegistrosMantenimiento / registrosPorPaginaMantenimiento)"
+              @click="cambiarPaginaMantenimiento(paginaActualMantenimiento + 1)" class="btn botones-paginacion">
+              &raquo;
+            </button>
+          </div>
+
+        </div>
       </v-col>
     </v-row>
 
-    <div v-if="mostrarProyectos">
-      <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }"
-        :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete"
-        :info_elemento="info_elemento" @filtrar="filtrar" />
-    </div>
-
-
-    <div v-if="mostrarMantenimientos">
-
-      <div class="container">
-        <div class="row mt-5">
-          <div class="form-group col-md-12">
-            <label for="select">Forma de busqueda:</label>
-            <select id="select" class="form-select form-control" aria-label="Default select example"
-              v-model="buscarPorMantenimiento" @change="paginaActualMantenimiento = 1">
-              <option :value="buscar.valor" v-for="buscar in tipoBusquedaMantenimiento" :key="buscar.valor"
-                class="text-success">
-                {{ buscar.descripcion }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="row" v-if="buscarPorMantenimiento !== 1">
-          <div class="form-group col-md-6">
-            <label for="fecha">Fecha Inicial:</label>
-            <input type="date" class="form-control" id="fecha" v-model="fechaInicialMantenimiento"
-              :max="maximaFechaMantenimiento" @change="paginaActualMantenimiento = 1" />
-          </div>
-          <div class="form-group col-md-6">
-            <label for="fecha">Fecha Final:</label>
-            <input type="date" class="form-control" id="fecha" v-model="fechaFinalMantenimiento"
-              :max="maximaFechaMantenimiento" @change="paginaActualMantenimiento = 1" />
-          </div>
-          <div class="form-group col-md-12" v-if="buscarPorMantenimiento === 2">
-            <button class="btn btn-success" @click="verMantenimientos()">Buscar</button>
-          </div>
-        </div>
-        <div class="row" v-if="buscarPorMantenimiento !== 2">
-          <div class="form-group col-md-6">
-            <label for="select"><v-icon icon="mdi-filter"></v-icon> Filtro:</label>
-            <select id="select" class="form-select form-control" aria-label="Default select example"
-              v-model="condicionMantenimiento" @change="paginaActualMantenimiento = 1">
-              <option :value="condicion.valor" v-for="condicion in condicionesMantenimiento" :key="condicion.valor"
-                class="text-success">
-                {{ condicion.descripcion }}
-              </option>
-            </select>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="select">Buscar:</label>
-            <div class="input-buscar">
-              <input class="form-control" type="text" v-model="buscarMantenimiento"
-                @keypress.enter="verMantenimientos()" @keyup="paginaActual = 1" />
-              <button class="btn btn-success" @click="verMantenimientos()">
-                &#128269;
-                <v-tooltip activator="parent" location="top">Ver</v-tooltip>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <MantenimientoTarjeta :mantenimientos="mantenimientos"
-        :info_tabla="{ nombre_tabla: 'elemento_activo', id: elemento.id }" :info_edificio="info_edificio"
-        :info_centro_cableado="info_centro_cableado" :info_gabinete="info_gabinete" :info_elemento="info_elemento" />
-
-      <div class="paginacion">
-        <button :disabled="paginaActualMantenimiento === 1"
-          @click="cambiarPaginaMantenimiento(paginaActualMantenimiento - 1)" class="btn btn-success mr-2">
-          &laquo;
-        </button>
-
-        <button v-for="pagina in paginasVisiblesMantenimiento" :key="pagina" @click="cambiarPaginaMantenimiento(pagina)"
-          :class="['mr-2 btn', pagina === paginaActualMantenimiento ? 'btn-success' : 'btn-outline-success']">
-          {{ pagina }}
-        </button>
-
-        <button
-          :disabled="paginaActualMantenimiento === Math.ceil(totalRegistrosMantenimiento / registrosPorPaginaMantenimiento)"
-          @click="cambiarPaginaMantenimiento(paginaActualMantenimiento + 1)" class="btn btn-success">
-          &raquo;
-        </button>
-      </div>
-
-    </div>
 
     <!-- Modal Atualizar Imagen-->
     <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"
       aria-labelledby="modalActualizarImagen" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Actualizar Imagen
@@ -261,7 +275,7 @@
     <div class="modal fade" id="modaleliminarElemento" tabindex="-1" role="dialog"
       aria-labelledby="modaleliminarElemento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Eliminar elemento
@@ -293,7 +307,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </v-app>
 </template>
 <script>
 import ElementoTarjeta from "@/components/elementos/ElementoTarjeta";
@@ -336,9 +350,9 @@ export default {
         { descripcion: "OBSERVACIÓN", valor: "m.observacion" }
       ],
       tipoBusquedaMantenimiento: [
-        { descripcion: "BUSCAR POR CONDICIÓN", valor: 1 },
+        { descripcion: "BUSCAR POR FILTRO", valor: 1 },
         { descripcion: "BUSCAR ENTRE FECHAS", valor: 2 },
-        { descripcion: "BUSCAR ENTRE FECHAS MÁS CONDICIÓN", valor: 3 },
+        { descripcion: "BUSCAR ENTRE FECHAS MÁS FILTRO", valor: 3 },
       ],
       buscarPorMantenimiento: 1,
       condicionMantenimiento: "m.codigo",
@@ -352,7 +366,8 @@ export default {
       show: false,
       mostrarInfoPrincipal: true,
       mostrarMantenimientos: false,
-      mostrarProyectos: false
+      mostrarProyectos: false,
+      ocultarExpandido: false
     };
   },
   mounted() {
@@ -367,6 +382,10 @@ export default {
     this.verProyectos('p.codigo', '')
     this.cargarFechaActual()
     this.verMantenimientos()
+    window.addEventListener('resize', this.verificarAnchoPantalla);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.verificarAnchoPantalla);
   },
   computed: {
     ...mapGetters(["usuario"]),
@@ -389,6 +408,9 @@ export default {
     }
   },
   methods: {
+    verificarAnchoPantalla() {
+      this.ocultarExpandido = window.innerWidth < 1500;
+    },
     cambiarPaginaMantenimiento(pagina) {
       if (pagina > 0 && pagina <= this.totalPaginasMantenimiento) {
         this.paginaActualMantenimiento = pagina;
@@ -608,11 +630,20 @@ export default {
 };
 </script>
 <style scoped>
-.input-buscar {
-  display: flex;
-  align-content: center;
-  align-items: center;
+.drawer-style {
+  padding-top: 70px;
+  height: 100vh;
+  /* Hace que el drawer ocupe todo el alto de la vista */
+  border-right: 3px solid #dd4b39;
+  /* Opcional: agrega un borde */
+  background-color: #E0E0E0;
 }
+
+.drawer-style .v-list-item {
+  color: #000;
+  /* Color del texto */
+}
+
 
 #imagen {
   width: 250px;
@@ -620,57 +651,9 @@ export default {
   border-radius: 182px;
 }
 
-.contenedor-principal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-content: space-between;
-}
-
-.contenedor-tarjeta {
-  margin-top: 70px;
-}
-
 .imagen-wrapper {
   position: relative;
   display: inline-block;
-}
-
-.icono-actualizar {
-  position: absolute;
-  top: 8px;
-  /* Ajusta según tu diseño */
-  right: 8px;
-  /* Ajusta según tu diseño */
-  background-color: rgba(255, 255, 255, 0.8);
-  /* Fondo blanco semi-transparente para mejor visibilidad */
-  border-radius: 50%;
-  /* Para hacer el fondo redondeado */
-  padding: 5px;
-  /* Espaciado interno */
-  cursor: pointer;
-  /* Cambia el cursor para indicar que es interactivo */
-  font-size: 20px;
-  /* Tamaño del ícono */
-  z-index: 10;
-  /* Asegura que esté por encima de la imagen */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.icono-actualizar:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-  /* Cambia el fondo al pasar el mouse */
-  color: white;
-  /* Cambia el color del ícono al pasar el mouse */
-}
-
-.icono-actualizar {
-  font-size: 23px;
-  /* Tamaño del ícono */
-  color: #212121;
-  /* Color del ícono */
 }
 
 .imagen-previsualizacion {
@@ -700,52 +683,10 @@ export default {
   /* Limita el ancho máximo */
 }
 
-.informacion {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
-  flex-wrap: wrap;
-}
-
 .informacion-basica,
 .informacion-secundario {
   flex-basis: 100%;
   max-width: 100%;
-}
-
-.informacion-secundario {
-  margin-bottom: 180px;
-}
-
-.numero {
-  position: absolute;
-  top: 5px;
-  /* Mueve el número hacia la parte superior */
-  left: 0px;
-  /* Mueve el número hacia la izquierda */
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 10px;
-  border-radius: 50%;
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.span-boton_nuevo {
-  padding: 3px;
-  background-color: #28a745;
-  color: #fff;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.info-secundaria span {
-  font-size: 18px;
-}
-
-.paginacion {
-  margin-top: -20px !important;
 }
 
 .contenedor-imagen {
@@ -753,16 +694,51 @@ export default {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background-color: #dd4b39;
   padding: 4px;
+  border-radius: 5px;
 }
 
-@media (min-width: 768px) {
+.v-icon {
+  font-size: 28px;
+}
 
-  .informacion-basica,
-  .informacion-secundario {
-    flex-basis: 50%;
-    max-width: 50%;
-  }
+.container-principal_informacion {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  width: 80%;
+  /* Asegura que ocupe todo el ancho del contenedor padre */
+  margin: 0 auto;
+  /* Centra el contenedor horizontalmente */
+  border: solid 0.5px #212121;
+  border-radius: 15px;
+}
+
+.logos {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.botones-icon {
+  font-size: 25px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid #fff;
+}
+
+.botones-paginacion {
+  font-size: 15px;
+  color: #fff;
+  background-color: #00B0FF;
+  border: solid #00B0FF;
+}
+
+.botones-paginacion-outline {
+  font-size: 15px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid 1px #00B0FF;
 }
 </style>

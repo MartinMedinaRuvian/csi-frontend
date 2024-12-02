@@ -11,7 +11,8 @@
                 title="Info C. Cableado" />
               <v-list-item prepend-icon="mdi-server-network" @click="sesionMostrar('gabinetes')"
                 title="Gabinetes (Racks)" />
-              <v-list-item prepend-icon="mdi-file-document-multiple" @click="sesionMostrar('proyectos')" title="Proyectos" />
+              <v-list-item prepend-icon="mdi-file-document-multiple" @click="sesionMostrar('proyectos')"
+                title="Proyectos" />
               <v-list-item prepend-icon="mdi-arrow-left" @click="volver()" title="Volver al Edificio" />
               <div class="logos" v-if="!ocultarExpandido">
                 <img src="../../assets/CSI_Logo.jpg" alt="Logo UFPS" style="width:60px; height: 60px;"> <br>
@@ -23,22 +24,22 @@
       </v-col>
       <v-col cols="10">
         <div class="ruta text-center" v-if="!mostrarInfoPrincipal">
-      <h6>
-        <span>
-          <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
-        </span>
-        <span class="ml-1">
-          {{ info_edificio.nombre }}
-        </span>
-        -
-        <span>
-          <v-icon color="grey-darken-4" icon="mdi-server-network"></v-icon>
-        </span>
-        <span>
-          C. CABLEADO #{{ info_centro_cableado.numero }}
-        </span>
-      </h6>
-    </div>
+          <h6>
+            <span>
+              <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
+            </span>
+            <span class="ml-1">
+              {{ info_edificio.nombre }}
+            </span>
+            -
+            <span>
+              <v-icon color="grey-darken-4" icon="mdi-server-network"></v-icon>
+            </span>
+            <span>
+              C. CABLEADO #{{ info_centro_cableado.numero }}
+            </span>
+          </h6>
+        </div>
         <div class="informacion-principal mt-5 text-center" v-if="mostrarInfoPrincipal">
 
           <v-row class="container-principal_informacion">
@@ -83,8 +84,7 @@
                 <v-icon icon="mdi-pencil"></v-icon>
                 <v-tooltip activator="parent" location="top">Modificar</v-tooltip>
               </v-btn>
-              <v-btn v-if="usuario.rol_id === 1" data-toggle="modal"
-                  data-target="#modaleliminarCentroCableado"
+              <v-btn v-if="usuario.rol_id === 1" data-toggle="modal" data-target="#modaleliminarCentroCableado"
                 class="botones-icon" @click="verDatosModal()">
                 <v-icon icon="mdi-delete"></v-icon>
                 <v-tooltip activator="parent" location="top">Eliminar</v-tooltip>
@@ -94,7 +94,7 @@
           <v-row>
             <v-col cols="12">
               <ArchivoTarjeta :archivos="archivos"
-              :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" />
+                :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" />
             </v-col>
           </v-row>
         </div>
@@ -113,8 +113,9 @@
         </div>
 
         <div v-if="mostrarProyectos">
-          <ProyectoTarjeta :proyectos="proyectos" :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }"
-          :info_edificio="info_edificio" :info_centro_cableado="info_centro_cableado" @filtrar="filtrar" />
+          <ProyectoTarjeta :proyectos="proyectos"
+            :info_tabla="{ nombre_tabla: 'centro_cableado', id: centro_cableado.id }" :info_edificio="info_edificio"
+            :info_centro_cableado="info_centro_cableado" @filtrar="filtrar" />
         </div>
 
         <div v-if="mostrarGabinetes" class="mt-5 text-center">

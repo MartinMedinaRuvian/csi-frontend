@@ -1,214 +1,244 @@
 <template>
-  <div class="mx-auto d-flex justify-content-center">
-    <div class="card">
-      <div class="card-header">
-        <h5 class="text-center text-success" id="exampleModalLongTitle">
-          Actualizar Elemento Activo
-        </h5>
-      </div>
-      <div class="card-body">
-        <form @submit.prevent>
+  <div>
+    <div class="ruta text-center mb-5 mt-5">
+      <h6>
+        <span>
+          <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
+        </span>
+        <span class="ml-1">
+          {{ info_edificio.nombre }}
+        </span>
+        -
+        <span>
+          <v-icon color="grey-darken-4" icon="mdi-ethernet"></v-icon>
+        </span>
+        <span>
+          C. CABLEADO #{{ info_centro_cableado.numero }}
+        </span>
+        -
+        <span>
+          <v-icon color="grey-darken-4" icon="mdi-desktop-tower"></v-icon>
+        </span>
+        <span>
+          GABINETE R{{
+            info_gabinete.numero }}
+        </span>
+      </h6>
+    </div>
+    <div class="mx-auto d-flex justify-content-center">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="text-center text-danger" id="exampleModalLongTitle">
+            Actualizar Elemento Activo
+          </h5>
+        </div>
+        <div class="card-body">
+          <form @submit.prevent>
 
-          <div class="row">
-            <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6">
 
-              <span @click="agregarNuevoTipo('tipo_dispositivo_activo', 'Nuevo Dispositivo')" class="boton-nuevo_elemento"
-                data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Dispositivo</span>
-              <v-autocomplete label="Dispositivo" class="requerido"
-                v-model="elemento_actualizar.id_tipo_dispositivo_activo" :items="tiposdispositivoactivo"
-                :item-title="titulosAutocompleteTipos" item-value="id"
-                :filter="filterAutocompleteTipos">
-              </v-autocomplete>
+                <span @click="agregarNuevoTipo('tipo_dispositivo_activo', 'Nuevo Dispositivo')"
+                  class="boton-nuevo_elemento" data-toggle="modal" data-target="#modalNuevoTipo">Nuevo
+                  Dispositivo</span>
+                <v-autocomplete label="Dispositivo" class="requerido"
+                  v-model="elemento_actualizar.id_tipo_dispositivo_activo" :items="tiposdispositivoactivo"
+                  :item-title="titulosAutocompleteTipos" item-value="id" :filter="filterAutocompleteTipos">
+                </v-autocomplete>
 
-              <span @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')" class="boton-nuevo_elemento"
-                data-toggle="modal" data-target="#modalNuevoTipo">Nueva Referencia</span>
-              <v-autocomplete label="Referencia" class="requerido" v-model="elemento_actualizar.id_tipo_referencia"
-                :items="tiposreferencias" :item-title="titulosAutocompleteTipos" item-value="id"
-                :filter="filterAutocompleteTipos"></v-autocomplete>
+                <span @click="agregarNuevoTipo('tipo_referencia', 'Nueva Referencia')" class="boton-nuevo_elemento"
+                  data-toggle="modal" data-target="#modalNuevoTipo">Nueva Referencia</span>
+                <v-autocomplete label="Referencia" class="requerido" v-model="elemento_actualizar.id_tipo_referencia"
+                  :items="tiposreferencias" :item-title="titulosAutocompleteTipos" item-value="id"
+                  :filter="filterAutocompleteTipos"></v-autocomplete>
 
 
-              <span @click="agregarNuevoTipo('tipo_modelo', 'Nuevo Modelo')" class="boton-nuevo_elemento"
-                data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Modelo</span>
-              <v-autocomplete label="Modelo" class="requerido" v-model="elemento_actualizar.id_tipo_modelo"
-                :items="tiposmodelos" :item-title="titulosAutocompleteTipos" item-value="id"
-                :filter="filterAutocompleteTipos"></v-autocomplete>
+                <span @click="agregarNuevoTipo('tipo_modelo', 'Nuevo Modelo')" class="boton-nuevo_elemento"
+                  data-toggle="modal" data-target="#modalNuevoTipo">Nuevo Modelo</span>
+                <v-autocomplete label="Modelo" class="requerido" v-model="elemento_actualizar.id_tipo_modelo"
+                  :items="tiposmodelos" :item-title="titulosAutocompleteTipos" item-value="id"
+                  :filter="filterAutocompleteTipos"></v-autocomplete>
 
-              <span @click="agregarNuevoTipo('tipo_marca', 'Nueva Marca')" class="boton-nuevo_elemento"
-                data-toggle="modal" data-target="#modalNuevoTipo">Nueva Marca</span>
-              <v-autocomplete label="Marca" class="requerido" v-model="elemento_actualizar.id_tipo_marca"
-                :items="tiposmarcas" :item-title="titulosAutocompleteTipos" item-value="id"
-                :filter="filterAutocompleteTipos"></v-autocomplete>
+                <span @click="agregarNuevoTipo('tipo_marca', 'Nueva Marca')" class="boton-nuevo_elemento"
+                  data-toggle="modal" data-target="#modalNuevoTipo">Nueva Marca</span>
+                <v-autocomplete label="Marca" class="requerido" v-model="elemento_actualizar.id_tipo_marca"
+                  :items="tiposmarcas" :item-title="titulosAutocompleteTipos" item-value="id"
+                  :filter="filterAutocompleteTipos"></v-autocomplete>
 
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo" class="requerido">Código:</label>
-                  <input required type="text" placeholder="Ingrese Código" v-model="elemento_actualizar.codigo"
-                    class="form-control" />
-                </div>
-              </div>
-
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo" class="requerido">Serial:</label>
-                  <input required type="text" placeholder="Ingrese Serial" v-model="elemento_actualizar.serial"
-                    class="form-control" />
-                </div>
-              </div>
-
-              <div class="form-group">
                 <div class="form group mt-3">
-                  <label for="codigo">Código Inventario:</label>
-                  <input required type="text" placeholder="" v-model="elemento_actualizar.codigo_inventario"
-                    class="form-control" />
+                  <div class="form-group">
+                    <label for="codigo" class="requerido">Código:</label>
+                    <input required type="text" placeholder="Ingrese Código" v-model="elemento_actualizar.codigo"
+                      class="form-control" />
+                  </div>
                 </div>
-              </div>
 
+                <div class="form group mt-3">
+                  <div class="form-group">
+                    <label for="codigo" class="requerido">Serial:</label>
+                    <input required type="text" placeholder="Ingrese Serial" v-model="elemento_actualizar.serial"
+                      class="form-control" />
+                  </div>
+                </div>
 
-              <div class="form group mt-3">
                 <div class="form-group">
-                  <label for="codigo">Gateway:</label>
-                  <input required type="text" placeholder="" v-model="elemento_actualizar.gateway"
-                    class="form-control" />
+                  <div class="form group mt-3">
+                    <label for="codigo">Código Inventario:</label>
+                    <input required type="text" placeholder="" v-model="elemento_actualizar.codigo_inventario"
+                      class="form-control" />
+                  </div>
                 </div>
+
+
+                <div class="form group mt-3">
+                  <div class="form-group">
+                    <label for="codigo">Gateway:</label>
+                    <input required type="text" placeholder="" v-model="elemento_actualizar.gateway"
+                      class="form-control" />
+                  </div>
+                </div>
+
+
               </div>
 
+              <div class="col-md-6">
 
+                <div class="form group mt-3">
+                  <div class="form-group">
+                    <label for="codigo">MAC:</label>
+                    <input required type="text" placeholder="" v-model="elemento_actualizar.mac" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="form group mt-3">
+                  <div class="form-group">
+                    <label for="codigo">S.O:</label>
+                    <input required type="text" placeholder="" v-model="elemento_actualizar.os" class="form-control" />
+                  </div>
+                </div>
+                <div class="form group mt-3">
+                  <div class="form-group">
+                    <label for="codigo">Versión S.O:</label>
+                    <input required type="text" placeholder="" v-model="elemento_actualizar.version_os"
+                      class="form-control" />
+                  </div>
+                </div>
+                <div class="form group mt-3">
+                  <div class="form-group">
+                    <label for="codigo">IP V4:</label>
+                    <input required type="text" placeholder="" v-model="elemento_actualizar.ip_v4"
+                      class="form-control" />
+                  </div>
+                </div>
+                <div class="form group mt-3">
+                  <div class="form-group">
+                    <label for="codigo">IP V6:</label>
+                    <input required type="text" placeholder="" v-model="elemento_actualizar.ip_v6"
+                      class="form-control" />
+                  </div>
+                </div>
+
+                <div class="form group mt-3">
+                  <div class="form-group">
+                    <label for="codigo">Cat. Puertos Default:</label>
+                    <input required type="number" placeholder=""
+                      v-model="elemento_actualizar.cantidad_puertos_por_defecto" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="form group mt-3">
+                  <div class="form-group">
+                    <label for="codigo">Puerto Lógico Default:</label>
+                    <input required type="number" placeholder="" v-model="elemento_actualizar.puerto_logico_por_defecto"
+                      class="form-control" />
+                  </div>
+                </div>
+
+                <div class="form group mt-3">
+                  <div class="form-group">
+                    <label for="codigo">Puerto Fisico Default:</label>
+                    <input required type="number" placeholder="" v-model="elemento_actualizar.puerto_fisico_por_defecto"
+                      class="form-control" />
+                  </div>
+                </div>
+
+              </div>
             </div>
 
-            <div class="col-md-6">
-
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo">MAC:</label>
-                  <input required type="text" placeholder="" v-model="elemento_actualizar.mac" class="form-control" />
-                </div>
+            <div class="form group mt-3 text-center">
+              <div class="form-group">
+                <label for="codigo">Observación:</label>
+                <textarea type="text" placeholder="Ingrese una observación" v-model="elemento_actualizar.observacion"
+                  class="form-control" />
               </div>
-
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo">S.O:</label>
-                  <input required type="text" placeholder="" v-model="elemento_actualizar.os" class="form-control" />
-                </div>
-              </div>
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo">Versión S.O:</label>
-                  <input required type="text" placeholder="" v-model="elemento_actualizar.version_os"
-                    class="form-control" />
-                </div>
-              </div>
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo">IP V4:</label>
-                  <input required type="text" placeholder="" v-model="elemento_actualizar.ip_v4" class="form-control" />
-                </div>
-              </div>
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo">IP V6:</label>
-                  <input required type="text" placeholder="" v-model="elemento_actualizar.ip_v6" class="form-control" />
-                </div>
-              </div>
-
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo">Cat. Puertos Default:</label>
-                  <input required type="number" placeholder=""
-                    v-model="elemento_actualizar.cantidad_puertos_por_defecto" class="form-control" />
-                </div>
-              </div>
-
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo">Puerto Lógico Default:</label>
-                  <input required type="number" placeholder="" v-model="elemento_actualizar.puerto_logico_por_defecto"
-                    class="form-control" />
-                </div>
-              </div>
-
-              <div class="form group mt-3">
-                <div class="form-group">
-                  <label for="codigo">Puerto Fisico Default:</label>
-                  <input required type="number" placeholder="" v-model="elemento_actualizar.puerto_fisico_por_defecto"
-                    class="form-control" />
-                </div>
-              </div>
-
             </div>
-          </div>
 
-          <div class="form group mt-3 text-center">
-            <div class="form-group">
-              <label for="codigo">Observación:</label>
-              <textarea type="text" placeholder="Ingrese una observación" v-model="elemento_actualizar.observacion"
-                class="form-control" />
+            <div class="row">
+              <div class="col-md-6 mt-3">
+                <button type="button" class="btn btn-secondary form-control" @click="volver()">
+                  Cancelar
+                </button>
+              </div>
+              <div class="col-md-6 mt-3">
+                <input type="button" class="btn btn-success form-control" value="Guardar"
+                  @click="actualizarelemento()" />
+              </div>
             </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 mt-3">
-              <button type="button" class="btn btn-secondary form-control" @click="volver()">
-                Cancelar
+          </form>
+        </div>
+      </div>
+      <!-- Modal Eliminar -->
+      <div class="modal fade" id="modaleliminarElemento" tabindex="-1" role="dialog"
+        aria-labelledby="modaleliminarElemento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-danger">
+              <h5 class="modal-title" id="exampleModalLongTitle">
+                Eliminar elemento
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="col-md-6 mt-3">
-              <input type="button" class="btn btn-success form-control" value="Guardar" @click="actualizarelemento()" />
+            <div class="modal-body">
+              <form @submit.prevent>
+
+                <div class="form-group mt-4">
+                  <h5>Nuevo Elemento</h5>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mt-3">
+                    <button type="button" class="btn btn-secondary form-control" data-dismiss="modal">
+                      Cancelar
+                    </button>
+                  </div>
+                  <div class="col-md-6 mt-3">
+                    <input type="button" class="btn btn-danger form-control" value="Eliminar"
+                      @click="eliminarElemento()" />
+                  </div>
+                </div>
+              </form>
             </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <!-- Modal Eliminar -->
-    <div class="modal fade" id="modaleliminarElemento" tabindex="-1" role="dialog"
-      aria-labelledby="modaleliminarElemento" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-danger">
-            <h5 class="modal-title" id="exampleModalLongTitle">
-              Eliminar elemento
-            </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form @submit.prevent>
-
-              <div class="form-group mt-4">
-                <h5>Nuevo Elemento</h5>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6 mt-3">
-                  <button type="button" class="btn btn-secondary form-control" data-dismiss="modal">
-                    Cancelar
-                  </button>
-                </div>
-                <div class="col-md-6 mt-3">
-                  <input type="button" class="btn btn-danger form-control" value="Eliminar"
-                    @click="eliminarElemento()" />
-                </div>
-              </div>
-            </form>
           </div>
         </div>
       </div>
-    </div>
-    <!-- Modal Nuevo Tipo -->
-    <div class="modal fade" id="modalNuevoTipo" tabindex="-1" role="dialog" aria-labelledby="modalNuevoTipo"
-      aria-hidden="true" data-backdrop="static" data-keyboard="false">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header bg-danger">
-            <h5 class="modal-title" id="exampleModalLongTitle">
-              Nuevo Tipo
-            </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <TipoGuardar @refrescar="refrescarTipos()" :titulo="tituloTipo" :tabla="tablaTipo" />
+      <!-- Modal Nuevo Tipo -->
+      <div class="modal fade" id="modalNuevoTipo" tabindex="-1" role="dialog" aria-labelledby="modalNuevoTipo"
+        aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-danger">
+              <h5 class="modal-title" id="exampleModalLongTitle">
+                Nuevo Tipo
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <TipoGuardar @refrescar="refrescarTipos()" :titulo="tituloTipo" :tabla="tablaTipo" />
+            </div>
           </div>
         </div>
       </div>
@@ -259,7 +289,7 @@ export default {
       switch (tablaTipo) {
         case 'tipo_dispositivo_activo':
           this.verTiposDispositivosActivos()
-          break        
+          break
         case 'tipo_referencia':
           this.verTiposReferencias()
           break
@@ -394,6 +424,7 @@ export default {
   font-weight: bold;
   /* Opcional, para darle más énfasis */
 }
+
 .boton-nuevo_elemento {
   padding: 5px;
   background-color: #28a745;

@@ -59,6 +59,8 @@
                 <b>Gabinete R{{ gabinete.numero }}</b>
               </p>
               <p><b>{{ gabinete.tipo }}</b></p>
+              <p v-if="gabinete.aterrizado === 'S'"><span>Aterrizado <v-icon icon="mdi-flash"></v-icon></span></p>
+              <p v-else><span>No esta Aterrizado <v-icon icon="mdi-flash-off"></v-icon></span></p>
               <p><b>Observación:</b> {{ gabinete.observacion && gabinete.observacion.length > 0 ? gabinete.observacion
                 : 'Ninguna' }}</p>
               <v-btn class="mr-5 botones-icon" data-toggle="modal" data-target="#modalActualizarImagen">
@@ -96,7 +98,7 @@
     <div class="modal fade" id="modalActualizarImagen" tabindex="-1" role="dialog"
       aria-labelledby="modalActualizarImagen" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Actualizar Imagen
@@ -143,7 +145,7 @@
     <div class="modal fade" id="modaleliminarGabinete" tabindex="-1" role="dialog"
       aria-labelledby="modaleliminarGabinete" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Eliminar Gabinete
@@ -179,7 +181,7 @@
     <div class="modal fade" id="modalActualizarGabinete" tabindex="-1" role="dialog"
       aria-labelledby="modalActualizarGabinete" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Actualizar Gabinete
@@ -274,7 +276,8 @@ export default {
       info_gabinete: {},
       show: false,
       mostrarInfoPrincipal: true,
-      mostrarElementos: false
+      mostrarElementos: false,
+      ocultarExpandido: false
     };
   },
   mounted() {
@@ -289,11 +292,18 @@ export default {
     this.verArchivos()
     this.verTiposGabinetes()
     this.sesionMostrar('elementos')
+    window.addEventListener('resize', this.verificarAnchoPantalla);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.verificarAnchoPantalla);
   },
   computed: {
     ...mapGetters(["usuario"]),
   },
   methods: {
+    verificarAnchoPantalla() {
+      this.ocultarExpandido = window.innerWidth < 1500;
+    },
     filtrar(datos) {
       console.log(datos, 'dt')
       const condicion = datos.condicion

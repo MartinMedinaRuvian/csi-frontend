@@ -20,7 +20,7 @@
             </thead>
             <tbody>
               <tr v-for="archivo in archivos" :key="archivo.id">
-                <td>
+                <td class="text-wrap" style="max-width: 260px;">
                   <p>{{ archivo.nombre }}</p>
                 </td>
                 <td>
@@ -264,8 +264,10 @@ export default {
 .container-principal_archivos {
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-direction: column;
+  width: 90%;
+  /* Asegura que ocupe todo el ancho del contenedor padre */
+  margin: 0 auto;
   /* Para que el contenido dentro de .container-principal esté en una columna */
 }
 
@@ -344,7 +346,7 @@ export default {
 }
 
 #dialog-window {
-  width: 80%;
+  width: 100%;
   height: 200px;
   margin-bottom: 40px;
 }
@@ -397,5 +399,11 @@ export default {
   color: #00B0FF;
   background-color: #fff;
   border: solid #fff;
+}
+
+.text-wrap {
+  word-wrap: break-word;     /* Ajusta palabras largas */
+  word-break: break-word;    /* Opcional: rompe palabras largas */
+  overflow-wrap: break-word; /* Compatibilidad moderna */
 }
 </style>

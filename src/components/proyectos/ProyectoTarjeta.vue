@@ -33,13 +33,13 @@
         </div>
         <div id="scrollable-content" class="containe-imagenes mb-5">
 
-          <table class="table table-responsive-md" v-if="(proyectos != null || proyectos != undefined)
+          <table class="table text-center table-responsive-md" v-if="(proyectos != null || proyectos != undefined)
             && proyectos.length > 0">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">Código</th>
-                <th scope="col">Objeto</th>
-                <th scope="col">Acción</th>
+                <th scope="col"># Contrato</th>
+                <th scope="col" width="70%">Objeto</th>
+                <th scope="col" width="20%">Acción</th>
               </tr>
             </thead>
             <tbody>

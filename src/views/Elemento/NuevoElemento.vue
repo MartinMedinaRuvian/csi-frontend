@@ -1,23 +1,23 @@
 <template>
   <div>
-    <div class="ruta text-center">
+    <div class="ruta text-center mb-5">
       <h6>
         <span>
-          <v-icon color="red-accent-4" icon="mdi-domain"></v-icon>
+          <v-icon color="grey-darken-4" icon="mdi-domain"></v-icon>
         </span>
         <span class="ml-1">
           {{ info_edificio.nombre }}
         </span>
         -
         <span>
-          <v-icon color="red-accent-4" icon="mdi-ethernet"></v-icon>
+          <v-icon color="grey-darken-4" icon="mdi-ethernet"></v-icon>
         </span>
         <span>
           C. CABLEADO #{{ info_centro_cableado.numero }}
         </span>
         -
         <span>
-          <v-icon color="red-accent-4" icon="mdi-desktop-tower"></v-icon>
+          <v-icon color="grey-darken-4" icon="mdi-desktop-tower"></v-icon>
         </span>
         <span>
           GABINETE R{{
@@ -27,7 +27,7 @@
     </div>
     <div class="card">
       <div class="card-header text-center">
-        <h5 class="text-success">Nuevo Elemento</h5>
+        <h5 class="text-danger">Nuevo Elemento</h5>
       </div>
       <div class="card-body">
         <form @submit.prevent>

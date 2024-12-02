@@ -1,9 +1,12 @@
 <template>
   <div>
-    <div class="container-principal_mantenimientos mt-5">
-      <h4 class="mb-5">Mantenimientos
+    <div class="container-principal mt-5">
+      <h4 class="mb-5 text-danger">Mantenimientos
         <span>
-          <button class="btn btn-success" data-toggle="modal" data-target="#modalGuardarMantenimiento">+ <v-tooltip activator="parent" location="top">Agregar</v-tooltip></button>
+          <v-btn class="ml-2 botones-icon" data-toggle="modal" data-target="#modalGuardarMantenimiento">
+                <v-icon icon="mdi-note-plus"></v-icon>
+                <v-tooltip activator="parent" location="top">Agregar</v-tooltip>
+                </v-btn>
         </span>
       </h4>
 
@@ -15,10 +18,10 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Código</th>
-                <th scope="col">Observación</th>
+                <th scope="col" width="50%">Objeto</th>
                 <th scope="col">Realizado Por</th>
                 <th scope="col">Fecha</th>
-                <th scope="col">Acción</th>
+                <th scope="col" width="20%">Acción</th>
               </tr>
             </thead>
             <tbody>
@@ -37,13 +40,17 @@
                 </td>
                 <td>
                   <span>
-                    <button class="btn-eliminar_item btn btn-success ml-2" @click="verMantenimiento(mantenimiento)">
-                      <span class="icon-Lupa"></span> <v-tooltip activator="parent" location="top">Ver</v-tooltip></button>
+                    <v-btn class="botones-icon mr-5" @click="verMantenimiento(mantenimiento)">
+                      <v-icon icon="mdi-eye-outline"></v-icon>
+                      <v-tooltip activator="parent" location="top">Ver</v-tooltip>
+                    </v-btn>
                   </span>
                   <span>
-                    <button v-if="usuario.rol_id === 1" class="btn-eliminar_item btn btn-danger ml-2"
-                     data-toggle="modal" data-target="#modalEliminarMantenimiento" @click="verDatosModal(mantenimiento)">
-                      X <v-tooltip activator="parent" location="top">Quitar</v-tooltip></button>
+                      <v-btn v-if="usuario.rol_id === 1" class="botones-icon" data-toggle="modal"
+                      data-target="#modalEliminarMantenimiento" @click="verDatosModal(mantenimiento)">
+                      <v-icon icon="mdi-delete"></v-icon>
+                      <v-tooltip activator="parent" location="top">Quitar</v-tooltip>
+                    </v-btn>
                   </span>
                 </td>
               </tr>
@@ -296,11 +303,12 @@ export default {
 </script>
 
 <style scoped>
-.container-principal_mantenimientos {
+.container-principal {
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-direction: column;
+  width: 90%;
+  margin: 0 auto;
   /* Para que el contenido dentro de .container-principal esté en una columna */
 }
 
@@ -382,40 +390,60 @@ export default {
 }
 
 #dialog-window {
-  width: 90%;
-  height: 350px;
+  width: 100%;
+  height: 250px;
   margin-bottom: 40px;
 }
 
 #scrollable-content {
-  height: 350px;
+  height: 250px;
   overflow: auto;
-  border: solid 0.3px #212121;
-  border-radius: 10px
+  border: solid 0.5px #212121;
+  border-radius: 10px;
+  background-color: #fff;
 }
 
-#imagenMantenimientoVer {
+#imagenProyectoVer {
   width: 100%;
   height: 300px;
 }
 
-.texto-mantenimientos {
+.texto-proyectos {
   width: 85%;
   word-wrap: break-word !important;
 }
 
-.texto-mantenimientos p {
+.texto-proyectos p {
   font-size: 15px;
 }
 
-.botones-mantenimientos {
+.botones-proyectos {
   width: 15%;
 }
 
+.input-password,
+.input-buscar {
+  display: flex;
+  align-content: center;
+  align-items: center;
+}
+
+#scrollable-content li {
+  background-color: #FFF59D;
+  color: #000 ;
+}
+
 .container-no_registros {
-  margin-top: 50px;
+  margin-top: 40px;
 }
 .container-no_registros span {
-  font-size: 80px;
+  font-size: 60px;
+}
+
+.botones-icon {
+  font-size: 25px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid #fff;
 }
 </style>
