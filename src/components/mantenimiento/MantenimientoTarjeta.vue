@@ -18,7 +18,7 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col">Código</th>
-                <th scope="col" width="50%">Objeto</th>
+                <th scope="col" width="50%">Observación</th>
                 <th scope="col">Realizado Por</th>
                 <th scope="col">Fecha</th>
                 <th scope="col" width="20%">Acción</th>

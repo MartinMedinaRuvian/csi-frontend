@@ -41,7 +41,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data () {
     return {
-      configuraciones: ['Usuarios', 'Parámetros', 'Ver Mapa', 'Cerrar Sesión']
+      configuraciones: ['Usuarios', 'Parámetros', 'Ver Histórico', 'Ver Mapa', 'Cerrar Sesión']
     }
   },
   methods: {
@@ -53,6 +53,8 @@ export default {
         this.$router.push('/parametros')
       } else if (opcion === "Ver Mapa") {
         this.$router.push('/')
+      } else if (opcion === "Ver Histórico") {
+        this.$router.push('/logs')
       }else if (opcion === "Cerrar Sesión") {
         this.cerrarSesion()
       }

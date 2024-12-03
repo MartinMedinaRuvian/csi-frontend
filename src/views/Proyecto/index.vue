@@ -106,7 +106,7 @@
     <div class="modal fade" id="modaleliminarProyecto" tabindex="-1" role="dialog"
       aria-labelledby="modaleliminarProyecto" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Eliminar Proyecto
@@ -119,7 +119,7 @@
             <form @submit.prevent>
 
               <div class="form-group mt-4">
-                <h5>¿ Eliminar Proyecto con el Código: {{ proyecto.codigo }} ?</h5>
+                <h5>¿ Eliminar Proyecto #{{ proyecto.codigo }} ?</h5>
               </div>
 
               <div class="row">
@@ -142,7 +142,7 @@
     <div class="modal fade" id="modalActualizarProyecto" tabindex="-1" role="dialog"
       aria-labelledby="modalActualizarProyecto" aria-hidden="true" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content text-center">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Actualizar Proyecto

@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <h3 class="text-success mb-4 titulo-principal">Logs - Históricos</h3>
+    <h3 class="text-danger mb-4 titulo-principal">Logs - Históricos</h3>
     <div class="container">
       <div class="row">
         <div class="form-group col-md-12">
@@ -30,7 +30,7 @@
       </div>
       <div class="row" v-if="buscarPor !== 2">
         <div class="form-group col-md-6">
-          <label for="select">Condicion:</label>
+          <label for="select"><v-icon icon="mdi-filter"></v-icon> Filtro:</label>
           <select id="select" class="form-select form-control" aria-label="Default select example" v-model="condicion"
             @change="paginaActual = 1">
             <option :value="condicion.valor" v-for="condicion in condiciones" :key="condicion.valor"
@@ -44,27 +44,27 @@
           <div class="input-buscar">
             <input class="form-control" type="text" v-model="buscar" @keypress.enter="verLogs()"
               @keyup="paginaActual = 1" />
-            <button class="btn btn-success" @click="verLogs()">
-              &#128269;
-              <v-tooltip activator="parent" location="top">Ver</v-tooltip>
-            </button>
+            <v-btn class="botones-icon" @click="verLogs()">
+              <v-icon icon="mdi-eye"></v-icon>
+              <v-tooltip activator="parent" location="top">Buscar</v-tooltip>
+            </v-btn>
           </div>
         </div>
       </div>
     </div>
     <TablaLogs :logs="logs" />
     <div class="paginacion">
-      <button :disabled="paginaActual === 1" @click="cambiarPagina(paginaActual - 1)" class="btn btn-success mr-2">
+      <button :disabled="paginaActual === 1" @click="cambiarPagina(paginaActual - 1)" class="btn botones-paginacion mr-2">
         &laquo;
       </button>
 
       <button v-for="pagina in paginasVisibles" :key="pagina" @click="cambiarPagina(pagina)"
-        :class="['mr-2 btn', pagina === paginaActual ? 'btn-success' : 'btn-outline-success']">
+        :class="['mr-2 btn', pagina === paginaActual ? 'botones-paginacion' : 'botones-paginacion-outline']">
         {{ pagina }}
       </button>
 
       <button :disabled="paginaActual === Math.ceil(totalRegistros / registrosPorPagina)"
-        @click="cambiarPagina(paginaActual + 1)" class="btn btn-success">
+        @click="cambiarPagina(paginaActual + 1)" class="btn botones-paginacion">
         &raquo;
       </button>
     </div>
@@ -85,9 +85,9 @@ export default {
         { descripcion: "OBSERVACIÓN", valor: "observacion" }
       ],
       tipoBusqueda: [
-        { descripcion: "BUSCAR POR CONDICIÓN", valor: 1 },
+        { descripcion: "BUSCAR POR FILTRO", valor: 1 },
         { descripcion: "BUSCAR ENTRE FECHAS", valor: 2 },
-        { descripcion: "BUSCAR ENTRE FECHAS MÁS CONDICIÓN", valor: 3 },
+        { descripcion: "BUSCAR ENTRE FECHAS MÁS FILTRO", valor: 3 },
       ],
       buscarPor: 1,
       condicion: "email_usuario",
@@ -202,7 +202,119 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
+.drawer-style {
+  padding-top: 70px;
+  height: 100vh;
+  /* Hace que el drawer ocupe todo el alto de la vista */
+  border-right: 3px solid #dd4b39;
+  /* Opcional: agrega un borde */
+  background-color: #E0E0E0;
+}
+
+.drawer-style .v-list-item {
+  color: #000;
+  /* Color del texto */
+}
+
+
+#imagen {
+  width: 250px;
+  height: 250px;
+  border-radius: 182px;
+}
+
+.imagen-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.imagen-previsualizacion {
+  width: 120px;
+  height: 120px;
+}
+
+.titulo {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.observacion {
+  width: 100%;
+  /* Asegura que ocupe todo el ancho disponible */
+  display: flex;
+  flex-direction: column;
+  /* Alinea verticalmente */
+  align-items: center;
+  /* Centra el contenido dentro del div */
+}
+
+.textarea-center {
+  width: 100%;
+  /* Asegura que el textarea use el ancho total de su contenedor */
+  max-width: 500px;
+  /* Limita el ancho máximo */
+}
+
+.informacion-basica,
+.informacion-secundario {
+  flex-basis: 100%;
+  max-width: 100%;
+}
+
+.contenedor-imagen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 4px;
+  border-radius: 5px;
+}
+
+.v-icon {
+  font-size: 28px;
+}
+
+.container-principal_informacion {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  width: 80%;
+  /* Asegura que ocupe todo el ancho del contenedor padre */
+  margin: 0 auto;
+  /* Centra el contenedor horizontalmente */
+  border: solid 0.5px #212121;
+  border-radius: 15px;
+}
+
+.logos {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.botones-icon {
+  font-size: 25px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid #fff;
+}
+
+.botones-paginacion {
+  font-size: 15px;
+  color: #fff;
+  background-color: #00B0FF;
+  border: solid #00B0FF;
+}
+
+.botones-paginacion-outline {
+  font-size: 15px;
+  color: #00B0FF;
+  background-color: #fff;
+  border: solid 1px #00B0FF;
+}
+
 .input-password,
 .input-buscar {
   display: flex;
